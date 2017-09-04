@@ -5,7 +5,7 @@
 Module::Module(int number_of_inputs, int number_of_outputs, neuron* n, connection* c, int dna_allocated_length)
 {
 	this->n=n;
-	this->c=c;	
+	this->c=c;
 	this->allocated_space= dna_allocated_length;
 
 	//if random was not set, return error
@@ -29,7 +29,7 @@ Module::Module(int number_of_inputs, int number_of_outputs, neuron* n, connectio
 		}
 		number_of_neurons++;
 	}
-	
+
 	//find the maximum of connections
 	for(int i=0 ; c[i].from_neuron_id >= 0 ; ++i)
 	{
@@ -44,8 +44,8 @@ Module::Module(int number_of_inputs, int number_of_outputs, neuron* n, connectio
 		printf("Pay more attention next time, kid\n");
 		exit(1);
 	}
-	
-	
+
+
 	//states
 	neuron_state= (double*)calloc(allocated_space, sizeof(double));
 	previous_neuron_state= (double*)calloc(allocated_space, sizeof(double));
@@ -54,36 +54,36 @@ Module::Module(int number_of_inputs, int number_of_outputs, neuron* n, connectio
 	is_fired= (bool*)calloc(allocated_space, sizeof(bool));
 	connection_state= (int*)calloc(allocated_space, sizeof(int));
 	previous_connection_state= (int*)calloc(allocated_space, sizeof(int));
-	
+
 	//ready to use information
 	primer_list= (int*)malloc(sizeof(int)*(allocated_space));
-	
-	updateInformation();
-	
-	//set input and output neurons
-	createFixedInterfaceNeurons(number_of_inputs, number_of_outputs, INPUT_IDENTITY, OUTPUT_IDENTITY);	
 
-	
+	updateInformation();
+
+	//set input and output neurons
+	createFixedInterfaceNeurons(number_of_inputs, number_of_outputs, INPUT_IDENTITY, OUTPUT_IDENTITY);
+
+
 }
 
 // the dna_allocated_length is for both n and c, therefore its value is equivalent to the longest length
 Module::Module(int number_of_inputs, int number_of_outputs, int suggested_allocation_length)
 {
 	this->allocated_space= suggested_allocation_length;
-	
+
 	this->n= (neuron*)malloc(allocated_space*sizeof(neuron));
 	this->c= (connection*)malloc(allocated_space*sizeof(connection));
 
 	//set the both DNA arrays as empty
-	n[0].id=-1;	
-	c[0].from_neuron_id=-1;	
+	n[0].id=-1;
+	c[0].from_neuron_id=-1;
 
 	//default max neuron id
 	max_neuron_id=-1;
 	number_of_neurons=0;
 	number_of_connections=0;
-	
-	
+
+
 	//states
 	neuron_state= (double*)calloc(allocated_space, sizeof(double));
 	previous_neuron_state= (double*)calloc(allocated_space, sizeof(double));
@@ -92,23 +92,23 @@ Module::Module(int number_of_inputs, int number_of_outputs, int suggested_alloca
 	is_fired= (bool*)calloc(allocated_space, sizeof(bool));
 	connection_state= (int*)calloc(allocated_space, sizeof(int));
 	previous_connection_state= (int*)calloc(allocated_space, sizeof(int));
-	
+
 	//ready to use information
 	primer_list= (int*)malloc(sizeof(int)*(allocated_space));
-	
+
 	//create the Primer list
 	//not all Control Neurons activate, the Primers are the ones that always activate
 	number_of_primers=0;
 	//set the end of the primer list
 	primer_list[number_of_primers]=-1;
-	
+
 	//set input and output neurons
-	createFixedInterfaceNeurons(number_of_inputs, number_of_outputs, INPUT_IDENTITY, OUTPUT_IDENTITY);	
+	createFixedInterfaceNeurons(number_of_inputs, number_of_outputs, INPUT_IDENTITY, OUTPUT_IDENTITY);
 }
 
 Module::~Module()
 {
-	
+
 }
 
 void Module::saveDNA(const char* filename)
@@ -119,7 +119,7 @@ void Module::saveDNA(const char* filename)
 void Module::loadDNA(const char* filename)
 {
 	readDNA(filename, &n, number_of_neurons, &c, number_of_connections);
-	
+
 	//find the max neuron id
 	max_neuron_id=-1;
 	number_of_neurons=0;
@@ -131,21 +131,21 @@ void Module::loadDNA(const char* filename)
 		}
 		number_of_neurons++;
 	}
-	
+
 	//find the maximum number of connections
 	number_of_connections=0;
 	for(int i=0 ; c[i].from_neuron_id >= 0 ; ++i)
 	{
 		number_of_connections++;
 	}
-	
+
 /*	//check the allocated space
 	if(allocated_space < number_of_neurons + number_of_connections)
 	{
-		reallocEverything(number_of_neurons+number_of_connections);	
+		reallocEverything(number_of_neurons+number_of_connections);
 	}
 */
-	updateInformation();	
+	updateInformation();
 }
 
 void Module::clone(Module* brother)
@@ -153,7 +153,7 @@ void Module::clone(Module* brother)
 	//check the allocated space
 	if(allocated_space < brother->allocated_space)
 	{
-		reallocEverything(brother->allocated_space);	
+		reallocEverything(brother->allocated_space);
 	}
 
 	max_neuron_id= brother->max_neuron_id;
@@ -162,14 +162,14 @@ void Module::clone(Module* brother)
 	number_of_primers= brother->number_of_primers;
 
 	//clone the DNA
-	memcpy(this->n, brother->n, brother->allocated_space*sizeof(neuron));	
-	memcpy(this->c, brother->c, brother->allocated_space*sizeof(connection));	
-	
+	memcpy(this->n, brother->n, brother->allocated_space*sizeof(neuron));
+	memcpy(this->c, brother->c, brother->allocated_space*sizeof(connection));
+
 	//clone related information
-	memcpy(this->primer_list, brother->primer_list, brother->allocated_space*sizeof(int));	
-	
+	memcpy(this->primer_list, brother->primer_list, brother->allocated_space*sizeof(int));
+
 	//erase all information from previous runs
-	//that still remains on the network 
+	//that still remains on the network
 	clearMemory();
 
 }
@@ -181,13 +181,13 @@ void Module::clone(Module* brother)
 void Module::firingRateMutation()
 {
 /*
-	double roulette = random->uniform(0.0, 1.0); 
-	
+	double roulette = random->uniform(0.0, 1.0);
+
 	if(roulette < FIRING_RATE_MUTATION_RATE)
 	{
 		for(int i=0 ; n[i].id >= 0 ; ++i)
 		{
-						
+
 		}
 	}
 */
@@ -195,13 +195,13 @@ void Module::firingRateMutation()
 
 ///////////////////////////////////////////////////////////////
 //	Weight mutation:
-//		- modify weight 
+//		- modify weight
 //		(for now the neuromodulation connections are ignored)
 ///////////////////////////////////////////////////////////////
 void Module::weightMutation()
 {
 
-	double roulette = random->uniform(0.0, 1.0); 
+	double roulette = random->uniform(0.0, 1.0);
 	if(roulette < CHANCE_OF_WEIGHT_MUTATION)
 	{
 		for(int i=0 ; c[i].from_neuron_id >= 0 ; ++i)
@@ -212,16 +212,16 @@ void Module::weightMutation()
 				double variance= WEIGHT_MUTATION_CHANGE_PERCENTAGE*c[i].weight;
 
 		//	double previous_weight= c[i].weight;
-				
-				double perturbation= random->uniform(variance,variance);
+
+				double perturbation= random->uniform(-variance,variance);
 				//printf("variance %f pert %f\n",variance, perturbation);
 				c[i].weight+= perturbation;
-			
-				if(c[i].weight > MAXIMUM_WEIGHT || isinf(c[i].weight))		
+
+				if(c[i].weight > MAXIMUM_WEIGHT || isinf(c[i].weight))
 				{
 					c[i].weight= MAXIMUM_WEIGHT;
 				}
-			//	double sum= c[i].weight;	
+			//	double sum= c[i].weight;
 			//	if(isnan(sum)||isinf(sum))
 			//	{
 			//		printf("Infinity weight from mutation: %f perturbation %f\n",c[i].weight, perturbation);
@@ -230,14 +230,14 @@ void Module::weightMutation()
 			}
 		}
 	}
-				
+
 }
 
 ///////////////////////////////////////////////////////////////
 //	There are 3 types of structural mutation:
 //		- topologic
 //			-add/remove neuron
-//			-add/remove connection 
+//			-add/remove connection
 //			!!!!!!!Important: after removing a connection, a non-primer might become a primer and vice-versa!!!!
 //			Threfore, always do a updatePrimerList() after structural Mutation
 ///////////////////////////////////////////////////////////////
@@ -245,7 +245,7 @@ void Module::structuralMutation()
 {
 	double mutation_chance[]= MUTATION_PROBABILITIES;
 
-	double roulette = random->uniform(0.0, 1.0); 
+	double roulette = random->uniform(0.0, 1.0);
 
 	int mutation_type;
 
@@ -283,23 +283,23 @@ void Module::structuralMutation()
 			//find an available index
 			int new_index= number_of_neurons;
 			number_of_neurons++;
-			
+
 			//find an available id
 			int new_id= smallestFreeId();
-			
+
 			//printf("add neuron id %d\n",new_id);
-			
+
 			//update max_neuron_id
 			if(max_neuron_id < new_id)
 			{
-				max_neuron_id = new_id;	
+				max_neuron_id = new_id;
 			}
 
 			//check the allocated space
 			if(allocated_space <= number_of_neurons + 1)
 			{
-				reallocEverything();	
-			}	
+				reallocEverything();
+			}
 
 			//chance of being a Control Neuron
 			if(random->uniform(0.0,1.0) < CHANCE_OF_CONTROL_NEURON)
@@ -310,13 +310,13 @@ void Module::structuralMutation()
 			else
 			{
 				//create a random neuron
-				n[new_index].type= random->uniform(0,NUMBER_OF_NEURON_TYPES-1); 
+				n[new_index].type= random->uniform(0,NUMBER_OF_NEURON_TYPES-1);
 			}
 
 			//create a random neuron
 			n[new_index].id= new_id;
 			n[new_index].firing_rate= randomFiringRateLevel(random);
-			n[number_of_neurons].id=-1;	
+			n[number_of_neurons].id=-1;
 
 			//if it is a Control Neuron then it must be a Primer (there are no connections to this neuron now)
 			if(n[new_index].type == CONTROL)
@@ -330,14 +330,14 @@ void Module::structuralMutation()
 
 		}
 		break;
-		
+
 		//remove neuron
 		case 2:
 		{
 
 			int delete_index= random->uniform(0,number_of_neurons-1);
 			int delete_id= n[delete_index].id;
-			
+
 			//printf("remove neuron id %d\n",delete_id);
 
 			if(delete_id==-1)
@@ -345,12 +345,12 @@ void Module::structuralMutation()
 				//printf("No neuron to delete\n");
 				return;
 			}
-			
+
 			//dont remove input and output neurons
-			if(n[delete_index].type == INPUT_IDENTITY || 
-					n[delete_index].type == INPUT_SIGMOID || 
-					n[delete_index].type == OUTPUT_IDENTITY || 
-					n[delete_index].type == OUTPUT_SIGMOID) 
+			if(n[delete_index].type == INPUT_IDENTITY ||
+					n[delete_index].type == INPUT_SIGMOID ||
+					n[delete_index].type == OUTPUT_IDENTITY ||
+					n[delete_index].type == OUTPUT_SIGMOID)
 			{
 				return;
 			}
@@ -367,7 +367,7 @@ void Module::structuralMutation()
 						number_of_primers--;
 						primer_list[number_of_primers]=-1;
 					}
-				}		
+				}
 			}
 
 			//deleting
@@ -387,10 +387,10 @@ void Module::structuralMutation()
 			//remove all connections to this or from this neuron
 			do{
 				found=false;
-			
+
 				for(int i=0; c[i].from_neuron_id >= 0 && found == false;++i)
 				{
-					if(c[i].from_neuron_id==delete_id || c[i].to_neuron_id==delete_id || c[i].neuro_modulation == delete_id)	
+					if(c[i].from_neuron_id==delete_id || c[i].to_neuron_id==delete_id || c[i].neuro_modulation == delete_id)
 					{
 						//printf("remove connection to neuron\n");
 						removeConnection(i);
@@ -400,15 +400,15 @@ void Module::structuralMutation()
 				}
 
 				//printf("number of connections %d\n",number_of_connections);
-					
+
 			}
 			while(found == true);
 			//printf("left\n");
-			
+
 
 		}
 		break;
-			
+
 		//add connection
 		case 3:
 		{
@@ -422,16 +422,16 @@ void Module::structuralMutation()
 			if(n[0].id==-1)
 			{
 				//printf("no neurons\n");
-				return;	
-			}			
+				return;
+			}
 
 			//create a random connection
 			int random_index= random->uniform(0,number_of_neurons-1);
 			c[number_of_connections].from_neuron_id= n[random_index].id;
-			
+
 			random_index= random->uniform(0,number_of_neurons-1);
 			c[number_of_connections].to_neuron_id= n[random_index].id;
-			
+
 			if(random->uniform(0.0,1.0) < CHANCE_OF_NEUROMODULATION)
 			{
 				//int random_index= random->uniform(0,1);
@@ -442,7 +442,7 @@ void Module::structuralMutation()
 			}
 			else
 			{
-				
+
 				int random_index= random->uniform(0,1);
 				c[number_of_connections].neuro_modulation= -1;
 				if(random_index==0)
@@ -453,35 +453,35 @@ void Module::structuralMutation()
 				{
 					c[number_of_connections].weight= -1;
 				}
-				
+
 				//for random real weights uncomment the following
 				//c[number_of_connections].neuro_modulation= -1;
 				//c[number_of_connections].weight= random->uniform(-1.0,1.0);
 			}
 
-			number_of_connections++;	
+			number_of_connections++;
 			c[number_of_connections].from_neuron_id=-1;
 		}
 		break;
-			
+
 		//remove connection
 		case 4:
 		{
 			int delete_index= random->uniform(0,number_of_connections-1);
-	
+
 			if(number_of_connections==0)
 			{
 				return;
-			}		
+			}
 
 			//printf("remove connection\n");
 			removeConnection(delete_index);
 		}
 		break;
 
-	}	
+	}
 
-/*	
+/*
 	switch(rnd)
 	{
 		case 1:
@@ -499,22 +499,22 @@ void Module::structuralMutation()
 			modifyVelocity();
 		}
 		break;
-	}	
+	}
 */
 }
 
 //
 // States: activated/deactivated, excited/inhibited, called/uncalled
 //
-// Sequence of activations: 
-// 	
+// Sequence of activations:
+//
 // 	example: [condition] type of neuron
 //
 //	**Control neurons has an activation bias of +1
 //
 // - Primers (Control Neurons (CN) that does not receive input from CN)
 //
-// - [excited and deactivated] CN  
+// - [excited and deactivated] CN
 //
 // - [excited] Input Neurons
 //
@@ -525,32 +525,32 @@ void Module::process(double* input, double* output)
 
 	this->input= input;
 	this->output= output;
-	
+
 	///////////////////////////// Excited Input Neurons //////////////////////////
-	
+
 	processInputNeurons();
 
 	///////////////////////////// Primers //////////////////////////
 
 	processPrimers();
-	
+
 	///////////////////////////// Excited Control Neurons //////////////////////////
-		
+
 	processControlNeurons();
 
 	///////////////////////////// Excited Input Neurons //////////////////////////
-	
+
 	//processInputNeurons();
-	
+
 	///////////////////////////// Excited & Called Neurons //////////////////////////
-	
+
 	processRemainingNeurons();
-	
+
 	///////////////////////////// Cleaning Phase //////////////////////////
 
 	//printFiredStates();
 	//printInternalStates();
-		
+
 	//printInformationFlowGraph("graph.dot");
 
 	//Clean Information:
@@ -558,7 +558,7 @@ void Module::process(double* input, double* output)
 	//fire - fire clean the fire information
 	//state - change neuron_state to previous neuron state
 	//excitation - clear excitation
-	
+
 	for(int i=0;i<number_of_neurons;++i)
 	{
 		is_fired[i]=false;
@@ -573,15 +573,15 @@ void Module::process(double* input, double* output)
 		previous_neuron_state[i]= neuron_state[i];
 		neuron_state[i]=0.0;
 		neuron_excitation[i]=0.0;
-	}	
-	
+	}
+
 	for(int i=0;i<number_of_connections;++i)
 	{
 		previous_connection_state[i]= connection_state[i];
 		connection_state[i]=0;
 	}
-		
-		
+
+
 }
 
 //clear all memory information that still remains on the neurons
@@ -594,8 +594,8 @@ void Module::clearMemory()
 		neuron_state[i]=0.0;
 		internal_neuron_state[i]=0.0;
 		neuron_excitation[i]=0.0;
-	}	
-	
+	}
+
 	for(int i=0;i<number_of_connections;++i)
 	{
 		previous_connection_state[i]= 0;
@@ -606,15 +606,15 @@ void Module::clearMemory()
 
 void Module::processControlNeurons()
 {
-	
+
 	//the loop only stops when:
-	//	-no Control Neuron that is excited and was not activated is found 
+	//	-no Control Neuron that is excited and was not activated is found
 	for(;;)
-	{	
-	
+	{
+
 		std::stack<int> active_neurons;
 		std::stack<int> active_neurons_copy;
-	
+
 		//execute all Control Neurons that are excited and not activated
 		for(int i=0; n[i].id >= 0;++i)
 		{
@@ -624,41 +624,41 @@ void Module::processControlNeurons()
 				//int index= map_id_to_dna[id];
 				//internal_neuron_state[i]+= execute(i);
 				execute(i);
-		
+
 				active_neurons.push(i);
 			}
 		}
-		
+
 		//stop loop if no excited and not activated control neuron was found
 		if(active_neurons.empty())
 		{
 			return;
 		}
-	
-		
+
+
 		//set all Control Neurons as already activated and fire them
 		while(!active_neurons.empty())
 		{
 			//int id= active_neuron;
 			int index= active_neurons.top();
-			
+
 			//remove the top of the stack & add this in the copy of this stack
 			active_neurons.pop();
 			active_neurons_copy.push(index);
-			
+
 			//mark as fired
 			is_fired[index]=true;
 		}
-	
-		//Excite/Inhibit other neurons 
+
+		//Excite/Inhibit other neurons
 		while(!active_neurons_copy.empty())
 		{
 			int control_index= active_neurons_copy.top();
 			int control_id= n[control_index].id;
-			
+
 			//pop
 			active_neurons_copy.pop();
-			
+
 			//check the connections from this neuron
 			for(int j=0; c[j].from_neuron_id >= 0;++j)
 			{
@@ -682,9 +682,9 @@ void Module::processControlNeurons()
 				{
 					int modulator= c[j].neuro_modulation;
 					int modulator_index= neuronIdToDNAIndex(modulator);
-					
+
 					double modulator_input=0.0;
-					
+
 					//check if it is excited
 					if(neuron_excitation[modulator_index] >= EXCITATION_THRESHOLD)
 					{
@@ -698,25 +698,25 @@ void Module::processControlNeurons()
 						{
 							modulator_input= previous_neuron_state[modulator_index];
 						}
-						
-					}	
+
+					}
 					else
 					{
 						modulator_input=0.0;
 					}
-					
+
 					neuron_excitation[destination_index]+= modulator_input*neuron_state[control_index];
 				}
 			}
-			
+
 		}
 
 
 
-			
+
 	}
 }
-	
+
 void Module::processInputNeurons()
 {
 	std::stack<int> active_neurons;
@@ -730,33 +730,33 @@ void Module::processInputNeurons()
 			//int index= map_id_to_dna[id];
 			//internal_neuron_state[i]+= execute(i);
 			execute(i);
-	
+
 			active_neurons.push(i);
 		}
 	}
-	
+
 	//return if no excited input neuron was found
 	if(active_neurons.empty())
 	{
 		return;
 	}
 
-	
+
 	//set all Input Neurons as already activated and fire them
 	while(!active_neurons.empty())
 	{
 		//int id= active_neuron;
 		int index= active_neurons.top();
-		
+
 		//remove the top of the stack
 		active_neurons.pop();
-		
+
 		//mark as fired
 		is_fired[index]=true;
 	}
 
 }
-	
+
 void Module::processRemainingNeurons()
 {
 	std::stack<int> output_neurons_stack;
@@ -781,59 +781,59 @@ void Module::processRemainingNeurons()
 
 	//printf("LLLLLLLLLLLLLLLLLL\n");
 	//the loop only stops when:
-	//	-no Remaining Neuron, that was excited and not activated, is found 
+	//	-no Remaining Neuron, that was excited and not activated, is found
 	for(;;)
-	{	
-	
+	{
+
 		std::stack<int> active_neurons;
-	
+
 		std::list<int>::iterator it;
 
 		//printf("list of firing neurons\n");
 		for(it=remaining_neurons_list.begin(); it!=remaining_neurons_list.end() ; ++it)
-		{	
+		{
 			int index= *it;
 			double output= execute(index, true);
-		
+
 			if(output > REMAINING_NEURON_THRESHOLD || output < -REMAINING_NEURON_THRESHOLD)
 			{
 				//int id= n[i].id;
 				//int index= map_id_to_dna[id];
 				//internal_neuron_state[index]+= output;
-		
+
 				active_neurons.push(index);
 				//printf("NNNNNNneuron %d\n", index);
 			}
 		}
 		//printf("end list of firing neurons\n\n");
-		
+
 		//stop loop if no excited and not activated control neuron was found
 		if(active_neurons.empty())
 		{
 			break;
 		}
-	
+
 		//set current active Neurons as already activated and fire them
 		while(!active_neurons.empty())
 		{
 			int index= active_neurons.top();
-			
+
 			//remove the top of the stack
 			active_neurons.pop();
-			
+
 
 			//mark as fired
 			is_fired[index]=true;
 
 			//remove activated neuron from the list of remaining neurons
-			remaining_neurons_list.remove(index);	
+			remaining_neurons_list.remove(index);
 		}
 
 
 	}
 	//printf("LLLLLLLLLLLLLLLLLL\n");
-	
-	//activate unactivated Output Neurons 
+
+	//activate unactivated Output Neurons
 	// - In other words, output neurons should be activated anyway
 	while(!output_neurons_stack.empty())
 	{
@@ -846,13 +846,13 @@ void Module::processRemainingNeurons()
 			//NEXT LINE, MARKED FOR EXCLUDING (exclude the internal_neuron_state[index]+= part only)
 			//internal_neuron_state[index]+= execute(index,true);
 			execute(index,true);
-		
+
 			is_fired[index]=true;
 
 		}
-		
+
 	}
-		
+
 }
 
 void Module::processPrimers()
@@ -864,24 +864,24 @@ void Module::processPrimers()
 		int index= neuronIdToDNAIndex(id);
 		//internal_neuron_state[index]+= execute(index);
 		execute(index);
-	}	
+	}
 
 	//set all Primer as already activated and fire them
 	for(int i=0; primer_list[i]!=-1; ++i)
 	{
 		int id= primer_list[i];
 		int index= neuronIdToDNAIndex(id);
-		
+
 		//mark as fired
 		is_fired[index]=true;
-	}	
-	
-	//Excite/Inhibit other neurons 
+	}
+
+	//Excite/Inhibit other neurons
 	for(int i=0; primer_list[i]!=-1; ++i)
 	{
 		int control_id= primer_list[i];
 		int control_index= neuronIdToDNAIndex(control_id);
-		
+
 		//check the connections from this neuron
 		for(int j=0; c[j].from_neuron_id >= 0;++j)
 		{
@@ -905,9 +905,9 @@ void Module::processPrimers()
 			{
 				int modulator= c[j].neuro_modulation;
 				int modulator_index= neuronIdToDNAIndex(modulator);
-				
+
 				double modulator_input=0.0;
-				
+
 				//check if it is excited
 				if(neuron_excitation[modulator_index] >= EXCITATION_THRESHOLD)
 				{
@@ -921,17 +921,17 @@ void Module::processPrimers()
 					{
 						modulator_input= previous_neuron_state[modulator_index];
 					}
-					
-				}	
+
+				}
 				else
 				{
 					modulator_input=0.0;
 				}
-				
+
 				neuron_excitation[destination_index]+= modulator_input*neuron_state[control_index];
 			}
 		}
-		
+
 	}
 
 }
@@ -942,8 +942,8 @@ void Module::processPrimers()
 //	w_i - weights
 //	I_i - inputs
 //
-//	f( \sum w_i * I_i )  
-//	
+//	f( \sum w_i * I_i )
+//
 //	(Neuron0)---I0---w0--
 //	         	    |
 //	(Neuron1)---I1---w1---(This Neuron)-----
@@ -951,12 +951,12 @@ void Module::processPrimers()
 //	(Neuron2)---I2---w2--
 //
 //	Ignore Input I_i if:
-//		-Neuron_i is a control neuron	
-//	
+//		-Neuron_i is a control neuron
+//
 //	IMPORTANT: this function returns this neuron's firing signal
 //		   if the neuron is going to fire or not this signal is left undecided
-//	
-//			
+//
+//
 //
 double Module::execute(int neuron_index, bool ignore_if_only_recurrent)
 {
@@ -982,7 +982,7 @@ double Module::execute(int neuron_index, bool ignore_if_only_recurrent)
 		int source_index= neuronIdToDNAIndex(source);
 
 		//add this input multiplied by the weight of the connection
-		//IGNORE if it comes from a Control Neuron 
+		//IGNORE if it comes from a Control Neuron
 		if(n[source_index].type!=CONTROL)
 		{
 
@@ -994,20 +994,20 @@ double Module::execute(int neuron_index, bool ignore_if_only_recurrent)
 				{
 					sum+= c[j].weight*neuron_state[source_index];
 					only_recurrent_inputs=false;
-					
+
 					connection_type cnn;
 					cnn.index=j;
 					cnn.type=FEEDFORWARD;
 
 					//marking the recurrent connection as used to be processed later on
-					//because we still do not know if this neuron will fire 
+					//because we still do not know if this neuron will fire
 					connections_used.push(cnn);
-					
+
 					if(isnan(sum)||isinf(sum))
 					{
 						printf("fired %f %f\n",c[j].weight, neuron_state[source_index]);
 					}
-			
+
 				}
 				//recurrent connection
 				//case it was not activated yet, use the state from the previous iteration
@@ -1016,46 +1016,46 @@ double Module::execute(int neuron_index, bool ignore_if_only_recurrent)
 					if(previous_connection_state[j] != FEEDFORWARD)
 					{
 						sum+= c[j].weight*previous_neuron_state[source_index];
-				
+
 						connection_type cnn;
 						cnn.index=j;
 						cnn.type=RECURRENT;
 
 						//marking the recurrent connection as used to be processed later on
-						//because we still do not know if this neuron will fire 
+						//because we still do not know if this neuron will fire
 						connections_used.push(cnn);
-						
+
 						if(isnan(sum)||isinf(sum))
 						{
 							printf("not fired %f %f\n",c[j].weight, previous_neuron_state[source_index]);
 						}
-					}		
+					}
 				}
-				
+
 				if(isnan(sum)||isinf(sum))
 				{
 					printf("no neuromodulation \n");
 				}
 			}
-			//with neuron modulation	
+			//with neuron modulation
 			else
 			{
 				///////////////////////////////////////////////////////////////
-				//	
+				//
 				//	Neuron Modulation
 				//
 				//
 				//	----(Modulator Neuron)----
 				//				 |
-				//	----(Source Neuron)---------------(This Neuron)---------			 
+				//	----(Source Neuron)---------------(This Neuron)---------
 				//
 				///////////////////////////////////////////////////////////////
-				
+
 				/////////////// modulator neuron /////////////
 
 				int modulator= c[j].neuro_modulation;
 				int modulator_index= neuronIdToDNAIndex(modulator);
-				
+
 				double modulator_input=0.0;
 				double source_input=0.0;
 
@@ -1072,33 +1072,33 @@ double Module::execute(int neuron_index, bool ignore_if_only_recurrent)
 					{
 						modulator_input= previous_neuron_state[modulator_index];
 					}
-					
-				}	
+
+				}
 				else
 				{
 					modulator_input=0.0;
 				}
-				
+
 				/////////////// source neuron ////////////
 
 				//source already activated
 				if(is_fired[source_index] == true)
 				{
 					source_input= neuron_state[source_index];
-					
+
 					connection_type cnn;
 					cnn.index=j;
 					cnn.type=FEEDFORWARD;
 
 					//marking the recurrent connection as used to be processed later on
-					//because we still do not know if this neuron will fire 
+					//because we still do not know if this neuron will fire
 					connections_used.push(cnn);
-					
+
 					if(isnan(source_input)||isinf(source_input))
 					{
 						printf("fired %f\n",neuron_state[source_index]);
 					}
-					
+
 				}
 				//recurrent connection
 				//source not already activated, use the state from the previous iteration
@@ -1107,40 +1107,40 @@ double Module::execute(int neuron_index, bool ignore_if_only_recurrent)
 					if(previous_connection_state[source_index] != FEEDFORWARD)
 					{
 						source_input= previous_neuron_state[source_index];
-						
+
 						connection_type cnn;
 						cnn.index=j;
 						cnn.type=RECURRENT;
 
 						//marking the recurrent connection as used to be processed later on
-						//because we still do not know if this neuron will fire 
+						//because we still do not know if this neuron will fire
 						connections_used.push(cnn);
-					
+
 						if(isnan(source_input)||isinf(source_input))
 						{
 							printf("not fired f %f\n", previous_neuron_state[source_index]);
 						}
 					}
-						
+
 					if(isnan(sum)||isinf(sum))
 					{
 						printf("not fired nnn\n");
 					}
-					
+
 				}
 
-				
+
 				sum+= modulator_input * source_input;
-				
+
 				if(isnan(sum)||isinf(sum))
 				{
 					printf("neuromodulation modulator %f source %f\n",modulator_input, source_input);
 				}
 
 			}
-		}	
+		}
 	}
-		
+
 
 	//if it is an Input Neuron
 	//sum the input
@@ -1149,22 +1149,22 @@ double Module::execute(int neuron_index, bool ignore_if_only_recurrent)
 		int input_index= n[neuron_index].interface_index;
 		sum+= input[input_index];
 	}
-	
+
 	if(isnan(sum)||isinf(sum))
 	{
 		printf("sum is nan, id %d\n",id);
 		printGraph("problem.dot");
 		exit(1);
 	}
-	
+
 	if(sum < -MAX_NEURON_OUTPUT || sum > MAX_NEURON_OUTPUT)
 	{
-		sum = MAX_NEURON_OUTPUT; 
+		sum = MAX_NEURON_OUTPUT;
 		//printf("neuron_state!! nan, id %d sum %f internal_neuron_state %f\n",id, sum, internal_neuron_state[neuron_index]);
 	}
-	
-	double neuron_output = activationFunction(n[neuron_index].type, sum, random); 
-	
+
+	double neuron_output = activationFunction(n[neuron_index].type, sum, random);
+
 	//In the case that the ignore_if_only_recurrent flag is set,
 	//the neuron does not activate if it only has recurrent input
 	//this is useful for normal "remaining neurons" (neurons that are not control, not input and not output neurons)
@@ -1177,7 +1177,7 @@ double Module::execute(int neuron_index, bool ignore_if_only_recurrent)
 	{
 		printf("neuron_state!! nan, id %d sum %f neuron output %f internal_neuron_state %f\n",id, sum, neuron_output, internal_neuron_state[neuron_index]);
 	}
-		
+
 	//if it is an Output Neuron
 	//set the output to the neuron_output
 	if(n[neuron_index].type == OUTPUT_IDENTITY || n[neuron_index].type ==  OUTPUT_SIGMOID)
@@ -1186,7 +1186,7 @@ double Module::execute(int neuron_index, bool ignore_if_only_recurrent)
 		output[output_index]= neuron_output;
 	}
 
-		
+
 	if(only_recurrent_inputs == true && ignore_if_only_recurrent == true)
 	{
 		return 0.0;
@@ -1202,13 +1202,13 @@ double Module::execute(int neuron_index, bool ignore_if_only_recurrent)
 			connection_state[cnn.index]=cnn.type;
 		}
 	}
-	
+
 	//use Windrow Hoff for slower neurons
 	double beta= 1/(double)n[neuron_index].firing_rate;
 	//printf("before beta %f, internal_neuron_state %f neuron_state %f\n",beta, internal_neuron_state[neuron_index],neuron_state[neuron_index]);
 	internal_neuron_state[neuron_index]= internal_neuron_state[neuron_index] + beta*(neuron_output - internal_neuron_state[neuron_index]);
 	neuron_state[neuron_index]= internal_neuron_state[neuron_index];
-	
+
 	if(isnan(neuron_state[neuron_index])||isinf(neuron_state[neuron_index]))
 	{
 		printf("neuron_state!! nan, id %d beta %f neuron output %f internal_neuron_state %f\n",id, beta, neuron_output, internal_neuron_state[neuron_index]);
@@ -1217,12 +1217,12 @@ double Module::execute(int neuron_index, bool ignore_if_only_recurrent)
 	//printf("beta %f, internal_neuron_state %f neuron_state %f\n",beta, internal_neuron_state[neuron_index],neuron_state[neuron_index]);
 
 	//printf("execute ");
-	//printNeuronType(n[neuron_index].type);	
+	//printNeuronType(n[neuron_index].type);
 	//printf("%d: %f\n", n[neuron_index].id, neuron_state[neuron_index]);
-	
+
 	return neuron_output;
 
-		
+
 }
 
 // FOR DEBUG PURPOSES
@@ -1274,7 +1274,7 @@ void Module::printInformationFlowGraph(const char* filename)
 				fprintf(fp,"%d [label=\"%d_s%.1f_ps%.1f\",shape=doublecircle, style=filled,fillcolor=gray]\n",i,i,neuron_state[i],previous_neuron_state[i]);
 			}
 			break;
-				
+
 			default:
 			{
 				if(neuron_excitation[i] >= EXCITATION_THRESHOLD)
@@ -1291,7 +1291,7 @@ void Module::printInformationFlowGraph(const char* filename)
 	}
 
 	int counter=1;
-	
+
 	for(i=0;c[i].from_neuron_id >= 0;++i)
 	{
 		if(c[i].neuro_modulation < 0)
@@ -1314,7 +1314,7 @@ void Module::printInformationFlowGraph(const char* filename)
 	}
 
 	fprintf(fp,"}\n");
-	fclose(fp);	
+	fclose(fp);
 }
 
 
@@ -1383,7 +1383,7 @@ void Module::printGraph(const char* filename)
 				fprintf(fp,"%d [label=\"%d_fire%d\",shape=doublecircle, style=filled, fillcolor=gray]\n",i,i,n[i].firing_rate);
 			}
 			break;
-				
+
 			default:
 			{
 				fprintf(fp,"%d\n",i);
@@ -1393,7 +1393,7 @@ void Module::printGraph(const char* filename)
 	}
 
 	int counter=1;
-	
+
 	for(i=0;c[i].from_neuron_id >= 0;++i)
 	{
 		if(c[i].neuro_modulation < 0)
@@ -1417,22 +1417,22 @@ void Module::printGraph(const char* filename)
 	}
 
 	fprintf(fp,"}\n");
-	fclose(fp);	
+	fclose(fp);
 }
 
 void Module::printVars()
 {
 	printf("number of allocated: %d\n",allocated_space);
-	
+
 	printf("max neuron id: %d number of neurons: %d\n",max_neuron_id, number_of_neurons);
-	
+
 	printf("Neuron State:\n");
 	for(int i=0;i<number_of_neurons;++i)
 	{
 		printf("%d:%f ",i,neuron_state[i]);
 	}
 	printf("\n");
-	
+
 	printf("Previous Neuron State:\n");
 	for(int i=0;i<number_of_neurons;++i)
 	{
@@ -1446,14 +1446,14 @@ void Module::printVars()
 		printf("%d:%f ",i,neuron_excitation[i]);
 	}
 	printf("\n");
-	
+
 	printf("Map ID to DNA's Position:\n");
 	for(int i=0;i<max_neuron_id+1;++i)
 	{
 		printf("%d:%d ",i,neuronIdToDNAIndex(i));
 	}
 	printf("\n");
-	
+
 	printf("Primer List:\n");
 	for(int i=0; primer_list[i]!=-1; ++i)
 	{
@@ -1480,7 +1480,7 @@ void Module::printDNA()
 		printf("\n");
 		printf("\n");
 	}
-	
+
 	printf("Connections:\n");
 	printf("\n");
 
@@ -1518,7 +1518,7 @@ void Module::printDNA(const char* filename)
 		fprintf(fp,"\n");
 		fprintf(fp,"\n");
 	}
-	
+
 	printf("Connections:\n");
 	printf("\n");
 
@@ -1560,7 +1560,7 @@ void Module::removeConnection(int index)
 
 void Module::setRandom(Random* random)
 {
-	Module::random= random;	
+	Module::random= random;
 }
 
 void Module::reallocEverything()
@@ -1628,7 +1628,7 @@ void Module::reallocEverything(int given_allocated_space)
 		primer_list[i]=-1;
 	}
 }
-	
+
 void Module::createFixedInterfaceNeurons(int number_of_inputs, int number_of_outputs, int input_type, int output_type)
 {
 	for(int i=0;i<number_of_inputs;++i)
@@ -1639,18 +1639,18 @@ void Module::createFixedInterfaceNeurons(int number_of_inputs, int number_of_out
 
 		//find an available id
 		int new_id = smallestFreeId();
-		
+
 		//update max_neuron_id
 		if(max_neuron_id < new_id)
 		{
-			max_neuron_id = new_id;	
+			max_neuron_id = new_id;
 		}
 
 		//check the allocated space
 		if(allocated_space <= number_of_neurons + 1)
 		{
-			reallocEverything();	
-		}	
+			reallocEverything();
+		}
 
 		//create a Input Neuron with the type passed
 		n[new_index].type= input_type;
@@ -1658,9 +1658,9 @@ void Module::createFixedInterfaceNeurons(int number_of_inputs, int number_of_out
 		n[new_index].id= new_id;
 		n[new_index].firing_rate= 1;//randomFiringRateLevel(random);
 		n[new_index].interface_index= i;
-		n[number_of_neurons].id=-1;	
-	}	
-	
+		n[number_of_neurons].id=-1;
+	}
+
 	for(int i=0;i<number_of_outputs;++i)
 	{
 		//find an available index
@@ -1669,18 +1669,18 @@ void Module::createFixedInterfaceNeurons(int number_of_inputs, int number_of_out
 
 		//find an available id
 		int new_id = smallestFreeId();
-		
+
 		//update max_neuron_id
 		if(max_neuron_id < new_id)
 		{
-			max_neuron_id = new_id;	
+			max_neuron_id = new_id;
 		}
 
 		//check the allocated space
 		if(allocated_space <= number_of_neurons + 1)
 		{
-			reallocEverything();	
-		}	
+			reallocEverything();
+		}
 
 		//create a Input Neuron with the type passed
 		n[new_index].type= output_type;
@@ -1688,10 +1688,10 @@ void Module::createFixedInterfaceNeurons(int number_of_inputs, int number_of_out
 		n[new_index].id= new_id;
 		n[new_index].firing_rate= 1;//randomFiringRateLevel(random);
 		n[new_index].interface_index= i;
-		n[number_of_neurons].id=-1;	
-	}	
+		n[number_of_neurons].id=-1;
+	}
 }
-		
+
 
 //add connection
 void Module::addConnection(int from_neuron_id, int to_neuron_id, int neuro_modulation, double weight)
@@ -1705,16 +1705,16 @@ void Module::addConnection(int from_neuron_id, int to_neuron_id, int neuro_modul
 	if(n[0].id==-1)
 	{
 		//printf("no neurons\n");
-		return;	
-	}			
+		return;
+	}
 
 	//create the specified connection
 	c[number_of_connections].from_neuron_id= from_neuron_id;
 	c[number_of_connections].to_neuron_id= to_neuron_id;
 	c[number_of_connections].neuro_modulation= neuro_modulation;
 	c[number_of_connections].weight= weight;
-	
-	number_of_connections++;	
+
+	number_of_connections++;
 	c[number_of_connections].from_neuron_id=-1;
 }
 
@@ -1724,14 +1724,14 @@ void Module::connectNewNeuronToNetwork(int new_neuron_id)
 	{
 		reallocEverything();
 	}
-	
+
 	// From the New Neuron
-	//create a random connection 
+	//create a random connection
 	c[number_of_connections].from_neuron_id= new_neuron_id;
-	
+
 	int random_index= random->uniform(0,number_of_neurons-1);
 	c[number_of_connections].to_neuron_id= n[random_index].id;
-	
+
 	if(random->uniform(0.0,1.0) < CHANCE_OF_NEUROMODULATION)
 	{
 		//int random_index= random->uniform(0,1);
@@ -1742,7 +1742,7 @@ void Module::connectNewNeuronToNetwork(int new_neuron_id)
 	}
 	else
 	{
-		
+
 		int random_index2= random->uniform(0,1);
 		c[number_of_connections].neuro_modulation= -1;
 		if(random_index2==0)
@@ -1753,25 +1753,25 @@ void Module::connectNewNeuronToNetwork(int new_neuron_id)
 		{
 			c[number_of_connections].weight= -1;
 		}
-		
+
 		//for random real weights uncomment the following
 		//c[number_of_connections].neuro_modulation= -1;
 		//c[number_of_connections].weight= random->uniform(-1.0,1.0);
 	}
 
-	number_of_connections++;	
+	number_of_connections++;
 	c[number_of_connections].from_neuron_id=-1;
-	
+
 
 	/**************** Second Connection ***************/
-	
+
 	// To the New Neuron
 	//create a random connection
 	random_index= random->uniform(0,number_of_neurons-1);
 	c[number_of_connections].from_neuron_id= n[random_index].id;
-	
+
 	c[number_of_connections].to_neuron_id= new_neuron_id;
-	
+
 	if(random->uniform(0.0,1.0) < CHANCE_OF_NEUROMODULATION)
 	{
 		//int random_index= random->uniform(0,1);
@@ -1782,7 +1782,7 @@ void Module::connectNewNeuronToNetwork(int new_neuron_id)
 	}
 	else
 	{
-		
+
 		int random_index2= random->uniform(0,1);
 		c[number_of_connections].neuro_modulation= -1;
 		if(random_index2==0)
@@ -1793,13 +1793,13 @@ void Module::connectNewNeuronToNetwork(int new_neuron_id)
 		{
 			c[number_of_connections].weight= -1;
 		}
-		
+
 		//for random real weights uncomment the following
 		//c[number_of_connections].neuro_modulation= -1;
 		//c[number_of_connections].weight= random->uniform(-1.0,1.0);
 	}
 
-	number_of_connections++;	
+	number_of_connections++;
 	c[number_of_connections].from_neuron_id=-1;
 }
 
@@ -1813,7 +1813,7 @@ void Module::printInternalStates()
 		printf(" %d: %f \n", n[i].id, internal_neuron_state[i]);
 	}
 	printf("\n");
-	
+
 	for(int i=0; i<number_of_neurons;++i)
 	{
 		printf("excited ");
@@ -1856,7 +1856,7 @@ void Module::updateInformation()
 			if(n[dna_index].type==CONTROL)
 			{
 				is_primer=false;
-			}	
+			}
 		}
 
 		//if this CN is a primer, insert it in the primer list
@@ -1866,14 +1866,14 @@ void Module::updateInformation()
 			number_of_primers++;
 		}
 	}
-	
+
 	//set the end of the primer list
 	primer_list[number_of_primers]=-1;
-*/	
-	
+*/
+
 	//printArray(primer_list, number_of_primers);
 }
-		
+
 void Module::printFiredStates()
 {
 	printf("\n");
@@ -1884,9 +1884,9 @@ void Module::printFiredStates()
 		printNeuronType(n[i].type);
 		printf(" %d: %d \n", n[i].id, is_fired[i]);
 	}
-}	
+}
 
-//check the validity of the DNA 
+//check the validity of the DNA
 bool Module::checkValidity()
 {
 	bool validity=true;
@@ -1902,8 +1902,8 @@ bool Module::checkValidity()
 	{
 		printf("Number of neurons is wrong\n");
 		validity=false;
-	}	
-	
+	}
+
 	//check number of connections
 	counter=0;
 	for(int i=0; c[i].from_neuron_id >= 0 ;++i)
@@ -1921,7 +1921,7 @@ bool Module::checkValidity()
 	for(int j=0; c[j].from_neuron_id >= 0 ; ++j)
 	{
 		int check_id= c[j].from_neuron_id;
-	
+
 		bool found=false;
 		for(int i=0; n[i].id >= 0 && found == false;++i)
 		{
@@ -1930,17 +1930,17 @@ bool Module::checkValidity()
 				found=true;
 			}
 		}
-	
+
 		if(found==false)
 		{
 			printf("From Id %d not found\n",check_id);
 			validity=false;
 		}
-		
-		
-		
+
+
+
 		check_id= c[j].to_neuron_id;
-	
+
 		found=false;
 		for(int i=0; n[i].id >= 0 && found == false;++i)
 		{
@@ -1949,16 +1949,16 @@ bool Module::checkValidity()
 				found=true;
 			}
 		}
-	
+
 		if(found==false)
 		{
 			printf("To Id %d not found\n",check_id);
 			validity=false;
 		}
-		
+
 		check_id= c[j].neuro_modulation;
 
-		//if there is neuro_modulation, verify if the neuron is present	
+		//if there is neuro_modulation, verify if the neuron is present
 		if(check_id != -1)
 		{
 			found=false;
@@ -1969,7 +1969,7 @@ bool Module::checkValidity()
 					found=true;
 				}
 			}
-		
+
 			if(found==false)
 			{
 				printf("Neuromodulation Id %d not found\n",check_id);
@@ -1982,7 +1982,7 @@ bool Module::checkValidity()
 
 	return validity;
 }
-	
+
 void Module::updatePrimerList()
 {
 	//create the Primer list
@@ -2015,7 +2015,7 @@ void Module::updatePrimerList()
 			if(n[dna_index].type==CONTROL)
 			{
 				is_primer=false;
-			}	
+			}
 		}
 
 		//if this CN is a primer, insert it in the primer list
@@ -2025,7 +2025,7 @@ void Module::updatePrimerList()
 			number_of_primers++;
 		}
 	}
-	
+
 	//set the end of the primer list
 	primer_list[number_of_primers]=-1;
 }
@@ -2043,23 +2043,23 @@ int Module::neuronIdToDNAIndex(int id)
 	printf("ERROR: No neuron with %d id found\n",id);
 	exit(1);
 	return -1;
-				
+
 }
 
 // this function returns an id number that is free to use
-// 
-// it is useful to avoid even sparse dna with even increasing values of id numbers 
+//
+// it is useful to avoid even sparse dna with even increasing values of id numbers
 int Module::smallestFreeId()
 {
-		
+
 	//check if there is the id "i" in the current dna
 	bool id_found;
-	
-	int i;	
+
+	int i;
 	for(i=0 ; n[i].id >= 0; ++i)
 	{
 		id_found=false;
-	
+
 
 		for(int j=0; n[j].id >=0 && id_found == false ;++j)
 		{
@@ -2068,7 +2068,7 @@ int Module::smallestFreeId()
 				id_found=true;
 			}
 		}
-	
+
 		if(id_found == false)
 		{
 			return i;
@@ -2080,4 +2080,3 @@ int Module::smallestFreeId()
 }
 
 Random* Module::random= NULL;
-
