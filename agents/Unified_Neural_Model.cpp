@@ -1,27 +1,31 @@
 
 #include"Unified_Neural_Model.h"
 
+#include<vector>
+using std::vector;
+vector<vector<int> > structure = {{100,10,10,0},{0,100,10,0},{0,0,100,10},{0,0,0,100}};
+
 Unified_Neural_Model::Unified_Neural_Model(Random* random)
 {
 	this->random= random;
 
 	Module::setRandom(random);
-	
+
 	testing_subpop= 0;
-	testing_individual= 0;	
+	testing_individual= 0;
 	generation=1;
 	best_index=0;
 
 #ifdef	SPECTRUM_DIVERSITY
 	nmap= new Novelty_Map(NOVELTY_MAP_SIZE , SPECTRUM_SIZE);
-	
-		
+
+
 	if(NOVELTY_MAP_SIZE >= SUBPOPULATION_SIZE)
 	{
 		printf("ERROR: Novelty map's size is bigger or equal to the subpopulation size\n");
 		exit(1);
 	}
-	
+
 	if(NUMBER_OF_SUBPOPULATIONS != 1)
 	{
 		printf("ERROR: Number of subpopulations is different than 1\n");
@@ -35,7 +39,7 @@ Unified_Neural_Model::Unified_Neural_Model(Random* random)
 Unified_Neural_Model::~Unified_Neural_Model()
 {
 	free(action);
-	
+
 	for(int i= 0; i < NUMBER_OF_SUBPOPULATIONS; ++i )
 	{
 		for(int j=0;j<SUBPOPULATION_SIZE; ++j)
@@ -45,7 +49,7 @@ Unified_Neural_Model::~Unified_Neural_Model()
 		delete subpopulation[i];
 		free(fitness[i]);
 	}
-	
+
 	delete subpopulation;
 	free(fitness);
 }
@@ -54,51 +58,51 @@ Unified_Neural_Model::~Unified_Neural_Model()
 void Unified_Neural_Model::savePopulation()
 {
 	printf("Saving population\n");
-	
+
 	for(int i= 0; i < NUMBER_OF_SUBPOPULATIONS; ++i )
 	{
 		for(int j=0;j<SUBPOPULATION_SIZE; ++j)
 		{
-			subpopulation[i][j]->saveDNA();		
+			subpopulation[i][j]->saveDNA();
 		}
 	}
 }
 */
-		
+
 void Unified_Neural_Model::saveAgent(const char* filename)
 {
 	//printf("Saving best agent model\n");
-	
-	//execute individual
-	subpopulation[MAIN_SUBPOP][best_index]->saveDNA(filename);		
 
-	subpopulation[MAIN_SUBPOP][best_index]->printGraph("best_individual.dot");		
-	
+	//execute individual
+	subpopulation[MAIN_SUBPOP][best_index]->saveDNA(filename);
+
+	subpopulation[MAIN_SUBPOP][best_index]->printGraph("best_individual.dot");
+
 	//char name[64];
 	//sprintf(name,"%s_printed",filename);
-	//subpopulation[MAIN_SUBPOP][best_index]->printDNA(name);		
-		
+	//subpopulation[MAIN_SUBPOP][best_index]->printDNA(name);
+
 }
 
 void Unified_Neural_Model::loadAgent(const char* filename)
 {
 	//printf("Loading agent model\n");
-	
+
 	//printf("primer list\n");
 	//printArray(subpopulation[MAIN_SUBPOP][best_index]->primer_list, subpopulation[MAIN_SUBPOP][best_index]->number_of_primers);
-	
+
 	//execute individual
-	subpopulation[MAIN_SUBPOP][best_index]->loadDNA(filename);	
+	subpopulation[MAIN_SUBPOP][best_index]->loadDNA(filename);
 
-	//subpopulation[MAIN_SUBPOP][best_index]->printDNA();	
+	//subpopulation[MAIN_SUBPOP][best_index]->printDNA();
 
-	
-	subpopulation[MAIN_SUBPOP][best_index]->clearMemory();		
-	
+
+	subpopulation[MAIN_SUBPOP][best_index]->clearMemory();
+
 	//char name[64];
 	//sprintf(name,"%s_loaded_printed",filename);
 
-	//subpopulation[MAIN_SUBPOP][best_index]->printDNA(name);		
+	//subpopulation[MAIN_SUBPOP][best_index]->printDNA(name);
 
 }
 
@@ -109,9 +113,9 @@ void Unified_Neural_Model::init(int number_of_observation_vars, int number_of_ac
 
 	action= (double*) calloc(number_of_action_vars, sizeof(double));
 
-	//random subpopulation	
-	subpopulation= new Module**[NUMBER_OF_SUBPOPULATIONS];		
-	tmp_subpopulation= new Module**[NUMBER_OF_SUBPOPULATIONS];		
+	//random subpopulation
+	subpopulation= new Module**[NUMBER_OF_SUBPOPULATIONS];
+	tmp_subpopulation= new Module**[NUMBER_OF_SUBPOPULATIONS];
 	fitness= (double**)malloc(sizeof(double*)*NUMBER_OF_SUBPOPULATIONS);
 	tmp_fitness= (double**)malloc(sizeof(double*)*NUMBER_OF_SUBPOPULATIONS);
 	for(int i= 0; i < NUMBER_OF_SUBPOPULATIONS; ++i )
@@ -122,8 +126,8 @@ void Unified_Neural_Model::init(int number_of_observation_vars, int number_of_ac
 		tmp_fitness[i]= (double*)malloc(sizeof(double)*SUBPOPULATION_SIZE);
 		for(int j=0;j<SUBPOPULATION_SIZE; ++j)
 		{
-			subpopulation[i][j]= new Module(number_of_observation_vars, number_of_action_vars, INITIAL_ALLOCATION_LENGTH);
-			tmp_subpopulation[i][j]= new Module(number_of_observation_vars, number_of_action_vars, INITIAL_ALLOCATION_LENGTH);
+			subpopulation[i][j]= new Module(number_of_observation_vars, number_of_action_vars, INITIAL_ALLOCATION_LENGTH, structure);
+			tmp_subpopulation[i][j]= new Module(number_of_observation_vars, number_of_action_vars, INITIAL_ALLOCATION_LENGTH, structure);
 
 			fitness[i][j]= EXTREME_NEGATIVE_REWARD;
 
@@ -136,29 +140,29 @@ void Unified_Neural_Model::init(int number_of_observation_vars, int number_of_ac
 		}
 	}
 
-	
+
 }
 
 void Unified_Neural_Model::step(double* observation, double reward)
 {
 	//execute individual
-	subpopulation[testing_subpop][testing_individual]->process(observation, action);		
+	subpopulation[testing_subpop][testing_individual]->process(observation, action);
 
 	//update reward
 	tmp_fitness[testing_subpop][testing_individual]+= reward;
 }
-		
+
 void Unified_Neural_Model::endEpisode(double reward)
 {
 	//update reward
 	tmp_fitness[testing_subpop][testing_individual]+= reward;
 
 	step_counter++;
-	
+
 
 	//printf("%f\n",tmp_fitness[testing_subpop][testing_individual]);
 
-	//average 
+	//average
 	if(step_counter >= EPISODES_PER_INDIVIDUAL)
 	{
 		tmp_fitness[testing_subpop][testing_individual]/= (double) step_counter;
@@ -169,9 +173,9 @@ void Unified_Neural_Model::endEpisode(double reward)
 	{
 		return;
 	}
-	
-	subpopulation[testing_subpop][testing_individual]->clearMemory();		
-	
+
+	subpopulation[testing_subpop][testing_individual]->clearMemory();
+
 	//test a new individual from this subpopulation
 	testing_individual++;
 
@@ -200,22 +204,22 @@ void Unified_Neural_Model::endEpisode(double reward)
 
 void Unified_Neural_Model::print()
 {
-	subpopulation[MAIN_SUBPOP][best_index]->printGraph("best_individual.dot");		
+	subpopulation[MAIN_SUBPOP][best_index]->printGraph("best_individual.dot");
 }
 
 double Unified_Neural_Model::stepBestAction(double* observation)
 {
 
 	//execute individual
-	subpopulation[MAIN_SUBPOP][best_index]->process(observation, action);		
+	subpopulation[MAIN_SUBPOP][best_index]->process(observation, action);
 
-	return 0;	
+	return 0;
 }
 
 
 void Unified_Neural_Model::endBestEpisode()
 {
-	subpopulation[MAIN_SUBPOP][best_index]->clearMemory();		
+	subpopulation[MAIN_SUBPOP][best_index]->clearMemory();
 }
 
 
@@ -227,15 +231,15 @@ void Unified_Neural_Model::supremacistEvolve()
 		for(int j=0;j<SUBPOPULATION_SIZE; ++j)
 		{
 			fitness[i][j]= tmp_fitness[i][j];
-		
+
 			//mark this subpopulation as without any individuals inserted
 			//selected_individuals[i][j][0]=-1;
-			
+
 			//reset the fitness
 			tmp_fitness[i][j]= 0.0;;
 		}
 	}
-	
+
 
 	for(int s= 0; s < NUMBER_OF_SUBPOPULATIONS; ++s)
 	{
@@ -248,18 +252,18 @@ void Unified_Neural_Model::supremacistEvolve()
 			for(int j=0;j<SUBPOPULATION_SIZE; ++j)
 			{
 				double objective= subpopulationObjective(subpopulation[i][j], fitness[i][j], s);
-			
+
 				if(best_objective < objective)
 				{
 					best_index_ind= j;
 					best_index_sub= i;
-					best_objective= objective;	
-				}	
+					best_objective= objective;
+				}
 			}
 		}
 		selected_individuals[s][0][0]= best_index_sub;
 		selected_individuals[s][0][1]= best_index_ind;
-	
+
 	}
 
 
@@ -274,7 +278,7 @@ void Unified_Neural_Model::supremacistEvolve()
 		int individual_index= selected_individuals[i][0][1];
 
 		tmp_subpopulation[i][0]->clone(subpopulation[subpopulation_index][individual_index]);
-		
+
 		//create new individuals
 		for(int j=1;j < SUBPOPULATION_SIZE; ++j)
 		{
@@ -295,7 +299,7 @@ void Unified_Neural_Model::supremacistEvolve()
 		}
 	}
 
-	//swap temporary population with the original one	
+	//swap temporary population with the original one
 	for(int i= 0; i < NUMBER_OF_SUBPOPULATIONS; ++i )
 	{
 		for(int j=0;j<SUBPOPULATION_SIZE; ++j)
@@ -305,7 +309,7 @@ void Unified_Neural_Model::supremacistEvolve()
 			tmp_subpopulation[i][j]= swap_individual;
 		}
 	}
-		
+
 	generation++;
 
 
@@ -314,7 +318,7 @@ void Unified_Neural_Model::supremacistEvolve()
 	best_index=0;
 	//printBest();
 
-	
+
 }
 
 void Unified_Neural_Model::spectrumDiversityEvolve()
@@ -325,9 +329,9 @@ void Unified_Neural_Model::spectrumDiversityEvolve()
 	double best_fitness= tmp_fitness[0][0];
 	//int previous_best_index= best_index;
 	best_index= 0;
-	int best_number_of_neurons= subpopulation[0][0]->number_of_neurons;		
-		
-	//find best individual	
+	int best_number_of_neurons= subpopulation[0][0]->number_of_neurons;
+
+	//find best individual
 	//printf("\n\n\nprevious best index %d %f\n", previous_best_index, fitness[0][previous_best_index]);
 	for(int i= 0; i < NUMBER_OF_SUBPOPULATIONS; ++i )
 	{
@@ -339,7 +343,7 @@ void Unified_Neural_Model::spectrumDiversityEvolve()
 			{
 				best_fitness= tmp_fitness[i][j];
 				best_index=j;
-				best_number_of_neurons= subpopulation[i][j]->number_of_neurons;		
+				best_number_of_neurons= subpopulation[i][j]->number_of_neurons;
 			}
 			else
 			{
@@ -350,18 +354,18 @@ void Unified_Neural_Model::spectrumDiversityEvolve()
 					{
 						best_fitness= tmp_fitness[i][j];
 						best_index=j;
-						best_number_of_neurons= subpopulation[i][j]->number_of_neurons;		
+						best_number_of_neurons= subpopulation[i][j]->number_of_neurons;
 
 					}
 				}
 			}
-		
+
 			//mark this subpopulation as without any individuals inserted
 			//selected_individuals[i][j][0]=-1;
-			
+
 			//reset the fitness
 			tmp_fitness[i][j]= 0.0;
-	
+
 			//printf("%d %f\n", j, fitness[i][j]);
 			avg_fitness+= fitness[i][j];
 			fcounter++;
@@ -379,13 +383,13 @@ void Unified_Neural_Model::spectrumDiversityEvolve()
 
 	//fflush(NULL);
 
-		
+
 /*	int read_fd[2];
 	int write_fd[2];
         pipe(read_fd);
         pipe(write_fd);
 */
-/*        //spawn a child 
+/*        //spawn a child
         pid_t pid=fork();
 		double testing_result;
 
@@ -401,9 +405,9 @@ void Unified_Neural_Model::spectrumDiversityEvolve()
 		close((read_fd[1]));
 		close((write_fd[0]));
 		close((write_fd[1]));
-*/		
+*/
 /*		execl("/home/ask/code/rl_debugging/live","/home/ask/code/rl_debugging/live","test_agent",NULL);
-	
+
 		sleep(1);
 
 		exit(1);
@@ -412,9 +416,9 @@ void Unified_Neural_Model::spectrumDiversityEvolve()
 	{
 		int status;
 		waitpid(pid,&status,0);
-		
+
 		FILE*fp1= fopen("comp","r");
-		
+
 		fscanf(fp1,"%lf",&testing_result);
 		printf("testing %f\n",testing_result);
 		fclose(fp1);
@@ -426,8 +430,8 @@ void Unified_Neural_Model::spectrumDiversityEvolve()
 		for(int j=0;j<SUBPOPULATION_SIZE; ++j)
 		{
 			//calculate spectrum
-			double spectrum[SPECTRUM_SIZE];	
-	
+			double spectrum[SPECTRUM_SIZE];
+
 
 			calculateSpectrum(spectrum, i,j);
 
@@ -438,26 +442,26 @@ void Unified_Neural_Model::spectrumDiversityEvolve()
 
 			nmap_cell* cell= (nmap_cell*)(nmap->map[index]).pointer;
 			double this_fitness= fitness[i][j];
-			
+
 			if(cell==NULL)
 			{
 				cell= (nmap_cell*)malloc(sizeof(nmap_cell));
 				nmap->map[index].pointer= cell;
 				cell->module=NULL;
-			}	
-			
+			}
+
 			//check if nothing was inserted
 			if(cell->module==NULL)
 			{
-				cell->module= subpopulation[i][j];		
+				cell->module= subpopulation[i][j];
 				cell->fitness= this_fitness;
-			}	
+			}
 			else
 			{
 				if(cell->fitness < this_fitness)
 				{
-					cell->module= subpopulation[i][j];		
-					cell->fitness= this_fitness;			
+					cell->module= subpopulation[i][j];
+					cell->fitness= this_fitness;
 				}
 				else
 				{
@@ -466,26 +470,26 @@ void Unified_Neural_Model::spectrumDiversityEvolve()
 					{
 						if((cell->module)->number_of_neurons >= subpopulation[i][j]->number_of_neurons)
 						{
-							cell->module= subpopulation[i][j];		
-							cell->fitness= this_fitness;			
+							cell->module= subpopulation[i][j];
+							cell->fitness= this_fitness;
 						}
 					}
 				}
 			}
-		
+
 		}
 	}
-	
-		
+
+
 	nmap_cell* cell= (nmap_cell*)(nmap->map[0]).pointer;
 	best_fitness= cell->fitness;
 	best_index= 0;
 
 	//copy parents (nmap's cells) to the population
 	for(int i=0;i<NOVELTY_MAP_SIZE;++i)
-	{	
+	{
 		cell= (nmap_cell*)(nmap->map[i]).pointer;
-		
+
 		if(cell->module!=NULL)
 		{
 			if(cell->fitness> best_fitness)
@@ -494,20 +498,20 @@ void Unified_Neural_Model::spectrumDiversityEvolve()
 				best_index=i;
 			}
 		}
-		
+
 		//printf("%d %p %p %p cell %d %d\n",i, tmp_subpopulation[0][i], cell->module, subpopulation[cell->i][cell->j], cell->i, cell->j);
 		//prevent the algorithm from choosing empty cells (those cells appear when there is many cells with the same weight array)
 		while(cell->module==NULL)
-		{	
+		{
 			//printf("%d %p is null\n",i, cell->module);
 			int roullete= random->uniform(0,NOVELTY_MAP_SIZE-1);
 			cell= (nmap_cell*)(nmap->map[roullete]).pointer;
 			//printf("%d %p is null\n",i, cell->module);
-		}	
+		}
 
 		tmp_subpopulation[0][i]->clone(cell->module);
 
-		
+
 		//tmp_subpopulation[0][i]->clone(subpopulation[cell->i][cell->j]);
 
 	}
@@ -515,18 +519,18 @@ void Unified_Neural_Model::spectrumDiversityEvolve()
 // 	verbose
 	//printf("%d new index %d fitness %f avg_fitness %f\n", generation, best_index, best_fitness, avg_fitness);
 
-	//reproduce 
+	//reproduce
 	for(int i=NOVELTY_MAP_SIZE;i<SUBPOPULATION_SIZE;++i)
 	{
 		int random_individual= random->uniform(0,NOVELTY_MAP_SIZE-1);
 		cell= (nmap_cell*)(nmap->map[random_individual]).pointer;
-		
+
 		while(cell->module==NULL)
-		{	
+		{
 			int roullete= random->uniform(0,NOVELTY_MAP_SIZE-1);
 			cell= (nmap_cell*)(nmap->map[roullete]).pointer;
-		}	
-			
+		}
+
 		//tmp_subpopulation[0][i]->clone(subpopulation[0][random_individual]);
 		tmp_subpopulation[0][i]->clone(cell->module);
 
@@ -539,27 +543,27 @@ void Unified_Neural_Model::spectrumDiversityEvolve()
 			tmp_subpopulation[0][i]->structuralMutation();
 		}
 		tmp_subpopulation[0][i]->updatePrimerList();
-		
+
 
 		//weight mutation
 		tmp_subpopulation[0][i]->weightMutation();
 	}
-	
+
 	//remove all modules inserted in the novelty map
 	for(int i=0;i<NOVELTY_MAP_SIZE;++i)
-	{	
+	{
 		cell= (nmap_cell*)(nmap->map[i]).pointer;
 		cell->module=NULL;
 		cell->fitness=EXTREME_NEGATIVE_REWARD;
 	}
 
-/*	
+/*
 	for(int i=0;i<SUBPOPULATION_SIZE;++i)
 	{
 		tmp_subpopulation[0][i]->clone(subpopulation[0][i]);
 	}
-*/	
-	//swap temporary population with the original one	
+*/
+	//swap temporary population with the original one
 	for(int i= 0; i < NUMBER_OF_SUBPOPULATIONS; ++i )
 	{
 		for(int j=0;j<SUBPOPULATION_SIZE; ++j)
@@ -570,9 +574,9 @@ void Unified_Neural_Model::spectrumDiversityEvolve()
 		}
 	}
 
-	generation++;	
+	generation++;
 
-	//double testing_result;	
+	//double testing_result;
 	//scanf("%f",&testing_result);
 
 	//if(generation>1000)
@@ -587,14 +591,14 @@ void Unified_Neural_Model::spectrumDiversityEvolve()
 // | Identity | Sigmoid | Threshold | Random | Control | Slow |
 void Unified_Neural_Model::calculateSpectrum(double* spectrum, int subpopulation_index, int individual_index)
 {
-	Module* mod= subpopulation[subpopulation_index][individual_index];		
+	Module* mod= subpopulation[subpopulation_index][individual_index];
 
 	//clear spectrum
 	for(int i=0;i<SPECTRUM_SIZE;++i)
 	{
 		spectrum[i]=0;
 	}
-	
+
 	//execute all Control Neurons that are excited and not activated
 	int counter=0;
 	for(int i=0; mod->n[i].id >= 0;++i)
@@ -612,31 +616,31 @@ void Unified_Neural_Model::calculateSpectrum(double* spectrum, int subpopulation
 				spectrum[1]++;
 			}
 			break;
-			
+
 			case THRESHOLD:
 			{
 				spectrum[2]++;
 			}
 			break;
-			
+
 			case RANDOM:
 			{
 				spectrum[3]++;
 			}
 			break;
-			
+
 			case CONTROL:
 			{
 				spectrum[4]++;
 			}
 			break;
 		}
-		
+
 		if(mod->n[i].firing_rate != 1)
 		{
 			spectrum[5]++;
 		}
-				
+
 		counter++;
 	}
 
@@ -647,7 +651,7 @@ void Unified_Neural_Model::calculateSpectrum(double* spectrum, int subpopulation
 	}
 	//printArray(spectrum,SPECTRUM_SIZE);
 #endif
-	
+
 }
 
 void Unified_Neural_Model::evolve()
@@ -660,19 +664,19 @@ void Unified_Neural_Model::evolve()
 		for(int j=0;j<SUBPOPULATION_SIZE; ++j)
 		{
 			fitness[i][j]= tmp_fitness[i][j];
-		
+
 			//mark this subpopulation as without any individuals inserted
 			selected_individuals[i][j][0]=-1;
-		
+
 			//reset the fitness
 			tmp_fitness[i][j]= 0.0;;
 		}
 	}
-	
+
 	//worst fitness in the subpop
-	//double fitness_cut[NUMBER_OF_SUBPOPULATIONS];	
+	//double fitness_cut[NUMBER_OF_SUBPOPULATIONS];
 	//individual with worst fitness in the subpop
-	//double individual_fitness_cut[NUMBER_OF_SUBPOPULATIONS];	
+	//double individual_fitness_cut[NUMBER_OF_SUBPOPULATIONS];
 
 
 	for(int i= 0; i < NUMBER_OF_SUBPOPULATIONS; ++i )
@@ -691,7 +695,7 @@ void Unified_Neural_Model::evolve()
 
 	printSubpop();
 	printBest();
-	
+
 	//Create the new population!!
 	//
 	//for the time being, move the fittest individuals to a temporary subpopulation
@@ -705,7 +709,7 @@ void Unified_Neural_Model::evolve()
 
 			tmp_subpopulation[i][j]->clone(subpopulation[subpopulation_index][individual_index]);
 		}
-		
+
 		//create new individuals
 		for(;j < SUBPOPULATION_SIZE; ++j)
 		{
@@ -726,7 +730,7 @@ void Unified_Neural_Model::evolve()
 		}
 	}
 
-	//swap temporary population with the original one	
+	//swap temporary population with the original one
 	for(int i= 0; i < NUMBER_OF_SUBPOPULATIONS; ++i )
 	{
 		for(int j=0;j<SUBPOPULATION_SIZE; ++j)
@@ -736,9 +740,9 @@ void Unified_Neural_Model::evolve()
 			tmp_subpopulation[i][j]= swap_individual;
 		}
 	}
-		
+
 	generation++;
-		
+
 }
 
 void Unified_Neural_Model::findBestIndividual()
@@ -756,7 +760,7 @@ void Unified_Neural_Model::findBestIndividual()
 		individual_index= selected_individuals[MAIN_SUBPOP][i][1];
 		int complexity= subpopulation[subpopulation_index][individual_index]->number_of_connections;
 		double objective=  subpopulationObjective(subpopulation[subpopulation_index][individual_index], fitness[subpopulation_index][individual_index], MAIN_SUBPOP);
-	
+
 		if(objective > best_objective)
 		{
 			best_index=i;
@@ -778,20 +782,20 @@ void Unified_Neural_Model::findBestIndividual()
 			}
 		}
 	}
-	
+
 }
 
 void Unified_Neural_Model::tryToInsertInSubpopulation(int subpopulation_index, int individual_index, int inserting_subpop)
 {
 	double objective= subpopulationObjective(subpopulation[subpopulation_index][individual_index], fitness[subpopulation_index][individual_index], inserting_subpop);
 
-	//printf("try to insert %d:%d %f\n",subpopulation_index, individual_index, objective);	
+	//printf("try to insert %d:%d %f\n",subpopulation_index, individual_index, objective);
 
 	if(selected_individuals[inserting_subpop][0][0]==-1)
 	{
 		selected_individuals[inserting_subpop][0][0]= subpopulation_index;
 		selected_individuals[inserting_subpop][0][1]= individual_index;
-		
+
 		//printf("inserted\n");
 
 		return;
@@ -817,29 +821,29 @@ void Unified_Neural_Model::tryToInsertInSubpopulation(int subpopulation_index, i
 		{
 			int sub= selected_individuals[inserting_subpop][i][0];
 			int ind= selected_individuals[inserting_subpop][i][1];
-			
+
 			double tmp_objective= subpopulationObjective(subpopulation[sub][ind], fitness[sub][ind], inserting_subpop);
 
 			if(worst_objective > tmp_objective)
 			{
 				worst_objective= tmp_objective;
 				worst_index= i;
-			}	
+			}
 		}
 	}
-	
+
 
 	if(objective > worst_objective)
 	{
 		selected_individuals[inserting_subpop][worst_index][0]=subpopulation_index;
 		selected_individuals[inserting_subpop][worst_index][1]=individual_index;
-	
+
 		double objective= subpopulationObjective(subpopulation[subpopulation_index][individual_index], fitness[subpopulation_index][individual_index], inserting_subpop);
-		
+
 
 		//telling the compiler that we are not going to use the objective variable for now
 		(void) objective;
-		
+
 		//printf("inserted in place of %d:%f\n",worst_index, worst_objective);
 		//printf("now inserted in place of %d:%f\n",worst_index, objective);
 	}
@@ -853,40 +857,40 @@ double Unified_Neural_Model::subpopulationObjective(Module* module, double fitne
 		{
 			return fitness;
 		}
-		break;	
+		break;
 		case NEURON_EFFICIENT:
 		{
-			double objective= fitness - (double)module->number_of_neurons;		
-			return objective;	
-		}	
-		break;	
+			double objective= fitness - (double)module->number_of_neurons;
+			return objective;
+		}
+		break;
 		case CONNECTION_EFFICIENT:
 		{
-			double objective= fitness - (double)module->number_of_connections;			
+			double objective= fitness - (double)module->number_of_connections;
 			return objective;
 		}
-		break;	
+		break;
 		case NEURON_RICH:
 		{
-			double objective= fitness + (double)module->number_of_neurons;			
+			double objective= fitness + (double)module->number_of_neurons;
 			return objective;
 
 		}
-		break;	
+		break;
 		case CONNECTION_RICH:
 		{
-			double objective= fitness + (double)module->number_of_connections;			
+			double objective= fitness + (double)module->number_of_connections;
 			return objective;
 
 		}
-		break;	
+		break;
 	}
 
 	printf("ERROR: subpopulation objectie with unknown subpopulation index %d\n",subpopulation_index);
 	exit(1);
-	return 0;	
+	return 0;
 }
-	
+
 void Unified_Neural_Model::printSubpop()
 {
 	printf("Fitness of the subpops\n");
@@ -899,11 +903,11 @@ void Unified_Neural_Model::printSubpop()
 			double objective= subpopulationObjective(subpopulation[i][j], fitness[i][j], i);
 			double main_objective= subpopulationObjective(subpopulation[i][j], fitness[i][j], MAIN_SUBPOP);
 
-			printf("%d:%d current objective %f main objective: %f\n",i,j, objective, main_objective);	
+			printf("%d:%d current objective %f main objective: %f\n",i,j, objective, main_objective);
 		}
 	}
-	
-	
+
+
 	printf("\nFitness of best individuals in each subpop\n");
 	//for the time being, move the fittest individuals to a temporary subpopulation
 	for(int i= 0; i < NUMBER_OF_SUBPOPULATIONS; ++i )
@@ -915,20 +919,20 @@ void Unified_Neural_Model::printSubpop()
 		{
 			int subpopulation_index= selected_individuals[i][j][0];
 			int individual_index= selected_individuals[i][j][1];
-	
+
 			double objective= subpopulationObjective(subpopulation[subpopulation_index][individual_index], fitness[subpopulation_index][individual_index], i);
 
-			printf("%d:%d %f   %f\n",i,j, fitness[subpopulation_index][individual_index], objective);	
+			printf("%d:%d %f   %f\n",i,j, fitness[subpopulation_index][individual_index], objective);
 		}
 	}
-	
+
 	printf("\nBest individual:\n");
 	int subpopulation_index= selected_individuals[MAIN_SUBPOP][best_index][0];
 	int individual_index= selected_individuals[MAIN_SUBPOP][best_index][1];
 	double objective= subpopulationObjective(subpopulation[subpopulation_index][individual_index], fitness[subpopulation_index][individual_index], MAIN_SUBPOP);
 	printf("%d  %d:%d %f\n",generation, MAIN_SUBPOP, best_index, objective);
 
-	
+
 	subpopulation[subpopulation_index][individual_index]->printGraph("best_graph.dot");
 
 

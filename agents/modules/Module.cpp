@@ -1,12 +1,15 @@
 
 #include"Module.h"
 
+using std::vector;
+
 // the dna_allocated_length is for both n and c, therefore its value is equivalent to the longest length
-Module::Module(int number_of_inputs, int number_of_outputs, neuron* n, connection* c, int dna_allocated_length)
+Module::Module(int number_of_inputs, int number_of_outputs, neuron* n, connection* c, int dna_allocated_length, vector<vector<int> > group_adjacent_matrix)
 {
 	this->n=n;
 	this->c=c;
 	this->allocated_space= dna_allocated_length;
+	this->group_adjacent= group_adjacent_matrix;
 
 	//if random was not set, return error
 	if(random==NULL)
@@ -67,12 +70,13 @@ Module::Module(int number_of_inputs, int number_of_outputs, neuron* n, connectio
 }
 
 // the dna_allocated_length is for both n and c, therefore its value is equivalent to the longest length
-Module::Module(int number_of_inputs, int number_of_outputs, int suggested_allocation_length)
+Module::Module(int number_of_inputs, int number_of_outputs, int suggested_allocation_length, vector<vector<int> > group_adjacent_matrix)
 {
 	this->allocated_space= suggested_allocation_length;
 
 	this->n= (neuron*)malloc(allocated_space*sizeof(neuron));
 	this->c= (connection*)malloc(allocated_space*sizeof(connection));
+	this->group_adjacent = group_adjacent_matrix;
 
 	//set the both DNA arrays as empty
 	n[0].id=-1;
@@ -168,6 +172,7 @@ void Module::clone(Module* brother)
 	//clone related information
 	memcpy(this->primer_list, brother->primer_list, brother->allocated_space*sizeof(int));
 
+	group_adjacent = brother->group_adjacent;
 	//erase all information from previous runs
 	//that still remains on the network
 	clearMemory();
@@ -316,6 +321,7 @@ void Module::structuralMutation()
 			//create a random neuron
 			n[new_index].id= new_id;
 			n[new_index].firing_rate= randomFiringRateLevel(random);
+			n[new_index].group= random->uniform(0,static_cast<int>(group_adjacent.size())-1);
 			n[number_of_neurons].id=-1;
 
 			//if it is a Control Neuron then it must be a Primer (there are no connections to this neuron now)
@@ -369,20 +375,6 @@ void Module::structuralMutation()
 					}
 				}
 			}
-
-			//deleting
-			n[delete_index].id = n[number_of_neurons-1].id;
-			n[delete_index].type = n[number_of_neurons-1].type;
-			n[delete_index].firing_rate = n[number_of_neurons-1].firing_rate;
-			previous_neuron_state[delete_index]=previous_neuron_state[number_of_neurons-1];
-			internal_neuron_state[delete_index]=internal_neuron_state[number_of_neurons-1];
-			//neuron_state[delete_index]=neuron_state[number_of_neurons-1];
-			//neuron_excitation[delete_index]=neuron_excitation[number_of_neurons-1];
-			//is_fired[delete_index]=is_fired[number_of_neurons-1];
-
-			number_of_neurons--;
-			n[number_of_neurons].id= -1;
-
 			bool found=false;
 			//remove all connections to this or from this neuron
 			do{
@@ -403,6 +395,21 @@ void Module::structuralMutation()
 
 			}
 			while(found == true);
+			//deleting
+			n[delete_index].id = n[number_of_neurons-1].id;
+			n[delete_index].type = n[number_of_neurons-1].type;
+			n[delete_index].firing_rate = n[number_of_neurons-1].firing_rate;
+			n[delete_index].group = n[number_of_neurons-1].group;
+			previous_neuron_state[delete_index]=previous_neuron_state[number_of_neurons-1];
+			internal_neuron_state[delete_index]=internal_neuron_state[number_of_neurons-1];
+			//neuron_state[delete_index]=neuron_state[number_of_neurons-1];
+			//neuron_excitation[delete_index]=neuron_excitation[number_of_neurons-1];
+			//is_fired[delete_index]=is_fired[number_of_neurons-1];
+
+			number_of_neurons--;
+			n[number_of_neurons].id= -1;
+
+
 			//printf("left\n");
 
 
@@ -426,11 +433,15 @@ void Module::structuralMutation()
 			}
 
 			//create a random connection
-			int random_index= random->uniform(0,number_of_neurons-1);
-			c[number_of_connections].from_neuron_id= n[random_index].id;
+			int from_random_index= random->uniform(0,number_of_neurons-1);
+			int to_random_index= random->uniform(0,number_of_neurons-1);
 
-			random_index= random->uniform(0,number_of_neurons-1);
-			c[number_of_connections].to_neuron_id= n[random_index].id;
+			//for structured
+			if(group_adjacent[n[from_random_index].group][n[to_random_index].group] < 1)break;
+			--group_adjacent[n[from_random_index].group][n[to_random_index].group];
+
+			c[number_of_connections].from_neuron_id= n[from_random_index].id;
+			c[number_of_connections].to_neuron_id= n[to_random_index].id;
 
 			if(random->uniform(0.0,1.0) < CHANCE_OF_NEUROMODULATION)
 			{
@@ -1547,6 +1558,10 @@ void Module::removeConnection(int index)
 		return;
 	}
 
+	int from_index = neuronIdToDNAIndex(c[index].from_neuron_id);
+	int to_index = neuronIdToDNAIndex(c[index].to_neuron_id);
+	++group_adjacent[n[from_index].group][n[to_index].group];
+
 	//moving
 	c[index].from_neuron_id=c[number_of_connections-1].from_neuron_id;
 	c[index].to_neuron_id=c[number_of_connections-1].to_neuron_id;
@@ -1658,9 +1673,11 @@ void Module::createFixedInterfaceNeurons(int number_of_inputs, int number_of_out
 		n[new_index].id= new_id;
 		n[new_index].firing_rate= 1;//randomFiringRateLevel(random);
 		n[new_index].interface_index= i;
+		n[new_index].group= 0;//for structured
 		n[number_of_neurons].id=-1;
 	}
 
+	int group_end = static_cast<int>(group_adjacent.size())-1;
 	for(int i=0;i<number_of_outputs;++i)
 	{
 		//find an available index
@@ -1688,6 +1705,7 @@ void Module::createFixedInterfaceNeurons(int number_of_inputs, int number_of_out
 		n[new_index].id= new_id;
 		n[new_index].firing_rate= 1;//randomFiringRateLevel(random);
 		n[new_index].interface_index= i;
+		n[new_index].group= group_end;//for structured
 		n[number_of_neurons].id=-1;
 	}
 }
@@ -1707,6 +1725,13 @@ void Module::addConnection(int from_neuron_id, int to_neuron_id, int neuro_modul
 		//printf("no neurons\n");
 		return;
 	}
+	//for structured
+	int from_neuron_index = neuronIdToDNAIndex(from_neuron_id);
+	int to_neuron_index = neuronIdToDNAIndex(to_neuron_id);
+	int from_group = n[from_neuron_index].group;
+	int to_group = n[to_neuron_index].group;
+	if(group_adjacent[from_group][to_group] < 1)return;
+	--group_adjacent[from_group][to_group];
 
 	//create the specified connection
 	c[number_of_connections].from_neuron_id= from_neuron_id;
@@ -1724,43 +1749,49 @@ void Module::connectNewNeuronToNetwork(int new_neuron_id)
 	{
 		reallocEverything();
 	}
+	int new_neuron_index=neuronIdToDNAIndex(new_neuron_id);
 
 	// From the New Neuron
 	//create a random connection
-	c[number_of_connections].from_neuron_id= new_neuron_id;
 
 	int random_index= random->uniform(0,number_of_neurons-1);
-	c[number_of_connections].to_neuron_id= n[random_index].id;
-
-	if(random->uniform(0.0,1.0) < CHANCE_OF_NEUROMODULATION)
+	if(group_adjacent[n[new_neuron_index].group][n[random_index].group] >= 1)
 	{
-		//int random_index= random->uniform(0,1);
-		int random_index2= random->uniform(0,number_of_neurons-1);
-		//with modulation
-		c[number_of_connections].neuro_modulation= n[random_index2].id;
-		c[number_of_connections].weight= 1;
-	}
-	else
-	{
+		c[number_of_connections].from_neuron_id= new_neuron_id;
+		c[number_of_connections].to_neuron_id= n[random_index].id;
 
-		int random_index2= random->uniform(0,1);
-		c[number_of_connections].neuro_modulation= -1;
-		if(random_index2==0)
+		if(random->uniform(0.0,1.0) < CHANCE_OF_NEUROMODULATION)
 		{
+			//int random_index= random->uniform(0,1);
+			int random_index2= random->uniform(0,number_of_neurons-1);
+			//with modulation
+			c[number_of_connections].neuro_modulation= n[random_index2].id;
 			c[number_of_connections].weight= 1;
 		}
 		else
 		{
-			c[number_of_connections].weight= -1;
-		}
 
-		//for random real weights uncomment the following
-		//c[number_of_connections].neuro_modulation= -1;
-		//c[number_of_connections].weight= random->uniform(-1.0,1.0);
+			int random_index2= random->uniform(0,1);
+			c[number_of_connections].neuro_modulation= -1;
+			if(random_index2==0)
+			{
+				c[number_of_connections].weight= 1;
+			}
+			else
+			{
+				c[number_of_connections].weight= -1;
+			}
+
+			//for random real weights uncomment the following
+			//c[number_of_connections].neuro_modulation= -1;
+			//c[number_of_connections].weight= random->uniform(-1.0,1.0);
+
+		}
+		number_of_connections++;
+		c[number_of_connections].from_neuron_id=-1;
+		++group_adjacent[n[new_neuron_index].group][n[random_index].group];
 	}
 
-	number_of_connections++;
-	c[number_of_connections].from_neuron_id=-1;
 
 
 	/**************** Second Connection ***************/
@@ -1768,41 +1799,44 @@ void Module::connectNewNeuronToNetwork(int new_neuron_id)
 	// To the New Neuron
 	//create a random connection
 	random_index= random->uniform(0,number_of_neurons-1);
-	c[number_of_connections].from_neuron_id= n[random_index].id;
-
-	c[number_of_connections].to_neuron_id= new_neuron_id;
-
-	if(random->uniform(0.0,1.0) < CHANCE_OF_NEUROMODULATION)
-	{
-		//int random_index= random->uniform(0,1);
-		int random_index2= random->uniform(0,number_of_neurons-1);
-		//with modulation
-		c[number_of_connections].neuro_modulation= n[random_index2].id;
-		c[number_of_connections].weight= 1;
-	}
-	else
+	if(group_adjacent[n[random_index].group][n[new_neuron_index].group] >= 1)
 	{
 
-		int random_index2= random->uniform(0,1);
-		c[number_of_connections].neuro_modulation= -1;
-		if(random_index2==0)
+		c[number_of_connections].from_neuron_id= n[random_index].id;
+		c[number_of_connections].to_neuron_id= new_neuron_id;
+
+		if(random->uniform(0.0,1.0) < CHANCE_OF_NEUROMODULATION)
 		{
+			//int random_index= random->uniform(0,1);
+			int random_index2= random->uniform(0,number_of_neurons-1);
+			//with modulation
+			c[number_of_connections].neuro_modulation= n[random_index2].id;
 			c[number_of_connections].weight= 1;
 		}
 		else
 		{
-			c[number_of_connections].weight= -1;
+
+			int random_index2= random->uniform(0,1);
+			c[number_of_connections].neuro_modulation= -1;
+			if(random_index2==0)
+			{
+				c[number_of_connections].weight= 1;
+			}
+			else
+			{
+				c[number_of_connections].weight= -1;
+			}
+
+			//for random real weights uncomment the following
+			//c[number_of_connections].neuro_modulation= -1;
+			//c[number_of_connections].weight= random->uniform(-1.0,1.0);
 		}
 
-		//for random real weights uncomment the following
-		//c[number_of_connections].neuro_modulation= -1;
-		//c[number_of_connections].weight= random->uniform(-1.0,1.0);
+		number_of_connections++;
+		c[number_of_connections].from_neuron_id=-1;
+		++group_adjacent[n[random_index].group][n[new_neuron_index].group];
 	}
-
-	number_of_connections++;
-	c[number_of_connections].from_neuron_id=-1;
 }
-
 void Module::printInternalStates()
 {
 	printf("\n");

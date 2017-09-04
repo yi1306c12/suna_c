@@ -22,7 +22,7 @@
 enum{IDENTITY, SIGMOID, THRESHOLD, RANDOM, CONTROL, NUMBER_OF_NEURON_TYPES, INPUT_IDENTITY, INPUT_SIGMOID, OUTPUT_IDENTITY, OUTPUT_SIGMOID, SIN};
 
 
-//starting levels of firing rate 
+//starting levels of firing rate
 enum{LEVEL1, LEVEL7, LEVEL49, NUMBER_OF_FIRING_RATE_LEVELS};
 
 typedef struct _neuron
@@ -31,6 +31,7 @@ typedef struct _neuron
 	int firing_rate;
 	int type;
 	int interface_index;	//only used by input and output neurons to find the respective variable inside the input/output vector
+	int group; // for structured
 }neuron;
 
 typedef struct _connection
@@ -38,7 +39,7 @@ typedef struct _connection
 	int from_neuron_id;
 	int to_neuron_id;
 	float weight;
-	int neuro_modulation;	//-1 for inactive, for >0 it is active and represents the id of the neuron whose response is used as weight 
+	int neuro_modulation;	//-1 for inactive, for >0 it is active and represents the id of the neuron whose response is used as weight
 }connection;
 
 inline void writeDNA(const char* filename, neuron** n, int n_size, connection** c, int c_size)
@@ -57,10 +58,10 @@ inline void writeDNA(const char* filename, neuron** n, int n_size, connection** 
 	fwrite((const void *)*c, sizeof(connection), c_size+1, fp);
 	//fwrite((unsigned char *)n, sizeof(neuron), n_size, fp);
 	//fwrite((unsigned char *)c, sizeof(connection), c_size, fp);
-	
+
 	//printf("saving n_size %d %d\n",n_size,sizeof(neuron));
 	//printf("saving c_size %d %d\n",c_size,sizeof(connection));
-	
+
 	fclose(fp);
 
 }
@@ -68,7 +69,7 @@ inline void writeDNA(const char* filename, neuron** n, int n_size, connection** 
 inline void readDNA(const char* filename, neuron** n, int& n_size, connection** c, int& c_size)
 {
 	FILE* fp= fopen(filename, "r");
-	
+
 	if(fp==NULL)
 	{
 		printf("Could no open file to read\n");
@@ -135,56 +136,56 @@ inline void fprintNeuronType(FILE* fp, int neuron_type)
 			return;
 		}
 		break;
-		
+
 		case THRESHOLD:
 		{
 			fprintf(fp,"Threshold");
 			return;
 		}
 		break;
-		
+
 		case RANDOM:
 		{
 			fprintf(fp,"Random");
 			return;
 		}
 		break;
-		
+
 		case SIN:
 		{
 			fprintf(fp,"Sin");
 			return;
 		}
 		break;
-		
+
 		case CONTROL:
 		{
 			fprintf(fp,"Control");
 			return;
 		}
 		break;
-		
+
 		case INPUT_IDENTITY:
 		{
 			fprintf(fp,"Input Identity");
 			return;
 		}
 		break;
-		
+
 		case INPUT_SIGMOID:
 		{
 			fprintf(fp,"Input Sigmoid");
 			return;
 		}
 		break;
-		
+
 		case OUTPUT_IDENTITY:
 		{
 			fprintf(fp,"Output Identity");
 			return;
 		}
 		break;
-		
+
 		case OUTPUT_SIGMOID:
 		{
 			fprintf(fp,"Output Sigmoid");
@@ -192,7 +193,7 @@ inline void fprintNeuronType(FILE* fp, int neuron_type)
 		}
 		break;
 	}
-	
+
 	printf("ERROR: fprintfNeuronType() function with an incorrect value of neuron type %d\n",neuron_type);
 	exit(1);
 	return;
@@ -215,56 +216,56 @@ inline void printNeuronType(int neuron_type)
 			return;
 		}
 		break;
-		
+
 		case THRESHOLD:
 		{
 			printf("Threshold");
 			return;
 		}
 		break;
-		
+
 		case RANDOM:
 		{
 			printf("Random");
 			return;
 		}
 		break;
-		
+
 		case CONTROL:
 		{
 			printf("Control");
 			return;
 		}
 		break;
-		
+
 		case SIN:
 		{
 			printf("Sin");
 			return;
 		}
 		break;
-		
+
 		case INPUT_IDENTITY:
 		{
 			printf("Input Identity");
 			return;
 		}
 		break;
-		
+
 		case INPUT_SIGMOID:
 		{
 			printf("Input Sigmoid");
 			return;
 		}
 		break;
-		
+
 		case OUTPUT_IDENTITY:
 		{
 			printf("Output Identity");
 			return;
 		}
 		break;
-		
+
 		case OUTPUT_SIGMOID:
 		{
 			printf("Output Sigmoid");
@@ -272,7 +273,7 @@ inline void printNeuronType(int neuron_type)
 		}
 		break;
 	}
-	
+
 	printf("ERROR: printNeuronType() function with an incorrect value of neuron type %d\n",neuron_type);
 	exit(1);
 	return;
@@ -282,7 +283,7 @@ inline float activationFunction(int neuron_type, float weighted_input, Random* r
 {
 	switch(neuron_type)
 	{
-		
+
 		case RANDOM:
 		{
 			double result= random->uniform(-1.0,1.0);
@@ -290,7 +291,7 @@ inline float activationFunction(int neuron_type, float weighted_input, Random* r
 			return (float)result;
 		}
 		break;
-		
+
 		case THRESHOLD:
 		{
 		}
@@ -306,13 +307,13 @@ inline float activationFunction(int neuron_type, float weighted_input, Random* r
 			}
 		}
 		break;
-		
+
 		case SIN:
 		{
 			return sin(weighted_input);
 		}
 		break;
-		
+
 		case IDENTITY:
 		{
 		}
@@ -324,7 +325,7 @@ inline float activationFunction(int neuron_type, float weighted_input, Random* r
 			return weighted_input;
 		}
 		break;
-	
+
 		case SIGMOID:
 		{
 		}
@@ -337,7 +338,7 @@ inline float activationFunction(int neuron_type, float weighted_input, Random* r
 		}
 		break;
 	}
-	
+
 	printf("ERROR: activationFunction() with an incorrect value of neuron type %d\n",neuron_type);
 	exit(1);
 	return 0;
