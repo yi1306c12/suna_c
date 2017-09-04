@@ -3,7 +3,7 @@
 
 #include<vector>
 using std::vector;
-vector<vector<int> > structure = {{100,10,10,0},{0,100,10,0},{0,0,100,10},{0,0,0,100}};
+vector<vector<int> > structure = {{100,3,3,0},{0,100,3,0},{0,0,100,3},{0,0,0,100}};
 
 Unified_Neural_Model::Unified_Neural_Model(Random* random)
 {

@@ -1344,34 +1344,34 @@ void Module::printGraph(const char* filename)
 //enum{IDENTITY, SIGMOID, THRESHOLD, RANDOM, CONTROL, NUMBER_OF_NEURON_TYPES, INPUT_IDENTITY, INPUT_SIGMOID, OUTPUT_IDENTITY, OUTPUT_SIGMOID};
 			case CONTROL:
 			{
-				fprintf(fp,"%d [label=\"%d_fire%d\",shape=diamond]\n",i,i,n[i].firing_rate);
+				fprintf(fp,"%d [label=\"%d_fire%d_G%d\",shape=diamond]\n",i,i,n[i].firing_rate,n[i].group);
 			}
 			break;
 			case IDENTITY:
 			{
 				//fprintf(fp,"%d [style=filled,fillcolor=yellow]\n",i);
 				//fprintf(fp,"%d [label=\"%d\",peripheries=%d,style=filled, fillcolor=gold]\n",i,i,n[i].firing_rate/7+1);
-				fprintf(fp,"%d [label=\"%d_fire%d\",style=filled, fillcolor=gold]\n",i,i,n[i].firing_rate);
+				fprintf(fp,"%d [label=\"%d_fire%d_G%d\",style=filled, fillcolor=gold]\n",i,i,n[i].firing_rate,n[i].group);
 			}
 			break;
 			case THRESHOLD:
 			{
 				//fprintf(fp,"%d [style=filled,fillcolor=green]\n",i);
-				fprintf(fp,"%d [label=\"%d_fire%d\",style=filled, fillcolor=lightgreen]\n",i,i,n[i].firing_rate);
+				fprintf(fp,"%d [label=\"%d_fire%d_G%d\",style=filled, fillcolor=lightgreen]\n",i,i,n[i].firing_rate,n[i].group);
 				//fprintf(fp,"%d [label=\"%d\",peripheries=%d,style=filled, fillcolor=lightgreen]\n",i,i,n[i].firing_rate/7+1);
 			}
 			break;
 			case SIGMOID:
 			{
 				//fprintf(fp,"%d [style=filled,fillcolor=blue]\n",i);
-				fprintf(fp,"%d [label=\"%d_fire%d\",style=filled, fillcolor=lightskyblue]\n",i,i,n[i].firing_rate);
+				fprintf(fp,"%d [label=\"%d_fire%d_G%d\",style=filled, fillcolor=lightskyblue]\n",i,i,n[i].firing_rate,n[i].group);
 				//fprintf(fp,"%d [label=\"%d\",peripheries=%d,style=filled, fillcolor=lightskyblue]\n",i,i,n[i].firing_rate/7+1);
 			}
 			break;
 			case RANDOM:
 			{
 				//fprintf(fp,"%d [style=filled,fillcolor=red]\n",i);
-				fprintf(fp,"%d [label=\"%d_fire%d\",style=filled, fillcolor=coral]\n",i,i,n[i].firing_rate);
+				fprintf(fp,"%d [label=\"%d_fire%d_G%d\",style=filled, fillcolor=coral]\n",i,i,n[i].firing_rate,n[i].group);
 				//fprintf(fp,"%d [label=\"%d\",peripheries=%d,style=filled, fillcolor=coral]\n",i,i,n[i].firing_rate + 1);
 			}
 			break;
@@ -1381,7 +1381,7 @@ void Module::printGraph(const char* filename)
 			case INPUT_SIGMOID:
 			{
 				//fprintf(fp,"%d [shape=doublecircle]\n",i);
-				fprintf(fp,"%d [label=\"%d_fire%d\",shape=doublecircle]\n",i,i,n[i].firing_rate);
+				fprintf(fp,"%d [label=\"%d_fire%d_G%d\",shape=doublecircle]\n",i,i,n[i].firing_rate,n[i].group);
 			}
 			break;
 
@@ -1391,7 +1391,7 @@ void Module::printGraph(const char* filename)
 			case OUTPUT_SIGMOID:
 			{
 				//fprintf(fp,"%d [shape=doublecircle, style=filled,fillcolor=gray]\n",i);
-				fprintf(fp,"%d [label=\"%d_fire%d\",shape=doublecircle, style=filled, fillcolor=gray]\n",i,i,n[i].firing_rate);
+				fprintf(fp,"%d [label=\"%d_fire%d_G%d\",shape=doublecircle, style=filled, fillcolor=gray]\n",i,i,n[i].firing_rate,n[i].group);
 			}
 			break;
 
