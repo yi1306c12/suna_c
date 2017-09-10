@@ -3,7 +3,7 @@
 
 #include<vector>
 using std::vector;
-const int self_connection = 3;
+const int self_connection = 10;
 const int other_connection = 2;
 vector<vector<int> > structure = {
 	{self_connection,other_connection,other_connection,0},
@@ -14,10 +14,10 @@ vector<vector<int> > structure = {
 #include"modules/group_setting.h"
 const int max_neuron_num_each_group = 2;
 vector<group_setting> group_settings = {
-	{LEVEL1,{0,0,0,0,0},true,false,max_neuron_num_each_group},
-	{LEVEL1,{0,0,0,0,0},true,false,max_neuron_num_each_group},
-	{LEVEL1,{0,0,0,0,0},true,false,max_neuron_num_each_group},
-	{LEVEL1,{0,0,0,0,0},true,false,max_neuron_num_each_group}
+	{LEVEL1,{2,0,0,0,2},true,false,max_neuron_num_each_group},
+	{LEVEL1,{2,0,0,0,2},true,false,max_neuron_num_each_group+2},
+	{LEVEL1,{2,0,0,0,2},true,false,max_neuron_num_each_group+2},
+	{LEVEL1,{2,0,0,0,2},true,false,max_neuron_num_each_group}
 };
 
 Unified_Neural_Model::Unified_Neural_Model(Random* random)

@@ -290,9 +290,15 @@ void Module::structuralMutation()
 		case 1:
 		{
 			//for structured
-			int new_neuron_group = random->uniform(0,static_cast<int>(group_adjacent.size())-1);
+			const int new_neuron_group = random->uniform(0,static_cast<int>(group_adjacent.size())-1);
 			if(group_settings[new_neuron_group].neuron_capacity <= 0)break;//guard
+			//control or normal
+			const int new_type = random->uniform(0.0,1.0) < CHANCE_OF_CONTROL_NEURON ? CONTROL : random->uniform(0,NUMBER_OF_NEURON_TYPES-1);
+			if(group_settings[new_neuron_group].type_capacities[new_type] < 1)break;//guard
+			//neuron addition decided
 			--group_settings[new_neuron_group].neuron_capacity;
+			--group_settings[new_neuron_group].type_capacities[new_type];
+
 
 			//find an available index
 			int new_index= number_of_neurons;
@@ -315,21 +321,11 @@ void Module::structuralMutation()
 				reallocEverything();
 			}
 
-			//chance of being a Control Neuron
-			if(random->uniform(0.0,1.0) < CHANCE_OF_CONTROL_NEURON)
-			{
-				//create a Control Neuron
-				n[new_index].type= CONTROL;
-			}
-			else
-			{
-				//create a random neuron
-				n[new_index].type= random->uniform(0,NUMBER_OF_NEURON_TYPES-1);
-			}
 
 			//create a random neuron
 			n[new_index].id= new_id;
 			n[new_index].group= new_neuron_group;
+			n[new_index].type= new_type;
 			n[new_index].firing_rate= randomFiringRateLevel(random,group_settings[new_neuron_group].min_adaptation_speed);
 			n[number_of_neurons].id=-1;
 
@@ -373,6 +369,7 @@ void Module::structuralMutation()
 			//neuron removal decided
 			//group neuron capacity +1
 			++group_settings[n[delete_index].group].neuron_capacity;
+			++group_settings[n[delete_index].group].type_capacities[n[delete_index].type];
 
 			//remove from primer_list
 			if(n[delete_index].type == CONTROL)
