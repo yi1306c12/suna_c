@@ -3,7 +3,22 @@
 
 #include<vector>
 using std::vector;
-vector<vector<int> > structure = {{100,3,3,0},{0,100,3,0},{0,0,100,3},{0,0,0,100}};
+const int self_connection = 3;
+const int other_connection = 2;
+vector<vector<int> > structure = {
+	{self_connection,other_connection,other_connection,0},
+	{0,self_connection,other_connection,0},
+	{0,0,self_connection,other_connection},
+	{0,0,0,self_connection}
+};
+#include"modules/group_setting.h"
+const int max_neuron_num_each_group = 2;
+vector<group_setting> group_settings = {
+	{LEVEL1,{0,0,0,0,0},true,false,max_neuron_num_each_group},
+	{LEVEL1,{0,0,0,0,0},true,false,max_neuron_num_each_group},
+	{LEVEL1,{0,0,0,0,0},true,false,max_neuron_num_each_group},
+	{LEVEL1,{0,0,0,0,0},true,false,max_neuron_num_each_group}
+};
 
 Unified_Neural_Model::Unified_Neural_Model(Random* random)
 {
@@ -126,8 +141,8 @@ void Unified_Neural_Model::init(int number_of_observation_vars, int number_of_ac
 		tmp_fitness[i]= (double*)malloc(sizeof(double)*SUBPOPULATION_SIZE);
 		for(int j=0;j<SUBPOPULATION_SIZE; ++j)
 		{
-			subpopulation[i][j]= new Module(number_of_observation_vars, number_of_action_vars, INITIAL_ALLOCATION_LENGTH, structure);
-			tmp_subpopulation[i][j]= new Module(number_of_observation_vars, number_of_action_vars, INITIAL_ALLOCATION_LENGTH, structure);
+			subpopulation[i][j]= new Module(number_of_observation_vars, number_of_action_vars, INITIAL_ALLOCATION_LENGTH, structure, group_settings);
+			tmp_subpopulation[i][j]= new Module(number_of_observation_vars, number_of_action_vars, INITIAL_ALLOCATION_LENGTH, structure, group_settings);
 
 			fitness[i][j]= EXTREME_NEGATIVE_REWARD;
 

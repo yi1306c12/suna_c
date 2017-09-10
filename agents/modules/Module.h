@@ -23,6 +23,7 @@
 #include"string.h"
 #include"useful/useful_utils.h"
 #include"../../parameters.h"
+#include"group_setting.h"//for structured
 
 #define RECURRENT -1
 #define FEEDFORWARD 1
@@ -34,8 +35,8 @@ class Module
 {
 	public:
 
-		Module(int number_of_inputs, int number_of_outputs, neuron* n, connection* c, int dna_allocated_length, std::vector<std::vector<int> > group_adjacent);
-		Module(int number_of_inputs, int number_of_outputs, int suggested_allocation_length, std::vector<std::vector<int> > group_adjacent);
+		Module(int number_of_inputs, int number_of_outputs, neuron* n, connection* c, int dna_allocated_length, std::vector<std::vector<int> > group_adjacent, std::vector<group_setting> group_settings);
+		Module(int number_of_inputs, int number_of_outputs, int suggested_allocation_length, std::vector<std::vector<int> > group_adjacent, std::vector<group_setting> group_settings);
 		~Module();
 
 		static void setRandom(Random* random);
@@ -81,6 +82,7 @@ class Module
 
 		//for structured
 		std::vector<std::vector<int> > group_adjacent;
+		std::vector<group_setting> group_settings;
 
 		void clone(Module* brother);
 		void process(double* input, double* output);

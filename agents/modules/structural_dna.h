@@ -91,9 +91,9 @@ inline void readDNA(const char* filename, neuron** n, int& n_size, connection** 
 	fclose(fp);
 }
 
-inline int randomFiringRateLevel(Random* random)
+inline int randomFiringRateLevel(Random* random, int minimum_rate=0)
 {
-	int level= random->uniform(0,NUMBER_OF_FIRING_RATE_LEVELS-1);
+	int level= random->uniform(minimum_rate,NUMBER_OF_FIRING_RATE_LEVELS-1);
 
 	switch(level)
 	{
