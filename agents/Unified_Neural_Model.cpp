@@ -1,4 +1,3 @@
-
 #include"Unified_Neural_Model.h"
 
 #include<vector>
@@ -6,18 +5,23 @@ using std::vector;
 const int self_connection = 10;
 const int other_connection = 2;
 vector<vector<int> > structure = {
-	{self_connection,other_connection,other_connection,0},
-	{0,self_connection,other_connection,0},
-	{0,0,self_connection,other_connection},
-	{0,0,0,self_connection}
+	{self_connection,other_connection,other_connection,0,0,0},
+	{0,self_connection,other_connection,other_connection,other_connection,0},
+	{0,other_connection,self_connection,other_connection,0,0},
+	{0,other_connection,0,self_connection,other_connection,0},
+	{0,other_connection,0,0,self_connection,other_connection},
+	{0,0,0,0,0,self_connection}
 };
 #include"modules/group_setting.h"
-const int max_neuron_num_each_group = 2;
+//speed,type,modulation,hierarchie(underconstruction	),neuron_capacity
+const int max_n_group = 10;
 vector<group_setting> group_settings = {
-	{LEVEL1,{2,0,0,0,2},true,false,max_neuron_num_each_group},
-	{LEVEL1,{2,0,0,0,2},true,false,max_neuron_num_each_group+2},
-	{LEVEL1,{2,0,0,0,2},true,false,max_neuron_num_each_group+2},
-	{LEVEL1,{2,0,0,0,2},true,false,max_neuron_num_each_group}
+	{LEVEL1,{0,0,0,0,0},true,false,max_n_group},
+	{LEVEL1,{0,0,0,0,max_n_group},true,false,max_n_group},
+	{LEVEL49,{max_n_group,0,0,0,0},true,false,max_n_group},
+	{LEVEL7,{max_n_group,0,0,0,0},true,false,max_n_group},
+	{LEVEL1,{max_n_group,0,0,0,0},true,false,max_n_group},
+	{LEVEL1,{0,0,0,0,0},true,false,max_n_group}
 };
 
 Unified_Neural_Model::Unified_Neural_Model(Random* random)
@@ -33,7 +37,7 @@ Unified_Neural_Model::Unified_Neural_Model(Random* random)
 
 #ifdef	SPECTRUM_DIVERSITY
 	nmap= new Novelty_Map(NOVELTY_MAP_SIZE , SPECTRUM_SIZE);
-
+		
 
 	if(NOVELTY_MAP_SIZE >= SUBPOPULATION_SIZE)
 	{
