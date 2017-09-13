@@ -1568,8 +1568,8 @@ void Module::removeConnection(int index)
 		return;
 	}
 
-	int from_index = neuronIdToDNAIndex(c[index].from_neuron_id);
-	int to_index = neuronIdToDNAIndex(c[index].to_neuron_id);
+	const int from_index = neuronIdToDNAIndex(c[index].from_neuron_id);
+	const int to_index = neuronIdToDNAIndex(c[index].to_neuron_id);
 	++group_adjacent[n[from_index].group][n[to_index].group];
 
 	//moving
