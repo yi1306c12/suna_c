@@ -1,7 +1,7 @@
 
-PATH_TO_ZWEIFEL_LIBRARY=/home/yihome/Documents/programs/zweifel
+PATH_TO_ZWEIFEL_LIBRARY=/home/yuta/Programs/zweifel
 
-CFLAGS= -O4 -Wall
+CFLAGS= -O4 -Wall -std=c++11
 #-Wall -pedantic -ansi
 #CFLAGS=-O4
 
