@@ -6,21 +6,24 @@ using std::vector;
 const int self_connection = 100;
 const int other_connection = 5;
 vector<vector<int> > structure = {
-	{self_connection,other_connection,other_connection,0},
-	{other_connection,self_connection,other_connection,other_connection},
-	{0,other_connection,self_connection,other_connection},
-	{0,other_connection,0,self_connection}
+	{self_connection,other_connection,other_connection,0,0,0},
+	{0,self_connection,other_connection,other_connection,other_connection,0,0},
+	{0,other_connection,self_connection,other_connection,0,0,0},
+	{0,other_connection,0,self_connection,other_connection,0},
+	{0,other_connection,0,0,self_connection,other_connection},
+	{0,0,0,0,0,other_connection}
 };
 #include"modules/group_setting.h"
 //speed,type,modulation,hierarchie(underconstruction),neuron_capacity
 const int max_n_group = 10;
 vector<group_setting> group_settings = {
-	//{LEVEL1,{0,0,0,0,0},true,false,max_n_group},
+	{LEVEL1,{0,0,0,0,0},true,false,max_n_group},
+	//{LEVEL1,{0,0,0,0,max_n_group},true,false,max_n_group},
+	{LEVEL1,{0,0,0,0,0},true,false,0},//blank
 	{LEVEL49,{max_n_group,max_n_group,max_n_group,max_n_group,0},true,false,max_n_group},
-	{LEVEL1,{0,0,0,0,max_n_group},true,false,max_n_group},
 	{LEVEL7,{max_n_group,max_n_group,max_n_group,max_n_group,0},true,false,max_n_group},
 	{LEVEL1,{max_n_group,max_n_group,max_n_group,max_n_group,0},true,false,max_n_group},
-	//{LEVEL1,{0,0,0,0,0},true,false,max_n_group}
+	{LEVEL1,{0,0,0,0,0},true,false,max_n_group}
 };
 
 
