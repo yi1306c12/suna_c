@@ -96,8 +96,8 @@ enum{FITNESS_BASED, NEURON_EFFICIENT, CONNECTION_EFFICIENT, NEURON_RICH, CONNECT
 //#define NORMALIZED_SPECTRUM_DIVERSITY
 
 //1-add neuron, 2-del neuron, 3-add connection, 4-del connection
-#define MUTATION_PROBABILITIES {0.25, 0.05, 0.6, 0.1}
-//#define MUTATION_PROBABILITIES {0.02, 0.01, 0.49, 0.48}
+//#define MUTATION_PROBABILITIES {0.25, 0.05, 0.6, 0.1}
+#define MUTATION_PROBABILITIES {0.01, 0.01, 0.49, 0.49}
 #define CHANCE_OF_NEUROMODULATION 0.1
 #define CHANCE_OF_CONTROL_NEURON 0.2
 #define EXCITATION_THRESHOLD 0.0		//minimum excitation necessary to activate the neuron

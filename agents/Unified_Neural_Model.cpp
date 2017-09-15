@@ -5,7 +5,7 @@
 using std::vector;
 const int self_connection = 100;
 const int other_connection = 5;
-vector<vector<int> > structure = {
+const vector<vector<int> > structure = {
 	{self_connection,other_connection,0},
 	{0,self_connection,other_connection,0},
 	{0,0,self_connection,other_connection},
@@ -13,7 +13,7 @@ vector<vector<int> > structure = {
 };
 #include"modules/group_setting.h"
 const int max_neuron_group = 10;
-vector<group_setting> group_settings = {
+const vector<group_setting> group_settings = {
 	{LEVEL1,{max_neuron_group,max_neuron_group,max_neuron_group,max_neuron_group,max_neuron_group},true,false,max_neuron_group},
 	{LEVEL1,{max_neuron_group,max_neuron_group,max_neuron_group,max_neuron_group,max_neuron_group},true,false,max_neuron_group},
 	{LEVEL1,{max_neuron_group,max_neuron_group,max_neuron_group,max_neuron_group,max_neuron_group},true,false,max_neuron_group},
