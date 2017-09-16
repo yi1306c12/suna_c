@@ -11,6 +11,7 @@
 #include"environments/Double_Cart_Pole.h"
 #include"environments/Mountain_Car.h"
 #include"environments/Multiplexer.h"
+#include"environments/Pendulum_Swing_Up.h"
 
 #include"parameters.h"
 
@@ -83,10 +84,12 @@ int main()
 	Random* random= new State_of_Art_Random(time(NULL));
 	
 	//Reinforcement_Environment* env= new Mountain_Car(random);
-	Reinforcement_Environment* env= new Function_Approximation(random,1000,false);
+	//Reinforcement_Environment* env= new Function_Approximation(random,1000,false);
 	//Reinforcement_Environment* env= new Single_Cart_Pole(random);
-//Reinforcement_Environment* env= new Double_Cart_Pole(random);
+	//Reinforcement_Environment* env= new Double_Cart_Pole(random);
 	//Reinforcement_Environment* env= new Multiplexer(3,8,random);
+	Reinforcement_Environment* env= new Pendulum_Swing_Up(random);
+	
 
 	//Reinforcement_Agent* agent= new Dummy(env);
 	Reinforcement_Agent* agent= new Unified_Neural_Model(random);
