@@ -243,7 +243,11 @@ int main()
 		i++;
 
 #ifdef STOP_REWARD
-		if(max_accum_reward > STOP_REWARD)break;
+		if(max_accum_reward > STOP_REWARD)
+		{
+			printf("%d %f\n",i,max_accum_reward);
+			break;
+		}
 #endif
 	
 	}
