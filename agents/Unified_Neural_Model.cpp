@@ -18,8 +18,8 @@ vector<vector<int> > structure = {
 const int max_n_group = 10;
 vector<group_setting> group_settings = {
 	{LEVEL1,{0,0,0,0,0},true,false,max_n_group},
-	{LEVEL1,{0,0,0,0,max_n_group},true,false,max_n_group},
-	//{LEVEL1,{0,0,0,0,0},true,false,0},//blank
+	//{LEVEL1,{0,0,0,0,max_n_group},true,false,max_n_group},
+	{LEVEL1,{0,0,0,0,0},true,false,0},//blank
 	{LEVEL49,{max_n_group,max_n_group,max_n_group,max_n_group,0},true,false,max_n_group},
 	{LEVEL7,{max_n_group,max_n_group,max_n_group,max_n_group,0},true,false,max_n_group},
 	{LEVEL1,{max_n_group,max_n_group,max_n_group,max_n_group,0},true,false,max_n_group},
