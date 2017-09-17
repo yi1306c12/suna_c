@@ -1,5 +1,6 @@
 
-PATH_TO_ZWEIFEL_LIBRARY=/home/yuta/Programs/zweifel
+#PATH_TO_ZWEIFEL_LIBRARY=/home/yuta/Programs/zweifel
+PATH_TO_ZWEIFEL_LIBRARY=/home/yihome/Documents/programs/zweifel
 
 CFLAGS= -O4 -Wall -std=c++11
 #CFLAGS= -O0 -Wall -std=c++11 -g#debug
