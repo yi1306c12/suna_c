@@ -83,11 +83,7 @@ int main()
 
 	Random* random= new State_of_Art_Random(time(NULL));
 	
-<<<<<<< HEAD
-	Reinforcement_Environment* env= new Mountain_Car(random);
-=======
 	//Reinforcement_Environment* env= new Mountain_Car(random);
->>>>>>> master
 	//Reinforcement_Environment* env= new Function_Approximation(random,1000,false);
 	//Reinforcement_Environment* env= new Single_Cart_Pole(random);
 	Reinforcement_Environment* env= new Double_Cart_Pole(random);
@@ -247,7 +243,11 @@ int main()
 		i++;
 
 #ifdef STOP_REWARD
-		if(max_accum_reward > STOP_REWARD)break;
+		if(max_accum_reward > STOP_REWARD)
+		{
+			printf("%d %f\n",i,max_accum_reward);
+			break;
+		}
 #endif
 	
 	}
