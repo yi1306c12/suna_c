@@ -11,6 +11,7 @@
 #include"environments/Double_Cart_Pole.h"
 #include"environments/Mountain_Car.h"
 #include"environments/Multiplexer.h"
+#include"environments/Pendulum_Swing_Up.h"
 
 #include"parameters.h"
 
@@ -87,6 +88,8 @@ int main()
 	//Reinforcement_Environment* env= new Single_Cart_Pole(random);
 	Reinforcement_Environment* env= new Double_Cart_Pole(random);
 	//Reinforcement_Environment* env= new Multiplexer(3,8,random);
+	//Reinforcement_Environment* env= new Pendulum_Swing_Up(random);
+	
 
 	//Reinforcement_Agent* agent= new Dummy(env);
 	Reinforcement_Agent* agent= new Unified_Neural_Model(random);
@@ -157,6 +160,7 @@ int main()
 				{
 					printf("%d %f\n",i, reward);
 				}
+
 
 			}
 		
@@ -238,6 +242,13 @@ int main()
 
 		i++;
 
+#ifdef STOP_REWARD
+		if(max_accum_reward > STOP_REWARD)
+		{
+			printf("%d %f\n",i,max_accum_reward);
+			break;
+		}
+#endif
 	
 	}
 
