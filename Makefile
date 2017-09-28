@@ -1,5 +1,5 @@
 
-PATH_TO_ZWEIFEL_LIBRARY=/home/yihome/Documents/programs/zweifel
+PATH_TO_ZWEIFEL_LIBRARY=/home/yuta/Programs/zweifel
 
 CFLAGS= -O4 -Wall
 #-Wall -pedantic -ansi
@@ -24,3 +24,7 @@ live:
 
 main:
 	g++ $(CFLAGS) $(MAIN_REINFORCEMENT_LEARNING) $(AGENTS) $(MODELS) $(MAPS) $(ENVIRONMENTS) $(LDFLAGS) -o rl
+
+
+python_lib:
+	g++ $(CFLAGS) UnifiedNeuralModel_wrapper.cpp $(AGENTS) $(MODELS) $(MAPS) $(ENVIRONMENTS) $(LDFLAGS) -o unified_neural_model.so -lboost_python -fPIC -DPIC -shared -I`python -c 'from distutils.sysconfig import *;print get_python_inc()'`
