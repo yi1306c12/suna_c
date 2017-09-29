@@ -1,5 +1,5 @@
 
-PATH_TO_ZWEIFEL_LIBRARY=/home/yihome/Documents/programs/zweifel
+PATH_TO_ZWEIFEL_LIBRARY=/home/yi/Programs/zweifel
 
 CFLAGS= -O4 -Wall
 #-Wall -pedantic -ansi
