@@ -16,24 +16,28 @@ public:
 
     UNF_python():Unified_Neural_Model(new State_of_Art_Random(time(NULL))){}
 
-    /*
-    double_vector const& step(double_vector& observation){
-        const double reward = 0;
-        double* const v = Unified_Neural_Model::step(&observation.front(), reward);
-        return double_vector(v, v+number_of_action_vars);
+    
+    void step_(double_vector const& observation){
+        Unified_Neural_Model::step(const_cast<double*>(&observation.front()),0);
+        laction = double_vector(action,action+number_of_action_vars);
     }
-    */
+
+    double_vector const& last_action()
+    {
+        return laction;
+    }
+private:
+    double_vector laction;    
 };
 
 
-template<typename T>
-class vector_to_pylist_converter
-{
-public:
-    typedef T native_type;
 
-    static PyObject* convert(native_type const& v)
-    {
+template<typename T_>
+class vector_to_pylist_converter {
+public:
+    typedef T_ native_type;
+
+    static PyObject* convert(native_type const& v) {
         namespace py = boost::python;
         py::list retval;
         BOOST_FOREACH(typename boost::range_value<native_type>::type i, v)
@@ -44,21 +48,20 @@ public:
     }
 };
 
-
-template<typename T>
-class pylist_to_vector_converter
-{
+template<typename T_>
+class pylist_to_vector_converter {
 public:
-    typedef T native_type;
+    typedef T_ native_type;
 
-    static void* convertible(PyObject* pyo)
-    {
-        if(!PySequence_Check(pyo))return 0;
+    static void* convertible(PyObject* pyo) {
+        if (!PySequence_Check(pyo))
+            return 0;
+
         return pyo;
     }
 
     static void construct(
-        PyObject* pyo, 
+        PyObject* pyo,
         boost::python::converter::rvalue_from_python_stage1_data* data
     )
     {
@@ -69,7 +72,7 @@ public:
             storage->push_back(
                 py::extract<typename boost::range_value<native_type>::type>
                 (
-                    PySequence_GetItem(pyo,i)
+                    PySequence_GetItem(pyo, i)
                 )
             );
         }
@@ -83,9 +86,10 @@ BOOST_PYTHON_MODULE(unified_neural_model)
     using namespace boost::python;
 
     class_<UNF_python>("unified_neural_model")
-        //.def("UNF_python", &UNF_python::UNF_python)
+        //.def("__init__", &UNF_python::UNF_python)
         .def("init", &UNF_python::init)
-        //.def("step", (UNF_python::double_vector const&(UNF_python::*)(UNF_python::double_vector&))&UNF_python::step, return_value_policy<copy_const_reference>())
+        .def("step", &UNF_python::step_)
+        .def("action",&UNF_python::last_action, return_value_policy<copy_const_reference>())
         .def("endEpisode", &UNF_python::endEpisode)
         .def("print", &UNF_python::print)
         .def("saveAgent", &UNF_python::saveAgent)
