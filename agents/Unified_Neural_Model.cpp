@@ -3,21 +3,23 @@
 
 #include<vector>
 using std::vector;
-const int self_connection = 10;
+const int self_connection = 100;
 const int other_connection = 2;
 vector<vector<int> > structure = {
-	{self_connection,other_connection,other_connection,0},
-	{0,self_connection,other_connection,0},
-	{0,0,self_connection,other_connection},
-	{0,0,0,self_connection}
+	{self_connection,other_connection,0,0,0},
+	{0,self_connection,other_connection,0,0},
+	{0,0,self_connection,other_connection,0},
+	{0,0,0,self_connection,other_connection},
+	{0,0,0,0,self_connection}
 };
 #include"modules/group_setting.h"
-const int max_neuron_num_each_group = 2;
+const int max_neuron_num = 20;
 vector<group_setting> group_settings = {
-	{LEVEL1,{2,0,0,0,2},true,false,max_neuron_num_each_group},
-	{LEVEL1,{2,0,0,0,2},true,false,max_neuron_num_each_group+2},
-	{LEVEL1,{2,0,0,0,2},true,false,max_neuron_num_each_group+2},
-	{LEVEL1,{2,0,0,0,2},true,false,max_neuron_num_each_group}
+	{LEVEL1,{max_neuron_num,max_neuron_num,max_neuron_num,max_neuron_num,max_neuron_num},true,false,max_neuron_num},//input,fast
+	{LEVEL7,{max_neuron_num,max_neuron_num,max_neuron_num,max_neuron_num,max_neuron_num},true,false,max_neuron_num},//medium
+	{LEVEL49,{max_neuron_num,max_neuron_num,max_neuron_num,max_neuron_num,max_neuron_num},true,false,max_neuron_num},//slow
+	{LEVEL7,{max_neuron_num,max_neuron_num,max_neuron_num,max_neuron_num,max_neuron_num},true,false,max_neuron_num},//medium
+	{LEVEL1,{max_neuron_num,max_neuron_num,max_neuron_num,max_neuron_num,max_neuron_num},true,false,max_neuron_num},//output,fast
 };
 
 Unified_Neural_Model::Unified_Neural_Model(Random* random)
