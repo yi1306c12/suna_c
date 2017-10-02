@@ -17,8 +17,8 @@ public:
     UNF_python():Unified_Neural_Model(new State_of_Art_Random(time(NULL))){}
 
     
-    void step_(double_vector const& observation){
-        Unified_Neural_Model::step(const_cast<double*>(&observation.front()),0);
+    void step_(double_vector const& observation, double reward){
+        Unified_Neural_Model::step(const_cast<double*>(&observation.front()),reward);
         laction = double_vector(action,action+number_of_action_vars);
     }
 
