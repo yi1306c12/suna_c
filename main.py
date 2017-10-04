@@ -1,11 +1,13 @@
 import gym
 #env = gym.make('CartPole-v1')
-env = gym.make('Pendulum-v0')
+#env = gym.make('Pendulum-v0')
 #env = gym.make('LunarLanderContinuous-v2')
 #env = gym.make('BipedalWalker-v2')
 #env = gym.make('Copy-v0')
+env = gym.make('MountainCarContinuous-v0')
+print(env.observation_space,env.action_space)
 #inputs,outputs = env.observation_space.shape[0], 1#cartpole
-inputs,outputs = env.observation_space.shape[0], env.action_space.shape[0]#pendulum,lunarlander,bipedwalker
+inputs,outputs = env.observation_space.shape[0], env.action_space.shape[0]#pendulum,lunarlander,bipedwalker,MountainCarContinuous
 #inputs,outputs = 1,3#copy
 
 from unified_neural_model import unified_neural_model
