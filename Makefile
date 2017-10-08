@@ -1,5 +1,5 @@
-
-PATH_TO_ZWEIFEL_LIBRARY=~/Programs/zweifel
+#PATH_TO_ZWEIFEL_LIBRARY=$(HOME)/Programs/zweifel
+PATH_TO_ZWEIFEL_LIBRARY=$(HOME)/Documents/programs/zweifel
 
 CFLAGS= -O4 -Wall -std=c++11
 #CFLAGS= -O0 -Wall -std=c++11 -g#debug
