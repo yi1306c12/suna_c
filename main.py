@@ -14,7 +14,7 @@ from unified_neural_model import unified_neural_model
 agent = unified_neural_model()
 agent.init(inputs,outputs)
 
-trials = int(2e5)
+trials = int(3)
 steps = 500
 
 accum_rewards = []
@@ -52,3 +52,5 @@ for i in range(trials):
 #           observation,reward = env.reset(),0
     agent.endEpisode(reward)
     accum_rewards.append(accum_reward)
+
+agent.saveAgent("best_individual")
