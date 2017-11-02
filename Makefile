@@ -3,13 +3,14 @@ PATH_TO_ZWEIFEL_LIBRARY=/home/yi/Programs/zweifel
 #PATH_TO_ZWEIFEL_LIBRARY=/home/yuta/Programs/zweifel
 #PATH_TO_ZWEIFEL_LIBRARY=/home/yihome/Documents/programs/zweifel
 
-CFLAGS= -O4 -Wall
+CFLAGS= -O4 -Wall -std=c++11
+#CFLAGS= -O0 -Wall -std=c++11 -g#debug
 #-Wall -pedantic -ansi
 #CFLAGS=-O4
 
 MAIN_REINFORCEMENT_LEARNING=main.cpp
 MAIN_LIVE=live.cpp
-ENVIRONMENTS=environments/Double_Cart_Pole.cpp environments/Mountain_Car.cpp environments/Single_Cart_Pole.cpp environments/Function_Approximation.cpp environments/Multiplexer.cpp
+ENVIRONMENTS=environments/Double_Cart_Pole.cpp environments/Mountain_Car.cpp environments/Single_Cart_Pole.cpp environments/Function_Approximation.cpp environments/Multiplexer.cpp environments/Pendulum_Swing_Up.cpp
 AGENTS=agents/Mysterious_Agent.cpp agents/Dummy.cpp agents/Unified_Neural_Model.cpp
 #agents/XCS_Butz.cpp
 MODELS=agents/modules/Module.cpp

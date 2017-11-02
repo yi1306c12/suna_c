@@ -12,16 +12,18 @@
 ///////////////////////////////////////////////////////////////////
 
 
-#ifndef MODULE_H	
+#ifndef MODULE_H
 #define MODULE_H
 
 #include"structural_dna.h"
 #include"stdlib.h"
 #include<stack>
 #include<list>
+#include<vector>//for structured
 #include"string.h"
 #include"useful/useful_utils.h"
 #include"../../parameters.h"
+#include"group_setting.h"//for structured
 
 #define RECURRENT -1
 #define FEEDFORWARD 1
@@ -33,9 +35,9 @@ class Module
 {
 	public:
 
-		Module(int number_of_inputs, int number_of_outputs, neuron* n, connection* c, int dna_allocated_length);
-		Module(int number_of_inputs, int number_of_outputs, int suggested_allocation_length);
-		~Module();	
+		Module(int number_of_inputs, int number_of_outputs, neuron* n, connection* c, int dna_allocated_length, std::vector<std::vector<int> > group_adjacent, std::vector<group_setting> group_settings);
+		Module(int number_of_inputs, int number_of_outputs, int suggested_allocation_length, std::vector<std::vector<int> > group_adjacent, std::vector<group_setting> group_settings);
+		~Module();
 
 		static void setRandom(Random* random);
 
@@ -62,21 +64,25 @@ class Module
 		double* internal_neuron_state;
 		double* neuron_state;
 		double* previous_neuron_state;
-		
+
 		//neuron_excitation -> excitation (positive)/inhibition(zero or negative) -> positive values let the neuron activate
 		//activation_counter:
 		//	- negative values, the neuron was already activated in this process
 		//	- positive values, count the number of times that the neuron was activated without giving the output away, mainly for slow neurons
-		double* neuron_excitation;	
+		double* neuron_excitation;
 		//int* activation_counter;
 		bool* is_fired;
 		//bool* is_feedback;
 		int* connection_state;
 		int* previous_connection_state;
 
-		//ready to use information	
+		//ready to use information
 		//int* map_id_to_dna;
 		int* primer_list;
+
+		//for structured
+		std::vector<std::vector<int> > group_adjacent;
+		std::vector<group_setting> group_settings;
 
 		void clone(Module* brother);
 		void process(double* input, double* output);
@@ -110,7 +116,7 @@ class Module
 		void printInformationFlowGraph(const char* filename);
 		void printDNA();
 		void printDNA(const char* filename);
-		void printVars();	//print module's vectors 	
+		void printVars();	//print module's vectors
 		void printInternalStates();
 		void printFiredStates();
 };
