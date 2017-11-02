@@ -53,4 +53,4 @@ for i in range(trials):
     agent.endEpisode(reward)
     accum_rewards.append(accum_reward)
 
-agent.saveAgent("best_individual")
+agent.saveAgent("dna_best_individual")
