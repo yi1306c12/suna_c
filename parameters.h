@@ -90,7 +90,7 @@ enum{FITNESS_BASED, NEURON_EFFICIENT, CONNECTION_EFFICIENT, NEURON_RICH, CONNECT
 
 //spectrum diversity
 #define SPECTRUM_DIVERSITY
-#define SPECTRUM_SIZE 6
+#define SPECTRUM_SIZE 7
 #define NOVELTY_MAP_SIZE 20
 #define NUMBER_OF_SUBPOPULATIONS 1
 //#define NORMALIZED_SPECTRUM_DIVERSITY
@@ -112,7 +112,8 @@ enum{FITNESS_BASED, NEURON_EFFICIENT, CONNECTION_EFFICIENT, NEURON_RICH, CONNECT
 //#define SET_NORMALIZED_INPUT
 //#define SET_NORMALIZED_OUTPUT
 //stop and exit the process if the max steps are reached in one trial, it means that the algorithm reached the best solution
-//#define TERMINATE_IF_MAX_STEPS_REACHED		
+//#define TERMINATE_IF_MAX_STEPS_REACHED
+#define STOP_REWARD 1e5		
 
 
 

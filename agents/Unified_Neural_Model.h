@@ -64,7 +64,7 @@ class Unified_Neural_Model : public Reinforcement_Agent
 		double subpopulationObjective(Module* module, double fitness, int subpopulation_index);
 		void findBestIndividual();
 		void tryToInsertInSubpopulation(int subpopulation_index, int individual_index, int inserting_subpop);
-		void calculateSpectrum(double* spectrum, int subpopulation_index, int individual_index);
+		void calculateSpectrum(double* spectrum, int subpopulation_index, int individual_index, const int min_connections, const int max_connections);
 		void endBestEpisode();
 
 		//Implementing the Reinforcement Agent Interface
