@@ -14,7 +14,7 @@ from unified_neural_model import unified_neural_model
 agent = unified_neural_model()
 agent.init(inputs,outputs)
 
-trials = int(2e5)
+trials = int(3e5)
 steps = 500
 
 accum_rewards = []
