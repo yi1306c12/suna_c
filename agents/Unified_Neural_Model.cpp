@@ -6,7 +6,7 @@ using std::vector;
 const int self_connection = 100;
 const int other_connection = 2;
 const vector<vector<int> > structure = {
-	{self_connection,other_connection,0},
+	{self_connection,other_connection,0,0},
 	{0,self_connection,other_connection,0},
 	{0,0,self_connection,other_connection},
 	{0,0,0,self_connection}
