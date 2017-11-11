@@ -434,16 +434,14 @@ void Module::structuralMutation()
 		//add connection
 		case 3:
 		{
-			//create a random connection
 			int from_random_index,to_random_index;
-			int times = 0;
-			//for structured			
-			do{
-				from_random_index= random->uniform(0,number_of_neurons-1);
-				to_random_index= random->uniform(0,number_of_neurons-1);
-			}while(times++ < max_retry && group_adjacent[n[from_random_index].group][n[to_random_index].group] < 1);
-			if(times == max_retry)break;//guard
-
+			for(int i = 0;;++i)
+			{
+				from_random_index = random->uniform(0,number_of_neurons-1);
+				to_random_index = random->uniform(0,number_of_neurons-1);
+				if(group_adjacent[n[from_random_index].group][n[to_random_index].group] > 0)break;
+				if(i+1 > max_retry)return;
+			}
 			--group_adjacent[n[from_random_index].group][n[to_random_index].group];
 
 			//printf("add connection\n");
@@ -1752,13 +1750,9 @@ void Module::addConnection(int from_neuron_id, int to_neuron_id, int neuro_modul
 		return;
 	}
 	//for structured
-	int from_neuron_index,to_neuron_index;
-	int times = 0;
-	do{
-		from_neuron_index = neuronIdToDNAIndex(from_neuron_id);
-		to_neuron_index = neuronIdToDNAIndex(to_neuron_id);
-	}while(times++ < max_retry && group_adjacent[n[from_neuron_index].group][n[to_neuron_index].group] < 1);
-	if(times == max_retry)return;//guard
+	int from_neuron_index = neuronIdToDNAIndex(from_neuron_id);
+	int to_neuron_index = neuronIdToDNAIndex(to_neuron_id);
+	if(group_adjacent[n[from_neuron_index].group][n[to_neuron_index].group] < 1)return;
 
 	--group_adjacent[n[from_neuron_index].group][n[to_neuron_index].group];
 
