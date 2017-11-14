@@ -149,7 +149,7 @@ void Unified_Neural_Model::init(int number_of_observation_vars, int number_of_ac
 			//starting mutations
 			for(int k=0; k < NUMBER_OF_INITIAL_MUTATIONS; ++k)
 			{
-				subpopulation[i][j]->structuralMutation();
+				subpopulation[i][j]->structuralMutation(INITIAL_MUTATION_PROBABILITIES);
 			}
 			subpopulation[i][j]->updatePrimerList();
 		}

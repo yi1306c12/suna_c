@@ -86,7 +86,7 @@ class Module
 
 		void clone(Module* brother);
 		void process(double* input, double* output);
-		void structuralMutation();
+		void structuralMutation(std::vector<double> mutation_chance=MUTATION_PROBABILITIES);
 		void firingRateMutation();
 		void weightMutation();
 		void addConnection(int from_neuron_id, int to_neuron_id, int neuro_modulation, double weight);

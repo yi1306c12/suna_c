@@ -252,10 +252,8 @@ void Module::weightMutation()
 //			!!!!!!!Important: after removing a connection, a non-primer might become a primer and vice-versa!!!!
 //			Threfore, always do a updatePrimerList() after structural Mutation
 ///////////////////////////////////////////////////////////////
-void Module::structuralMutation()
+void Module::structuralMutation(vector<double> mutation_chance)
 {
-	double mutation_chance[]= MUTATION_PROBABILITIES;
-
 	double roulette = random->uniform(0.0, 1.0);
 
 	int mutation_type;
