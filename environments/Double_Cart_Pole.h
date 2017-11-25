@@ -16,10 +16,10 @@
 #define TAU 0.01		  //seconds between state updates 
 #define GRAVITY -9.8
 #define MASSCART 1.0
-#define LENGTH_1 0.5		  
-#define MASSPOLE_1 0.1
-#define LENGTH_2 0.05
-#define	MASSPOLE_2 0.01
+#define LENGTH_1 0.05
+#define MASSPOLE_1 0.01
+#define LENGTH_2 0.5
+#define	MASSPOLE_2 0.1
 #define thirty_six_degrees 0.628329
 
 class Double_Cart_Pole : public Reinforcement_Environment
