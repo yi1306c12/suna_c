@@ -1,0 +1,8 @@
+digraph G {
+ node[shape = circle]
+0 [label="0_fire1",shape=doublecircle]
+1 [label="1_fire1",shape=doublecircle]
+2 [label="2_fire1",shape=doublecircle]
+3 [label="3_fire1",shape=doublecircle, style=filled, fillcolor=gray]
+3 -> 3 [label="0.000000"]
+}
