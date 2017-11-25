@@ -1,3 +1,5 @@
+#!/usr/bin/python2
+
 import gym
 #env = gym.make('CartPole-v1')
 #env = gym.make('Pendulum-v0')
