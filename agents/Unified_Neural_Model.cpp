@@ -18,6 +18,9 @@ const vector<group_setting> group_settings = {
 	{LEVEL1,{0,0,0,0,0},true,false,max_neuron_group}
 };
 
+#include<stdexcept>
+using std::runtime_error;
+
 Unified_Neural_Model::Unified_Neural_Model(Random* random)
 {
 	this->random= random;
