@@ -290,11 +290,11 @@ void Module::structuralMutation(vector<double> mutation_chance)
 		case 1:
 		{
 			//for structured
-			int new_neuron_group = 1;
+			int new_neuron_group;
 			int new_type;
 			for(int i=0;i<max_retry;++i)
 			{
-				//new_neuron_group = random->uniform(0,static_cast<int>(group_adjacent.size())-1);
+				new_neuron_group = random->uniform(1,static_cast<int>(group_adjacent.size())-2);
 				new_type = random->uniform(0.0,1.0) < CHANCE_OF_CONTROL_NEURON ? CONTROL : random->uniform(0,NUMBER_OF_NEURON_TYPES-1);//control or normal
 				if(group_settings[new_neuron_group].neuron_capacity > 0 && group_settings[new_neuron_group].type_capacities[new_type] > 0)break;
 				if(i+1>max_retry)return;
