@@ -1,7 +1,6 @@
 
 #include"Unified_Neural_Model.h"
 
-<<<<<<< HEAD
 #include<vector>
 using std::vector;
 const int self_connection = 20;
@@ -18,10 +17,6 @@ const vector<group_setting> group_settings = {
 	{LEVEL1,{max_neuron_group,max_neuron_group,max_neuron_group,max_neuron_group,max_neuron_group},true,false,max_neuron_group},
 	{LEVEL1,{0,0,0,0,0},true,false,max_neuron_group}
 };
-=======
-#include<stdexcept>
-using std::runtime_error;
->>>>>>> origin/connection_spectrum
 
 Unified_Neural_Model::Unified_Neural_Model(Random* random)
 {
@@ -681,14 +676,11 @@ void Unified_Neural_Model::calculateSpectrum(double* spectrum, int subpopulation
 	//printArray(spectrum,SPECTRUM_SIZE);
 #endif
 
-<<<<<<< HEAD
-=======
 
 	//connections_spectrum
 	if(max_connections == min_connections) throw runtime_error("zero division in calculateSpectrum\n");
 	spectrum[6] = static_cast<double>(mod->number_of_connections - min_connections)/static_cast<double>(max_connections-min_connections);
 	
->>>>>>> origin/connection_spectrum
 }
 
 void Unified_Neural_Model::evolve()
