@@ -6,14 +6,18 @@ using std::vector;
 const int self_connection = 20;
 const int other_connection = 5;
 const vector<vector<int> > structure = {
-	{self_connection,other_connection,0},
-	{0,self_connection,other_connection},
-	{0,0,self_connection}
+	{self_connection,other_connection,0,0,0},
+	{0,self_connection,0,0,other_connection},
+	{0,0,self_connection,0,other_connection},
+	{0,0,0,self_connection,other_connection},
+	{0,0,0,0,self_connection}
 };
 #include"modules/group_setting.h"
 const int max_neuron_group = 10;
 const vector<group_setting> group_settings = {
 	{LEVEL1,{0,0,0,0,0},true,false,max_neuron_group},
+	{LEVEL1,{max_neuron_group,max_neuron_group,max_neuron_group,max_neuron_group,max_neuron_group},true,false,max_neuron_group},
+	{LEVEL1,{max_neuron_group,max_neuron_group,max_neuron_group,max_neuron_group,max_neuron_group},true,false,max_neuron_group},
 	{LEVEL1,{max_neuron_group,max_neuron_group,max_neuron_group,max_neuron_group,max_neuron_group},true,false,max_neuron_group},
 	{LEVEL1,{0,0,0,0,0},true,false,max_neuron_group}
 };
