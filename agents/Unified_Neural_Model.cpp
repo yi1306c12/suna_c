@@ -1,6 +1,7 @@
 
 #include"Unified_Neural_Model.h"
 
+<<<<<<< HEAD
 #include<vector>
 using std::vector;
 const int self_connection = 20;
@@ -17,6 +18,10 @@ const vector<group_setting> group_settings = {
 	{LEVEL1,{max_neuron_group,max_neuron_group,max_neuron_group,max_neuron_group,max_neuron_group},true,false,max_neuron_group},
 	{LEVEL1,{0,0,0,0,0},true,false,max_neuron_group}
 };
+=======
+#include<stdexcept>
+using std::runtime_error;
+>>>>>>> origin/connection_spectrum
 
 Unified_Neural_Model::Unified_Neural_Model(Random* random)
 {
@@ -437,6 +442,17 @@ void Unified_Neural_Model::spectrumDiversityEvolve()
 		fclose(fp1);
 	}
 */
+
+	//check max&min connections
+	int max_connections = 0;
+	int min_connections = 0x7fffffff;
+	for(int i = 0; i < NUMBER_OF_SUBPOPULATIONS;++i){
+		for(int j = 0; j < SUBPOPULATION_SIZE; ++j){
+			const int connection_number = subpopulation[i][j]->number_of_connections;
+			if(max_connections < connection_number)max_connections = connection_number;
+			if(min_connections > connection_number)min_connections = connection_number;
+		}
+	}
 	//decide the parents
 	for(int i= 0; i < NUMBER_OF_SUBPOPULATIONS; ++i )
 	{
@@ -446,7 +462,7 @@ void Unified_Neural_Model::spectrumDiversityEvolve()
 			double spectrum[SPECTRUM_SIZE];
 
 
-			calculateSpectrum(spectrum, i,j);
+			calculateSpectrum(spectrum, i,j,min_connections,max_connections);
 
 			//printArray(spectrum,SPECTRUM_SIZE);
 
@@ -602,7 +618,7 @@ void Unified_Neural_Model::spectrumDiversityEvolve()
 // Create the Spectrum of the DNA
 //
 // | Identity | Sigmoid | Threshold | Random | Control | Slow |
-void Unified_Neural_Model::calculateSpectrum(double* spectrum, int subpopulation_index, int individual_index)
+void Unified_Neural_Model::calculateSpectrum(double* spectrum, int subpopulation_index, int individual_index,const int min_connections, const int max_connections)
 {
 	Module* mod= subpopulation[subpopulation_index][individual_index];
 
@@ -658,13 +674,21 @@ void Unified_Neural_Model::calculateSpectrum(double* spectrum, int subpopulation
 	}
 
 #ifdef NORMALIZED_SPECTRUM_DIVERSITY
-	for(int i=0;i<SPECTRUM_SIZE;++i)
+	for(int i=0;i<6;++i)
 	{
 		spectrum[i]/=(double)counter;
 	}
 	//printArray(spectrum,SPECTRUM_SIZE);
 #endif
 
+<<<<<<< HEAD
+=======
+
+	//connections_spectrum
+	if(max_connections == min_connections) throw runtime_error("zero division in calculateSpectrum\n");
+	spectrum[6] = static_cast<double>(mod->number_of_connections - min_connections)/static_cast<double>(max_connections-min_connections);
+	
+>>>>>>> origin/connection_spectrum
 }
 
 void Unified_Neural_Model::evolve()
