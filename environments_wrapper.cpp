@@ -41,6 +41,9 @@ BOOST_PYTHON_MODULE(environments)
     class_<doublecartpole_python>("double_cart_pole")
         .def("restart",&doublecartpole_python::restart)
         .def("step",&doublecartpole_python::step_)
+        .def_readonly("observations",&doublecartpole_python::number_of_observation_vars)
+        .def_readonly("actions",&doublecartpole_python::number_of_action_vars)
+        .def_readonly("MAX_STEPS",&doublecartpole_python::MAX_STEPS)
     ;
 
     converter::registry::push_back(
