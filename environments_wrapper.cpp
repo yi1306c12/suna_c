@@ -29,18 +29,18 @@ public:
 
     double step_(double_vector const& action)
     {
-        return Double_Cart_Pole::step(const_cast<double*>(&action.front()));
+       return Double_Cart_Pole::step(const_cast<double*>(&action.front()));
     }
 
     double_vector const& reset()
     {
         restart();
-        return last_observatoin()
+        return last_observation();
     }
 
     double_vector const& last_observation()
     {
-        return double_vector(std::begin(observation),std::end(observation));
+        return double_vector(observation,observation+static_cast<size_t>(number_of_observation_vars));
     }
 };
 
