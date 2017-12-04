@@ -12,7 +12,7 @@
 #include<vector>
 #include<new>
 using std::vector;
-
+#include<iterator>
 
 class doublecartpole_python:public Double_Cart_Pole
 {
@@ -34,11 +34,8 @@ public:
 
     double_vector const& last_observation()
     {
-        return lobservation;
+        return double_vector(std::begin(observation),std::end(observation));
     }
-
-private:
-    double_vector lobservation;
 };
 
 
