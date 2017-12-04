@@ -29,4 +29,4 @@ main:
 
 
 python_lib:
-	g++ $(CFLAGS) UnifiedNeuralModel_wrapper.cpp $(AGENTS) $(MODELS) $(MAPS) $(ENVIRONMENTS) $(LDFLAGS) -o unified_neural_model.so -lboost_python -fPIC -DPIC -shared -I`python -c 'from distutils.sysconfig import *;print get_python_inc()'`
+	g++ $(CFLAGS) UnifiedNeuralModel_wrapper.cpp $(AGENTS) $(MODELS) $(MAPS) $(ENVIRONMENTS) $(LDFLAGS) -o unified_neural_model.so -lboost_python-py35 -fPIC -DPIC -shared -I`python -c 'from distutils.sysconfig import *;print(get_python_inc())'`

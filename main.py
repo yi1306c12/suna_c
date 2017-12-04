@@ -1,5 +1,3 @@
-#!/usr/bin/python2
-
 import gym
 #env = gym.make('CartPole-v1')
 #env = gym.make('Pendulum-v0')
@@ -24,7 +22,7 @@ accum_rewards = []
 import numpy as np
 for i in range(trials):
     if i%100 == 0 and i != 0:
-        print i//100, max(accum_rewards)
+        print(i//100, max(accum_rewards))
         accum_rewards = []
 
 
