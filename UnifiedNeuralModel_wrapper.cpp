@@ -12,22 +12,20 @@ using std::vector;
 class UNF_python:public Unified_Neural_Model
 {
 public:
-    typedef vector<double> double_vector;
-
     UNF_python():Unified_Neural_Model(new State_of_Art_Random(time(NULL))){}
 
     
-    void step_(double_vector const& observation, double reward){
+    void step_(vector<double> const& observation, double reward){
         Unified_Neural_Model::step(const_cast<double*>(&observation.front()),reward);
-        laction = double_vector(action,action+number_of_action_vars);
+        laction = vector<double>(action,action+number_of_action_vars);
     }
 
-    double_vector const& last_action()
+    vector<double> const& last_action()
     {
         return laction;
     }
 private:
-    double_vector laction;    
+    vector<double> laction;
 };
 
 
@@ -45,12 +43,12 @@ BOOST_PYTHON_MODULE(unified_neural_model)
         .def("saveAgent", &UNF_python::saveAgent)
     ;
 
-    to_python_converter<UNF_python::double_vector, vector_to_pylist_converter<UNF_python::double_vector> >();
+    to_python_converter<vector<double>, vector_to_pylist_converter<vector<double> > >();
 
     converter::registry::push_back(
-        &pylist_to_vector_converter<UNF_python::double_vector>::convertible,
-        &pylist_to_vector_converter<UNF_python::double_vector>::construct,
-        boost::python::type_id<UNF_python::double_vector>()
+        &pylist_to_vector_converter<vector<double> >::convertible,
+        &pylist_to_vector_converter<vector<double> >::construct,
+        boost::python::type_id<vector<double> >()
     );
 }
 

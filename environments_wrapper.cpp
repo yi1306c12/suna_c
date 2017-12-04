@@ -18,7 +18,7 @@ class doublecartpole_python:public Double_Cart_Pole
 {
 public:
 
-    typedef vector<double> double_vector;
+//  typedef vector<double> double_vector;
     int number_of_observation_vars=-1;
     int number_of_action_vars=-1;
 
@@ -27,24 +27,21 @@ public:
         start(number_of_observation_vars,number_of_action_vars);
     }
 
-    double step_(double_vector const& action)
+    const double step_(vector<double> const& action)
     {
        return Double_Cart_Pole::step(const_cast<double*>(&action.front()));
     }
 
-    double_vector const& reset()
+    vector<double> const& reset()
     {
         restart();
         return last_observation();
     }
 
-    double_vector const& last_observation()
+    vector<double> const& last_observation()
     {
-        lobservation = double_vector(observation,observation+static_cast<size_t>(number_of_observation_vars));
-        return lobservation;
+        return vector<double>(observation,observation+number_of_observation_vars);
     }
-private:
-    double_vector lobservation;
 };
 
 
@@ -61,11 +58,11 @@ BOOST_PYTHON_MODULE(environments)
         .def("last_observation",&doublecartpole_python::last_observation,return_value_policy<copy_const_reference>())
     ;
 
-    to_python_converter<doublecartpole_python::double_vector, vector_to_pylist_converter<doublecartpole_python::double_vector> >();
+    to_python_converter<vector<double>, vector_to_pylist_converter<vector<double> > >();
 
     converter::registry::push_back(
-        &pylist_to_vector_converter<doublecartpole_python::double_vector>::convertible,
-        &pylist_to_vector_converter<doublecartpole_python::double_vector>::construct,
-        boost::python::type_id<doublecartpole_python::double_vector>()
+        &pylist_to_vector_converter<vector<double> >::convertible,
+        &pylist_to_vector_converter<vector<double> >::construct,
+        boost::python::type_id<vector<double> >()
     );
 }
