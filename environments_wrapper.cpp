@@ -31,6 +31,14 @@ public:
     {
         return Double_Cart_Pole::step(const_cast<double*>(&action.front()));
     }
+
+    double_vector const& last_observation()
+    {
+        return lobservation;
+    }
+
+private:
+    double_vector lobservation;
 };
 
 
@@ -44,7 +52,10 @@ BOOST_PYTHON_MODULE(environments)
         .def_readonly("observations",&doublecartpole_python::number_of_observation_vars)
         .def_readonly("actions",&doublecartpole_python::number_of_action_vars)
         .def_readonly("MAX_STEPS",&doublecartpole_python::MAX_STEPS)
+        .def("last_observation",&doublecartpole_python::last_observation,return_value_policy<copy_const_reference>())
     ;
+
+    to_python_converter<doublecartpole_python::double_vector, vector_to_pylist_converter<doublecartpole_python::double_vector> >();
 
     converter::registry::push_back(
         &pylist_to_vector_converter<doublecartpole_python::double_vector>::convertible,
