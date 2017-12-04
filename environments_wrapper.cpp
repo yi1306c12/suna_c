@@ -40,8 +40,11 @@ public:
 
     double_vector const& last_observation()
     {
-        return double_vector(observation,observation+static_cast<size_t>(number_of_observation_vars));
+        lobservation = double_vector(observation,observation+static_cast<size_t>(number_of_observation_vars));
+        return lobservation;
     }
+private:
+    double_vector lobservation;
 };
 
 
