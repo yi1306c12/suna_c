@@ -32,6 +32,12 @@ public:
         return Double_Cart_Pole::step(const_cast<double*>(&action.front()));
     }
 
+    double_vector const& reset()
+    {
+        restart();
+        return last_observatoin()
+    }
+
     double_vector const& last_observation()
     {
         return double_vector(std::begin(observation),std::end(observation));
@@ -44,7 +50,7 @@ BOOST_PYTHON_MODULE(environments)
     using namespace boost::python;
 
     class_<doublecartpole_python>("double_cart_pole")
-        .def("restart",&doublecartpole_python::restart)
+        .def("reset",&doublecartpole_python::reset,return_value_policy<copy_const_reference>())
         .def("step",&doublecartpole_python::step_)
         .def_readonly("observations",&doublecartpole_python::number_of_observation_vars)
         .def_readonly("actions",&doublecartpole_python::number_of_action_vars)
