@@ -1,5 +1,5 @@
 
-PATH_TO_ZWEIFEL_LIBRARY=/home/yi/Programs/zweifel
+PATH_TO_ZWEIFEL_LIBRARY=$(HOME)/Programs/zweifel
 #PATH_TO_ZWEIFEL_LIBRARY=/home/yuta/Programs/zweifel
 #PATH_TO_ZWEIFEL_LIBRARY=/home/yihome/Documents/programs/zweifel
 
