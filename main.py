@@ -11,7 +11,7 @@ def main():
     agent = unified_neural_model()
     agent.init(env.observations,env.actions)
 
-    trials = int(2e5)
+    trials = int(3e5)
 
     accum_rewards = []
 
