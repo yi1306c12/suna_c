@@ -2,6 +2,7 @@
 from environments import double_cart_pole
 from unified_neural_model import unified_neural_model
 import numpy as np
+import matplotlib.pyplot as plt
 
 #@profile
 def main():
@@ -10,30 +11,35 @@ def main():
     agent = unified_neural_model()
     agent.init(env.observations,env.actions)
 
-    trials = int(3e5)
-    steps = 500
+    trials = int(2e5)
 
     accum_rewards = []
 
     for i in range(trials):
-#        print(i)
-        if i%100 == 0 and i != 0:
-            print(i//100, max(accum_rewards))
-            accum_rewards = []
+            
+        observation,reward = env.reset(),0.
+        accum_reward = 0.
 
-        observation,reward = env.reset(),0
-        accum_reward = 0
+        env_trial = env.trial
         for t in range(env.MAX_STEPS):
 
             agent.step(env.last_observation(),reward)
             reward = env.step(agent.action())
 
             accum_reward += reward
+
+            if env.trial != env_trial:
+                break
+
         agent.endEpisode(reward)
         accum_rewards.append(accum_reward)
 
+        if i%100 == 0 and i != 0:
+            print(i, max(accum_rewards))
+            accum_rewards = []
 
-    #agent.saveAgent("dna_best_individual")
+
+    agent.saveAgent("dna_best_individual")
 
 if __name__=='__main__':
     main()

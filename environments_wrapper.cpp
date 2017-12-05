@@ -57,6 +57,7 @@ BOOST_PYTHON_MODULE(environments)
         .def_readonly("actions",&doublecartpole_python::number_of_action_vars)
         .def_readonly("MAX_STEPS",&doublecartpole_python::MAX_STEPS)
         .def("last_observation",&doublecartpole_python::last_observation,return_internal_reference<>())
+        .def_readonly("trial",&doublecartpole_python::trial)
     ;
 
     to_python_converter<vector<double>, vector_to_pylist_converter<vector<double> > >();
