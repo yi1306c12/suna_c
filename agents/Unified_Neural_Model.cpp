@@ -630,11 +630,17 @@ void Unified_Neural_Model::calculateSpectrum(double* spectrum, int subpopulation
 				spectrum[4]++;
 			}
 			break;
+
+			case SIN:
+			{
+				spectrum[5]++;
+			}
+			break;
 		}
 		
 		if(mod->n[i].firing_rate != 1)
 		{
-			spectrum[5]++;
+			spectrum[6]++;
 		}
 				
 		counter++;
