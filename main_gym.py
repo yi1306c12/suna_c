@@ -1,20 +1,20 @@
-import gym
-env = gym.make('BipedalWalker-v2')
-inputs,outputs = env.observation_space.shape[0], env.action_space.shape[0]#pendulum,lunarlander,bipedwalker,MountainCarContinuous
-
-from unified_neural_model import unified_neural_model
-agent = unified_neural_model()
-agent.init(inputs,outputs)
-
-trials = int(3e5)
-steps = 500
-
-accum_rewards = []
 
 import numpy as np
 
 @profile
 def main():
+    import gym
+    env = gym.make('BipedalWalker-v2')
+    inputs,outputs = env.observation_space.shape[0], env.action_space.shape[0]#pendulum,lunarlander,bipedwalker,MountainCarContinuous
+
+    from unified_neural_model import unified_neural_model
+    agent = unified_neural_model()
+    agent.init(inputs,outputs)
+
+    trials = int(3e5)
+    steps = 500
+
+    accum_rewards = []
     for i in range(trials):
         if i%100 == 0 and i != 0:
             print(i, max(accum_rewards))
