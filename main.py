@@ -36,7 +36,10 @@ def main():
 
         if i%100 == 0 and i != 0:
             print(i, max(accum_rewards))
+            if max(accum_rewards) >= 1e5:
+                break
             accum_rewards = []
+
 
 
     agent.saveAgent("dna_best_individual")
