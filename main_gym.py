@@ -12,25 +12,31 @@ steps = 500
 accum_rewards = []
 
 import numpy as np
-for i in range(trials):
-    if i%100 == 0 and i != 0:
-        print(i, max(accum_rewards))
-        accum_rewards = []
 
-    observation,reward = env.reset(),0
-    accum_reward = 0
-    for t in range(steps):
-        observation = list(observation)#pendulum-v0
+@profile
+def main():
+    for i in range(trials):
+        if i%100 == 0 and i != 0:
+            print(i, max(accum_rewards))
+            accum_rewards = []
 
-        agent.step(observation,reward)
-        action = np.array(agent.action())#pendulum,lunarlander,bipedwalker
+        observation,reward = env.reset(),0
+        accum_reward = 0
+        for t in range(steps):
+            observation = list(observation)#pendulum-v0
 
-        observation, reward, done, info = env.step(action)
-        #env.render()
-        accum_reward += reward
-        if done:
-            break
-    agent.endEpisode(reward)
-    accum_rewards.append(accum_reward)
+            agent.step(observation,reward)
+            action = np.array(agent.action())#pendulum,lunarlander,bipedwalker
 
-agent.saveAgent("dna_best_individual")
+            observation, reward, done, info = env.step(action)
+            #env.render()
+            accum_reward += reward
+            if done:
+                break
+        agent.endEpisode(reward)
+        accum_rewards.append(accum_reward)
+
+    agent.saveAgent("dna_best_individual")
+
+if __name__=='__main__':
+    main()
