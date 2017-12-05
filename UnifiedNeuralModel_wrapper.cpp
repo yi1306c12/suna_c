@@ -1,61 +1,51 @@
 #include<boost/python.hpp>
-#include<boost/python/suite/indexing/vector_indexing_suite.hpp>
-#include<vector>
+#include<boost/numpy.hpp>
+namespace p = boost::python;
+namespace np = boost::numpy;
+
 #include<new>
-using std::vector;
+#include<stdexcept>
+using std::runtime_error;
 
 #include"agents/Unified_Neural_Model.h"
-
-#include"converters.hpp"
 
 
 class UNF_python:public Unified_Neural_Model
 {
-public:
-    using double_vector = vector<double>;
+    np::dtype const dtype = np::dtype::get_builtin<double>();
+    p::tuple const stride = p::make_tuple(sizeof(double));
 
+public:
     UNF_python():Unified_Neural_Model(new State_of_Art_Random(time(NULL))){}
 
     
-    void step_(vector<double> const& observation, double reward){
-        Unified_Neural_Model::step(const_cast<double*>(&observation.front()),reward);
-        laction = vector<double>(action,action+number_of_action_vars);
-    }
+    np::ndarray step_(np::ndarray observation, double reward){
+        if(observation.get_nd() != 1)throw runtime_error("observation must be 1-dimensional");
 
-    vector<double> const& last_action()
-    {
-        return laction;
+        p::tuple const shape = p::make_tuple(number_of_action_vars);//this should get out
+        Unified_Neural_Model::step(reinterpret_cast<double *>(observation.get_data()),reward);
+
+        return np::from_data(action, dtype, shape, stride, p::object());
     }
-private:
-    double_vector laction;
 };
 
 
 BOOST_PYTHON_MODULE(unified_neural_model)
 {
     using namespace boost::python;
+    Py_Initialize();
+    np::initialize();
 
     class_<UNF_python>("unified_neural_model")
         //.def("__init__", &UNF_python::UNF_python)
         .def("init", &UNF_python::init)
         .def("step", &UNF_python::step_)
-        .def("action",&UNF_python::last_action, return_internal_reference<>())
         .def("endEpisode", &UNF_python::endEpisode)
         .def("print", &UNF_python::print)
         .def("saveAgent", &UNF_python::saveAgent)
     ;
 
-    to_python_converter<vector<double>, vector_to_pylist_converter<vector<double> > >();
-
-    converter::registry::push_back(
-        &pylist_to_vector_converter<vector<double> >::convertible,
-        &pylist_to_vector_converter<vector<double> >::construct,
-        boost::python::type_id<vector<double> >()
-    );
-
-    class_<UNF_python::double_vector>("double_vector")
-        .def(vector_indexing_suite<UNF_python::double_vector>())
-    ;
 }
 
-//http://d.hatena.ne.jp/moriyoshi/20091214/1260779899
+//https://qiita.com/termoshtt/items/81eeb0467d9087958f7f
+//https://qiita.com/termoshtt/items/0103803c40331c77c727
