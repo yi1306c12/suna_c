@@ -1,4 +1,3 @@
-
 import numpy as np
 
 @profile
@@ -11,7 +10,7 @@ def main():
     agent = unified_neural_model()
     agent.init(inputs,outputs)
 
-    trials = int(3e5)
+    trials = int(3000)
     steps = 500
 
     accum_rewards = []
@@ -23,11 +22,7 @@ def main():
         observation,reward = env.reset(),0
         accum_reward = 0
         for t in range(steps):
-            observation = list(observation)#pendulum-v0
-
-            agent.step(observation,reward)
-            action = np.array(agent.action())#pendulum,lunarlander,bipedwalker
-
+            action = agent.step(observation,reward)
             observation, reward, done, info = env.step(action)
             #env.render()
             accum_reward += reward

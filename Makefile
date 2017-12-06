@@ -27,7 +27,8 @@ main:
 
 
 python_lib:
-	g++ $(CFLAGS) UnifiedNeuralModel_wrapper.cpp $(AGENTS) $(MODELS) $(MAPS) $(ENVIRONMENTS) $(LDFLAGS) -o unified_neural_model.so -lboost_python-py35 -fPIC -DPIC -shared -I`python -c 'from distutils.sysconfig import *;print(get_python_inc())'`
+#	g++ $(CFLAGS) UnifiedNeuralModel_wrapper.cpp $(AGENTS) $(MODELS) $(MAPS) $(ENVIRONMENTS) $(LDFLAGS) -o unified_neural_model.so -lboost_python-py35 -fPIC -DPIC -shared -I`python -c 'from distutils.sysconfig import *;print(get_python_inc())'`
+	g++ $(CFLAGS) UnifiedNeuralModel_wrapper.cpp $(AGENTS) $(MODELS) $(MAPS) $(ENVIRONMENTS) $(LDFLAGS) -o unified_neural_model.so -lboost_python-py35 -fPIC -DPIC -shared -I/usr/include/python3.5 -lboost_numpy -L/usr/local/lib
 
 python_env:
 	g++ $(CFLAGS) environments_wrapper.cpp $(ENVIRONMENTS) $(LDFLAGS) -o environments.so -lboost_python-py35 -fPIC -DPIC -shared -I`python -c 'from distutils.sysconfig import *;print(get_python_inc())'`
