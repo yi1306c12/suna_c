@@ -26,7 +26,7 @@ public:
         start(number_of_observation_vars,number_of_action_vars);
     }
 
-    const double step_(np::ndarray action, double reward)
+    const double step_(np::ndarray action)
     {
         if(action.get_nd() != 1)throw runtime_error("action must be 1-dimensional");
         return Double_Cart_Pole::step(reinterpret_cast<double*>(action.get_data()));
