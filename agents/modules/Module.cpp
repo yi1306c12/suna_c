@@ -294,13 +294,13 @@ void Module::structuralMutation()
 			//for structured
 			int new_neuron_group;
 			int new_type;
-			int times = 0;
-			do{
+			for(int i=0;i<max_retry;++i)
+			{
 				new_neuron_group = random->uniform(0,static_cast<int>(group_adjacent.size())-1);
-				//control or normal
-				new_type = random->uniform(0.0,1.0) < CHANCE_OF_CONTROL_NEURON ? CONTROL : random->uniform(0,NUMBER_OF_NEURON_TYPES-1);
-			}while(times++ < max_retry && (group_settings[new_neuron_group].neuron_capacity < 1 || group_settings[new_neuron_group].type_capacities[new_type] < 1));
-			if(times == max_retry)break;//guard
+				new_type = random->uniform(0.0,1.0) < CHANCE_OF_CONTROL_NEURON ? CONTROL : random->uniform(0,NUMBER_OF_NEURON_TYPES-1);//control or normal
+				if(group_settings[new_neuron_group].neuron_capacity > 0 && group_settings[new_neuron_group].type_capacities[new_type] > 0)break;
+				if(i+1>max_retry)return;
+			}
 			//neuron addition decided
 			--group_settings[new_neuron_group].neuron_capacity;
 			--group_settings[new_neuron_group].type_capacities[new_type];
