@@ -3,11 +3,7 @@
 
 #include<vector>
 using std::vector;
-<<<<<<< HEAD
-const int self_connection = 20;
-=======
 const int self_connection = 100;
->>>>>>> layered
 const int other_connection = 5;
 const vector<vector<int> > structure = {
 	{self_connection,other_connection,0},
