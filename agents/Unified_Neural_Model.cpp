@@ -3,7 +3,11 @@
 
 #include<vector>
 using std::vector;
+<<<<<<< HEAD
 const int self_connection = 20;
+=======
+const int self_connection = 100;
+>>>>>>> layered
 const int other_connection = 5;
 const vector<vector<int> > structure = {
 	{self_connection,other_connection,0},
@@ -11,7 +15,7 @@ const vector<vector<int> > structure = {
 	{0,0,self_connection}
 };
 #include"modules/group_setting.h"
-const int max_neuron_group = 10;
+const int max_neuron_group = 20;
 const vector<group_setting> group_settings = {
 	{LEVEL1,{0,0,0,0,0},true,false,max_neuron_group},
 	{LEVEL1,{max_neuron_group,max_neuron_group,max_neuron_group,max_neuron_group,max_neuron_group},true,false,max_neuron_group},
