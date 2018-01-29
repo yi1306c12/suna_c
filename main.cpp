@@ -87,8 +87,8 @@ int main()
 	//Reinforcement_Environment* env= new Function_Approximation(random,1000,false);
 	//Reinforcement_Environment* env= new Single_Cart_Pole(random);
 	//Reinforcement_Environment* env= new Double_Cart_Pole(random);
-	//Reinforcement_Environment* env= new Multiplexer(3,8,random);
-	Reinforcement_Environment* env= new Pendulum_Swing_Up(random);
+	Reinforcement_Environment* env= new Multiplexer(3,8,random);
+	//Reinforcement_Environment* env= new Pendulum_Swing_Up(random);
 	
 
 	//Reinforcement_Agent* agent= new Dummy(env);
