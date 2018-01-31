@@ -4,7 +4,7 @@
 using std::vector;
 using std::runtime_error;
 
-const int max_retry = 5;
+const int max_retry = 100;
 
 // the dna_allocated_length is for both n and c, therefore its value is equivalent to the longest length
 Module::Module(int number_of_inputs, int number_of_outputs, neuron* n, connection* c, int dna_allocated_length, vector<vector<int> > group_adjacent_matrix, vector<group_setting> group_setting_parameters)
