@@ -51,7 +51,7 @@ Count_Minority::Count_Minority(Random* random)
             n <<= 1;
         }
     }
-    for (auto&& v:problems)cout << v << endl;
+//    for (auto&& v:problems)cout << v << endl;
 }
 
 
