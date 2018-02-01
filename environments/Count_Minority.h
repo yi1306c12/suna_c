@@ -17,7 +17,7 @@ class Count_Minority : public Reinforcement_Environment
 {
     int previous_answer;
 
-    std::vector<std::vector<std::bitset<data_length> > > problems;
+    std::vector<std::bitset<data_length> > problems;
 
 public:
     Count_Minority(Random* random);

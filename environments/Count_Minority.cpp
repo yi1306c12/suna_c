@@ -19,10 +19,14 @@ Count_Minority::Count_Minority(Random* random)
     MAX_STEPS = 100000;
     if (data_length < answer_length) throw runtime_error("data length < answer length");
 
+
+
+/*
     //make answer
     //memory allocation
-    problems = vector<vector<bitset<data_length> > >(answer_length);
     //make each bit answer
+    problems = vector<bitset<data_length> >(answer_length);
+
     for (unsigned long n = 1, nend = static_cast<unsigned long>(std::pow(2,data_length)); n < nend; ++n)
     {
         bitset<data_length> num(n);
@@ -33,6 +37,21 @@ Count_Minority::Count_Minority(Random* random)
             problems[rise-1].push_back(~num);
         }
     }
+    */
+
+    for(int i = 1;i <= answer_length; ++i)
+    {
+        bitset<data_length> n(0);
+        for(int j = 0; j < i;++j) n.set(j);//000..00111
+
+        for(int j = 0; j < data_length-i+1;++j)
+        {
+            problems.push_back(n);
+            problems.push_back(~n);
+            n <<= 1;
+        }
+    }
+//    for (auto&& v:problems)cout << v << endl;
 }
 
 
@@ -52,9 +71,7 @@ void Count_Minority::start(int &number_of_observation_vars, int& number_of_actio
 }
 
 
-#include<iostream>
-using std::cout;
-using std::endl;
+
 double Count_Minority::step(double* action)
 {
     double const one_threshold = 1.;
@@ -77,17 +94,13 @@ double Count_Minority::step(double* action)
 
 //whether data&answer change every step?
     //Update Values
-    int const answer = random->uniform(0,answer_length-1);
-    int const obs_rand = random->uniform(0,problems[answer].size()-1);
-
-
-    bitset<data_length> const obs = problems[answer][obs_rand];
+    int const obs_rand = random->uniform(0,problems.size()-1);
+    bitset<data_length> const obs = problems[obs_rand];
     for(int i = 0; i < number_of_observation_vars; ++i)
     {
         observation[i] = static_cast<double>(obs[i]);
     }
-
-    previous_answer = answer;
+    previous_answer = obs.count();
     return static_cast<double>(reward);
 }
 
