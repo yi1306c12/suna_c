@@ -12,6 +12,7 @@
 #include"environments/Mountain_Car.h"
 #include"environments/Multiplexer.h"
 #include"environments/Pendulum_Swing_Up.h"
+#include"environments/Count_Minority.h"
 
 #include"parameters.h"
 
@@ -88,7 +89,8 @@ int main()
 	//Reinforcement_Environment* env= new Single_Cart_Pole(random);
 	//Reinforcement_Environment* env= new Double_Cart_Pole(random);
 	//Reinforcement_Environment* env= new Multiplexer(3,8,random);
-	Reinforcement_Environment* env= new Pendulum_Swing_Up(random);
+	//Reinforcement_Environment* env= new Pendulum_Swing_Up(random);
+	Reinforcement_Environment* env = new Count_Minority(random);
 	
 
 	//Reinforcement_Agent* agent= new Dummy(env);
