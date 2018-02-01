@@ -16,7 +16,7 @@ using std::endl;
 Count_Minority::Count_Minority(Random* random)
 : random(random) 
 {
-    MAX_STEPS = 100000;
+    MAX_STEPS = 1000;
     if (data_length < answer_length) throw runtime_error("data length < answer length");
 
 
