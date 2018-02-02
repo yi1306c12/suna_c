@@ -13,6 +13,9 @@ using std::bitset;
 using std::cout;
 using std::endl;
 
+//#define ACTION_BUTTON
+//#define TIME_SERIES_INPUT
+
 Count_Minority::Count_Minority(Random* random)
 : random(random) 
 {
@@ -58,11 +61,21 @@ Count_Minority::Count_Minority(Random* random)
 void Count_Minority::start(int &number_of_observation_vars, int& number_of_action_vars)
 {
     number_of_observation_vars = data_length;
+
+#ifdef TIME_SERIES_INPUT
+    number_of_observation_vars = 1;
+#else
+    number_of_observation_vars = data_length;
+#endif
+
+#ifdef ACTION_BUTTON
+    number_of_action_vars = answer_length+1;
+#else
     number_of_action_vars = answer_length;
+#endif
 
     this->number_of_observation_vars = number_of_observation_vars;
     this->number_of_action_vars = number_of_action_vars;
-
     //allocation
     observation= (double*) malloc(number_of_observation_vars*sizeof(double));
 
@@ -74,8 +87,6 @@ void Count_Minority::start(int &number_of_observation_vars, int& number_of_actio
 
 double Count_Minority::step(double* action)
 {
-    double const one_threshold = 1.;
-
     if(action==NULL)
     {
         //throw runtime_error("NULL action");
@@ -85,22 +96,53 @@ double Count_Minority::step(double* action)
 //Evaluate with -|response - answer| or (response == answer)?
     //Evaluation
     int reward = 0;
-    for(int i = 0; i < number_of_action_vars; ++i)
+#ifdef ACTION_BUTTON
+    bool const actioned = action[answer_length <= 0];
+    if (actioned)
     {
-        bool const is_one = action[i] > one_threshold;
-        bool const answer_i = i == previous_answer-1;
-        reward -= answer_i != is_one;
+#endif
+        int max_answer = 0;
+        double max = action[0];
+        for(int i = 1; i < answer_length;++i)
+        {
+            if(max < action[i])
+            {
+                max_answer = i;
+                max = action[i];
+            }
+        }
+        reward = max_answer == next_answer;
+#ifdef ACTION_BUTTON
     }
-
+#endif
 //whether data&answer change every step?
     //Update Values
+
+#ifdef TIME_SERIES_INPUT
+    if(actioned)
+    {
+        next_bit = 0;
+        int const obs_rand = random->uniform(0,problems.size()-1);
+        now_series = problems[obs_rand];
+        next_answer = obs_rand;
+    }
+    if(next_bit < data_length)observation[0] = static_cast<double>(now_series[next_bit]);
+    else observation[0] = 0;
+    next_bit++;
+
+#else
+#ifdef ACTION_BUTTON
+    if(!actioned)return 0.;//same observation, 0 reward
+#endif
     int const obs_rand = random->uniform(0,problems.size()-1);
     bitset<data_length> const obs = problems[obs_rand];
     for(int i = 0; i < number_of_observation_vars; ++i)
     {
         observation[i] = static_cast<double>(obs[i]);
     }
-    previous_answer = obs.count();
+    next_answer = obs.count();
+#endif
+
     return static_cast<double>(reward);
 }
 
@@ -108,11 +150,12 @@ double Count_Minority::step(double* action)
 double Count_Minority::restart()
 {
     ++trial;
-    previous_answer = 0;
+    next_answer = 0;
     for(int i=0; i<number_of_observation_vars; ++i)
     {
         observation[i] = 0.;
     }
+    next_bit = 0;
 
     return 0.;
 }

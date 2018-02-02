@@ -1,6 +1,8 @@
 #ifndef COUNTMINORITY
 #define COUNTMINORITY
 
+
+
 #include"../parameters.h"
 #include"Reinforcement_Environment.h"
 #include"random/State_of_Art_Random.h"
@@ -15,9 +17,12 @@ int const answer_length = 3;
 
 class Count_Minority : public Reinforcement_Environment
 {
-    int previous_answer;
+    int next_answer;
 
     std::vector<std::bitset<data_length> > problems;
+
+    int next_bit;
+    std::bitset<data_length> now_series;
 
 public:
     Count_Minority(Random* random);
