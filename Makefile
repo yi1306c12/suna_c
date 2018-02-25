@@ -15,7 +15,7 @@ MAPS=agents/self_organized_systems/Som_Map.cpp agents/self_organized_systems/Nov
 
 LDFLAGS=  -L${PATH_TO_ZWEIFEL_LIBRARY}/lib -I${PATH_TO_ZWEIFEL_LIBRARY}/src/ -lzrandom -lzgraph
 
-PYTHON_FLAGS= -lboost_python3 -fPIC -DPIC -shared -I$(PYENV_ROOT)/versions/3.6.3/include/python3.6m
+PYTHON_FLAGS= -lboost_python3 -fPIC -DPIC -shared -I$(PYENV_ROOT)/versions/3.6.4/include/python3.6m
 NUMPY_FLAGS= -L/usr/local/lib64 -lboost_numpy $(PYTHON_FLAGS)
 
 all:	main live
