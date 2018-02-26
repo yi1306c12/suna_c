@@ -2,8 +2,6 @@
 PATH_TO_ZWEIFEL_LIBRARY=$(HOME)/Programs/zweifel
 
 CFLAGS= -O4 -Wall --std=c++11
-#-Wall -pedantic -ansi
-#CFLAGS=-O4
 
 MAIN_REINFORCEMENT_LEARNING=main.cpp
 MAIN_LIVE=live.cpp
@@ -15,7 +13,9 @@ MAPS=agents/self_organized_systems/Som_Map.cpp agents/self_organized_systems/Nov
 
 LDFLAGS=  -L${PATH_TO_ZWEIFEL_LIBRARY}/lib -I${PATH_TO_ZWEIFEL_LIBRARY}/src/ -lzrandom -lzgraph
 
-PYTHON_FLAGS= -lboost_python3 -fPIC -DPIC -shared -I$(PYENV_ROOT)/versions/3.6.4/include/python3.6m
+PYTHON_DIR= $(shell python -c "from distutils.sysconfig import *;print(get_python_inc())")
+
+PYTHON_FLAGS= -lboost_python3 -fPIC -DPIC -shared -I$(PYTHON_DIR)
 NUMPY_FLAGS= -L/usr/local/lib64 -lboost_numpy $(PYTHON_FLAGS)
 
 all:	main live
@@ -29,7 +29,6 @@ main:
 
 
 python_lib:
-#	g++ $(CFLAGS) UnifiedNeuralModel_wrapper.cpp $(AGENTS) $(MODELS) $(MAPS) $(ENVIRONMENTS) $(LDFLAGS) -o unified_neural_model.so -lboost_python-py35 -fPIC -DPIC -shared -I`python -c 'from distutils.sysconfig import *;print(get_python_inc())'`
 	g++ $(CFLAGS) UnifiedNeuralModel_wrapper.cpp $(AGENTS) $(MODELS) $(MAPS) $(LDFLAGS) -o unified_neural_model.so $(NUMPY_FLAGS)
 
 python_env:
