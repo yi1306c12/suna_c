@@ -1,4 +1,4 @@
-from multiprocessing import Process
+from multiprocessing import Process,Queue
 import gym
 environment_name = 'BipedalWalker-v2'
 gym.logger.set_level(40)#vanish warnings
@@ -11,20 +11,18 @@ pid = os.getpid()
 import psutil
 py = psutil.Process(pid)
 
-def f(agent):
+def f(agent,queue):
     env = gym.make(environment_name)
-    observation, reward = env.reset()
+    observation, reward = env.reset(), 0
     
     sum_reward = 0
     for s in range(steps):
         action = agent.step(observation,reward)
-        observation, reward, done, info = env.step()
-        if done:
-            break
-            #observation, reward = env.reset()
+        observation, reward, done, info = env.step(action)
         sum_reward += reward
-    return sum_reward
-
+        if done:
+            observation, reward = env.reset(),0
+    queue.put(sum_reward)
 
 def main(trials):
     env = gym.make(environment_name)
@@ -33,12 +31,14 @@ def main(trials):
     agent = unified_neural_model()
     agent.init(inputs,outputs)
 
+    q = Queue()
     for g in range(generations):
         accum_reward = []
         for t in range(100):
-            p = Process(targert=f,args=(agent,))
+            p = Process(target=f,args=(agent,q))
             p.start()
-            reward = p.join()
+            p.join()
+            reward = q.get()
             agent.endEpisode(reward)
             accum_reward.append(reward)
         print(g,max(accum_reward), "memory_usave:{}MB".format(py.memory_info()[0]/2**20))
