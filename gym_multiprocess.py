@@ -1,6 +1,7 @@
 from multiprocessing import Process
 import gym
 environment_name = 'BipedalWalker-v2'
+gym.logger.set_level(40)#vanish warnings
 from unified_neural_model import unified_neural_model
 
 steps = 1000
