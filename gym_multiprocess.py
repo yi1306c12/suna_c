@@ -1,7 +1,7 @@
 from multiprocessing import Process,Queue
 import gym
 environment_name = 'BipedalWalker-v2'
-gym.logger.set_level(40)#exclude waning
+gym.logger.set_level(40)#exclude waning message
 from unified_neural_model import unified_neural_model
 
 import os
