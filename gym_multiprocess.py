@@ -15,12 +15,13 @@ def f(agent,queue):
     observation, reward = env.reset(), 0
     
     sum_reward = 0
-    for s in range(steps):
-        action = agent.step(observation,reward)
-        observation, reward, done, info = env.step(action)
-        sum_reward += reward
-        if done:
-            observation, reward = env.reset(),0
+    for r in range(retry):
+        for s in range(steps):
+            action = agent.step(observation,reward)
+            observation, reward, done, info = env.step(action)
+            sum_reward += reward
+            if done:
+                observation, reward = env.reset(),0
     queue.put(sum_reward)
 
 def main(trials):
