@@ -16,13 +16,14 @@ def f(agent,queue,steps,retry):
     
     sum_reward = 0
     for r in range(retry):
+        agent.resetAgent()
+        observation, reward = env.reset(),0
         for s in range(steps):
             action = agent.step(observation,reward)
             observation, reward, done, info = env.step(action)
             sum_reward += reward
             if done:
-                agent.resetAgent()
-                observation, reward = env.reset(),0
+                break
     queue.put(sum_reward)
 
 
