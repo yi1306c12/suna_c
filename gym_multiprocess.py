@@ -3,14 +3,13 @@ import gym
 environment_name = 'BipedalWalker-v2'
 from unified_neural_model import unified_neural_model
 
-steps = 1000
-
 import os
 pid = os.getpid()
 import psutil
 py = psutil.Process(pid)
 
-def f(agent,queue):
+
+def f(agent,queue,steps,retry):
     env = gym.make(environment_name)
     observation, reward = env.reset(), 0
     
@@ -21,10 +20,12 @@ def f(agent,queue):
             observation, reward, done, info = env.step(action)
             sum_reward += reward
             if done:
+                agent.resetAgent()
                 observation, reward = env.reset(),0
     queue.put(sum_reward)
 
-def main(trials):
+
+def main(generations, steps, retry):
     env = gym.make(environment_name)
     inputs, outputs = env.observation_space.shape[0], env.action_space.shape[0]
 
@@ -35,7 +36,7 @@ def main(trials):
     for g in range(generations):
         accum_reward = []
         for t in range(100):
-            p = Process(target=f,args=(agent,q))
+            p = Process(target=f,args=(agent,q,steps,retry))
             p.start()
             p.join()
             reward = q.get()
@@ -44,11 +45,13 @@ def main(trials):
         print(g,max(accum_reward), "memory_usave:{}MB".format(py.memory_info()[0]/2**20))
 
     agent.saveAgent("dna_best_individual")
-        
-            
+
+
 
 if __name__=='__main__':
     import sys
     generations = int(sys.argv[1])
+    steps = int(sys.argv[2])
+    retry = int(sys.argv[3])
 
-    main(generations)
+    main(generations,steps,retry)
