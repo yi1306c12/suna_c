@@ -44,7 +44,8 @@ def main(generations, steps, retry):
             reward = q.get()
             agent.endEpisode(reward)
             accum_reward.append(reward)
-        print(g,max(accum_reward), "memory_usage:{}MB".format(py.memory_info()[0]/2**20))
+        #print(g,max(accum_reward), "memory_usage:{}MB".format(py.memory_info()[0]/2**20))
+        print(g,max(accum_reward),*accum_reward,sep=',')
 
     agent.saveAgent("dna_best_individual")
 
