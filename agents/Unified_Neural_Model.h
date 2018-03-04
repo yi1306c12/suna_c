@@ -79,6 +79,9 @@ class Unified_Neural_Model : public Reinforcement_Agent
 		//debug
 		void printSubpop();
 
+		//for python
+		void resetAgent(void);
+
 };
 
 #endif

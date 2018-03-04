@@ -43,6 +43,7 @@ BOOST_PYTHON_MODULE(unified_neural_model)
         .def("endEpisode", &UNF_python::endEpisode)
         .def("print", &UNF_python::print)
         .def("saveAgent", &UNF_python::saveAgent)
+        .def("resetAgent", &UNF_python::resetAgent)
     ;
 
 }

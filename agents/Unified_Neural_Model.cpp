@@ -942,3 +942,9 @@ void Unified_Neural_Model::printBest()
 	printf("%d %f\n", generation, objective);
 
 }
+
+//for python
+void Unified_Neural_Model::resetAgent(void)
+{
+	subpopulation[testing_subpop][testing_individual]->clearMemory();
+}
