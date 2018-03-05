@@ -1,7 +1,7 @@
 from multiprocessing import Process,Queue
 import gym
 environment_name = 'BipedalWalker-v2'
-input_select = set([
+input_select = [
 #   0,	#hull_angle
 #   1,	#hull_angularVelocity
 #   2,	#vel_x
@@ -17,7 +17,7 @@ input_select = set([
 #   12,	#knee_joint_2_speed
     13	#leg_2_ground_contact_flag
 #   14-23   #10 lidar readings
-])
+]
 gym.logger.set_level(40)#exclude waning message
 
 class limited_observation:
