@@ -35,26 +35,29 @@ int main()
 	agent->init(number_of_observation_vars, number_of_action_vars);
 	
 	//starting reward 
-	double reward= env->step(NULL);		
-	double step_counter=1;
+	double reward= 0;//env->step(NULL);		
+	int step_counter=1;
 		
 		
 	for(int i=env->trial;i<trials;)
 	{
-		double accum_reward=reward;
+		double accum_reward=0.;//reward;
+		reward = 0.;
 		//do one trial (multiple steps until the environment finish the trial or the trial reaches its MAX_STEPS)
+		printf("%d\t%d\n",env->trial, i);
 		while(env->trial==i && step_counter <= env->MAX_STEPS)
 		{
-
 			agent->step(env->observation, reward);
 
-			reward= env->step(agent->action);		
+			reward= env->step(agent->action);
+			if(isnan(reward))break;
 		
 			accum_reward+= reward;
 		
 			step_counter++;
 
 		}
+		printf("%lf\t%d\n",accum_reward,step_counter);
 
 		//update the max_accum_reward and print		
 		if(print_max_accum_reward_in_n_trials)
@@ -87,27 +90,11 @@ int main()
 			
 		//if env->trial is the same as i, it means that the internal state of the environment has not changed
 		//then it needs a restart to begin a new trial
-		if(env->trial==i)
-		{
-			reward= env->restart();
-		}
-		else
-		{
-			reward= env->step(NULL);
-		}
+		reward= env->restart();
 	
 		step_counter=1;
 
 		i++;
-
-#ifdef STOP_REWARD
-		if(max_accum_reward > STOP_REWARD)
-		{
-			printf("%d %f\n",i,max_accum_reward);
-			break;
-		}
-#endif
-	
 	}
 
 	agent->saveAgent("dna_best_individual");

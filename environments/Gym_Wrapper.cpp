@@ -8,6 +8,7 @@
 #include <boost/python/numpy.hpp>
 
 #include <iostream>
+#include <cmath>
 
 namespace p = boost::python;
 namespace np = p::numpy;
@@ -22,10 +23,8 @@ Gym_Wrapper::Gym_Wrapper(const char* environment_name)
     cout << environment_name << endl; //debug
 
     global_namespace = p::import("__main__").attr("__dict__");
-    cout << "import " << endl;
-//    global_namespace["environment_name"] = environment_name;//set environment_name(in python) = environment_name(in c++)
+    global_namespace["environment_name"] = environment_name;//set environment_name(in python) = environment_name(in c++)
 
-    cout << "global_namespace" << endl;
     try
     {
         ifstream ifs("environments/Gym_Wrapper.py");
@@ -33,7 +32,6 @@ Gym_Wrapper::Gym_Wrapper(const char* environment_name)
             (istreambuf_iterator<char>(ifs)),
             istreambuf_iterator<char>()
         );
-        cout << script << "script" << endl;
         p::exec(script.c_str(),global_namespace);
         number_of_observation_vars = p::extract<int>(global_namespace["number_of_observation_vars"]);
         number_of_action_vars = p::extract<int>(global_namespace["number_of_action_vars"]);
@@ -43,12 +41,11 @@ Gym_Wrapper::Gym_Wrapper(const char* environment_name)
         PyErr_Print();
         throw e;
     }
-    cout << number_of_observation_vars << ":" << number_of_action_vars << endl; //debug
 
-    shape_action = p::make_tuple(number_of_observation_vars);
+    shape_action = p::make_tuple(number_of_action_vars);
     observation = new double[number_of_observation_vars];
-    MAX_STEPS = 100;
-    trial = 0; //the first trial will be 0, because restart() is NOT called in start().
+    MAX_STEPS = 1000;
+    trial = -1; 
 }
 
 
@@ -56,13 +53,13 @@ void Gym_Wrapper::start(int& number_of_observation_vars, int& number_of_action_v
 {
     number_of_observation_vars = this->number_of_observation_vars;
     number_of_action_vars = this->number_of_action_vars;
+
+    restart();
 }
 
 
 double Gym_Wrapper::step(double* action)
 {
-    if(action==NULL)return 1;//??? (by Double_Cart_Pole)
-
     double reward = 0.;
     auto action_np = np::from_data(
         action,
