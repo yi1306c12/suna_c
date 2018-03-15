@@ -1,7 +1,7 @@
 
 PATH_TO_ZWEIFEL_LIBRARY=$(HOME)/Programs/zweifel
 
-CFLAGS= -O4 -Wall -std=c++11
+CFLAGS= -O0 -Wall -std=c++11
 #-Wall -pedantic -ansi
 #CFLAGS=-O4
 
@@ -15,6 +15,7 @@ MAPS=agents/self_organized_systems/Som_Map.cpp agents/self_organized_systems/Nov
 
 LDFLAGS=  -L${PATH_TO_ZWEIFEL_LIBRARY}/lib -I${PATH_TO_ZWEIFEL_LIBRARY}/src/ -lzrandom -lzgraph
 
+PYTHONFLAGS=`python-config --cflags` `python-config --ldflags` -lboost_python3 -L/usr/local/lib -lboost_numpy3
 
 all:	main live
 
@@ -24,3 +25,6 @@ live:
 
 main:
 	g++ $(CFLAGS) $(MAIN_REINFORCEMENT_LEARNING) $(AGENTS) $(MODELS) $(MAPS) $(ENVIRONMENTS) $(LDFLAGS) -o rl
+
+gym:
+	g++ $(CFLAGS) main_gym.cpp environments/Gym_Wrapper.cpp $(AGENTS) $(MODELS) $(MAPS) $(LDFLAGS) $(PYTHONFLAGS) -o rl_gym -O0 -g

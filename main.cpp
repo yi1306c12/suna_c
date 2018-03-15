@@ -142,6 +142,7 @@ int main()
 		while(env->trial==i && step_counter <= env->MAX_STEPS)
 		{
 
+			print(" %d",step_counter);
 			agent->step(env->observation, reward);
 
 			reward= env->step(agent->action);		
