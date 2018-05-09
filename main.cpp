@@ -22,7 +22,6 @@ int const trial_frequency_to_print= 100;
 
 int main()
 {
-	int i;
 
 	Random* random= new State_of_Art_Random(time(NULL));
 	
@@ -38,9 +37,7 @@ int main()
 	Reinforcement_Agent* agent= new Unified_Neural_Model(random);
 	//print max accumulated reward seen in N trials, the N trials is given by trial_frequency_to_print
 	double max_accum_reward=0;
-	bool was_initialized=false;	//tells if the max_accum_reward was initialized
-
-	int trials=300000;		
+	int trials=300000;
 	
 	int number_of_observation_vars;
 	int number_of_action_vars;
@@ -48,21 +45,14 @@ int main()
 	agent->init(number_of_observation_vars, number_of_action_vars);
 	
 	//starting reward 
-	double reward= env->step(NULL);		
+	double reward= env->step(NULL);
 	double step_counter=1;
-		
-	//agent->print();
-		
-	double last_rewards[100];
-	int counter=0;
-	double avg_rewards;
-
 	
-	for(i=env->trial;i<trials;)
+	for(int i=env->trial; i<trials;)
 	{
 		double accum_reward=reward;
 		//do one trial (multiple steps until the environment finish the trial or the trial reaches its MAX_STEPS)
-		while(env->trial==i && step_counter <= env->MAX_STEPS)
+		while(env->trial==i && step_counter<=env->MAX_STEPS)
 		{
 			agent->step(env->observation, reward);
 			reward= env->step(agent->action);
@@ -107,11 +97,8 @@ int main()
 		
 		step_counter=1;
 		i++;
-
-	
 	}
 
 	agent->saveAgent("dna_best_individual");
 	return 0;
 }
-
