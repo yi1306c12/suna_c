@@ -1,7 +1,7 @@
 #include<boost/python.hpp>
-#include<boost/numpy.hpp>
+#include<boost/python/numpy.hpp>
 namespace p = boost::python;
-namespace np = boost::numpy;
+namespace np = p::numpy;
 
 #include<new>
 #include<stdexcept>
