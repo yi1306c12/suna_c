@@ -2,7 +2,6 @@
 from environments import double_cart_pole
 from unified_neural_model import unified_neural_model
 import numpy as np
-import matplotlib.pyplot as plt
 
 #@profile
 def main():
@@ -23,8 +22,8 @@ def main():
         env_trial = env.trial
         for t in range(env.MAX_STEPS):
 
-            agent.step(env.last_observation(),reward)
-            reward = env.step(agent.action())
+            action = agent.step(env.last_observation(),reward)
+            reward = env.step(action)
 
             accum_reward += reward
 
