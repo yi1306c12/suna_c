@@ -15,8 +15,8 @@ LDFLAGS=  -L${PATH_TO_ZWEIFEL_LIBRARY}/lib -I${PATH_TO_ZWEIFEL_LIBRARY}/src/ -lz
 
 PYTHON_DIR= $(shell python -c "from distutils.sysconfig import *;print(get_python_inc())")
 
-PYTHON_FLAGS= -lboost_python $(shell python-config --cflags --ldflags) -fPIC -DPIC -shared #-I$(PYTHON_DIR)
-NUMPY_FLAGS= -lboost_numpy $(PYTHON_FLAGS)
+PYTHON_FLAGS= -lboost_python3 $(shell python3-config --cflags --ldflags) -fPIC -DPIC -shared #-I$(PYTHON_DIR)
+NUMPY_FLAGS= -lboost_numpy3 $(PYTHON_FLAGS)
 #NUMPY_FLAGS= -L/usr/local/lib64 -lboost_numpy $(PYTHON_FLAGS)
 
 all:	main live
