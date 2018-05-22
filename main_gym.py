@@ -34,7 +34,7 @@ def trial():
                 break
 #                observation = env.reset()
     agent.endEpisode(reward)
-    return accum_reward
+    return accum_reward/retry
 
 accum_rewards = []
 for i in range(trials):
