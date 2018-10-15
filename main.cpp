@@ -2,6 +2,10 @@
 #include"stdio.h"
 #include"stdlib.h"
 
+//for random seed
+#include<unistd.h>//getpid
+#include<time.h>//clock
+
 //agents
 #include"agents/Unified_Neural_Model.h"
 
@@ -82,15 +86,15 @@ int main()
 	int i;
 	main_log_file= fopen("log.txt","w");
 
-	Random* random= new State_of_Art_Random(time(NULL));
+	Random* random= new State_of_Art_Random(static_cast<unsigned int>(clock())+static_cast<unsigned int>(getpid()));
 
 	//Reinforcement_Environment* env= new Mountain_Car(random);
 	//Reinforcement_Environment* env= new Function_Approximation(random,1000,false);
 	//Reinforcement_Environment* env= new Single_Cart_Pole(random);
-	//Reinforcement_Environment* env= new Double_Cart_Pole(random);
+	Reinforcement_Environment* env= new Double_Cart_Pole(random);
 	//Reinforcement_Environment* env= new Multiplexer(3,8,random);
 	//Reinforcement_Environment* env= new Pendulum_Swing_Up(random);
-	Reinforcement_Environment* env = new Count_Minority(random);
+	//Reinforcement_Environment* env = new Count_Minority(random);
 
 
 	//Reinforcement_Agent* agent= new Dummy(env);
