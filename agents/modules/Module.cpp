@@ -735,19 +735,11 @@ void Module::processInputNeurons()
 		}
 	}
 
-	//return if no excited input neuron was found
-	if(active_neurons.empty())
-	{
-		return;
-	}
-
-
 	//set all Input Neurons as already activated and fire them
 	while(!active_neurons.empty())
 	{
 		//int id= active_neuron;
 		int index= active_neurons.top();
-
 		//remove the top of the stack
 		active_neurons.pop();
 
