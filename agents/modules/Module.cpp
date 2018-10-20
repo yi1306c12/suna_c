@@ -1,6 +1,8 @@
 
 #include"Module.h"
 
+#include<cmath>//std::abs
+
 // the dna_allocated_length is for both n and c, therefore its value is equivalent to the longest length
 Module::Module(int number_of_inputs, int number_of_outputs, neuron* n, connection* c, int dna_allocated_length)
 {
@@ -758,7 +760,6 @@ void Module::processRemainingNeurons()
 		}
 	}
 
-	//printf("LLLLLLLLLLLLLLLLLL\n");
 	//the loop only stops when:
 	//	-no Remaining Neuron, that was excited and not activated, is found
 	for(;;)
@@ -774,11 +775,11 @@ void Module::processRemainingNeurons()
 			int index= *it;
 			double output= execute(index, true);
 
-			if(output > REMAINING_NEURON_THRESHOLD || output < -REMAINING_NEURON_THRESHOLD)
+			if(std::abs(execute(index, true)) > REMAINING_NEURON_THRESHOLD)
 			{
 				//int id= n[i].id;
 				//int index= map_id_to_dna[id];
-				//internal_neuron_state[index]+= output;
+				//internal_neuron_state[index]+= output;output
 
 				active_neurons.push(index);
 				//printf("NNNNNNneuron %d\n", index);
