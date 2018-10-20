@@ -613,7 +613,6 @@ void Module::processControlNeurons()
 	{
 
 		std::stack<int> active_neurons;
-		std::stack<int> active_neurons_copy;
 
 		//execute all Control Neurons that are excited and not activated
 		for(int i=0; n[i].id >= 0;++i)
@@ -635,29 +634,17 @@ void Module::processControlNeurons()
 			return;
 		}
 
-
-		//set all Control Neurons as already activated and fire them
+		//Excite/Inhibit other neurons
 		while(!active_neurons.empty())
 		{
-			//int id= active_neuron;
-			int index= active_neurons.top();
-
-			//remove the top of the stack & add this in the copy of this stack
-			active_neurons.pop();
-			active_neurons_copy.push(index);
-
-			//mark as fired
-			is_fired[index]=true;
-		}
-
-		//Excite/Inhibit other neurons
-		while(!active_neurons_copy.empty())
-		{
-			int control_index= active_neurons_copy.top();
+			int control_index= active_neurons.top();
 			int control_id= n[control_index].id;
 
+			//mark as fired
+			is_fired[control_index]=true;
+
 			//pop
-			active_neurons_copy.pop();
+			active_neurons.pop();
 
 			//check the connections from this neuron
 			for(int j=0; c[j].from_neuron_id >= 0;++j)
