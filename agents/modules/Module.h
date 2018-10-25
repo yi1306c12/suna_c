@@ -81,7 +81,6 @@ class Module
 		void clone(Module* brother);
 		void process(double* input, double* output);
 		void structuralMutation();
-		void firingRateMutation();
 		void weightMutation();
 		void addConnection(int from_neuron_id, int to_neuron_id, int neuro_modulation, double weight);
 		void connectNewNeuronToNetwork(int new_neuron_id);
