@@ -1126,17 +1126,18 @@ double Module::execute(int neuron_index, bool ignore_if_only_recurrent)
 
 	double neuron_output = activationFunction(n[neuron_index].type, sum, random);
 
+
+	if(isnan(neuron_output)||isinf(neuron_output))
+	{
+		printf("neuron_state!! nan, id %d sum %f neuron output %f internal_neuron_state %f\n",id, sum, neuron_output, internal_neuron_state[neuron_index]);
+	}
+
 	//In the case that the ignore_if_only_recurrent flag is set,
 	//the neuron does not activate if it only has recurrent input
 	//this is useful for normal "remaining neurons" (neurons that are not control, not input and not output neurons)
 	if(only_recurrent_inputs == true && ignore_if_only_recurrent == true)
 	{
 		neuron_output = 0.0;
-	}
-
-	if(isnan(neuron_output)||isinf(neuron_output))
-	{
-		printf("neuron_state!! nan, id %d sum %f neuron output %f internal_neuron_state %f\n",id, sum, neuron_output, internal_neuron_state[neuron_index]);
 	}
 
 	//if it is an Output Neuron
