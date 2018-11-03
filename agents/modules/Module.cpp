@@ -177,25 +177,6 @@ void Module::clone(Module* brother)
 }
 
 ///////////////////////////////////////////////////////////////
-//	Firing Rate mutation:
-//		- modify firing rate
-///////////////////////////////////////////////////////////////
-void Module::firingRateMutation()
-{
-/*
-	double roulette = random->uniform(0.0, 1.0);
-
-	if(roulette < FIRING_RATE_MUTATION_RATE)
-	{
-		for(int i=0 ; n[i].id >= 0 ; ++i)
-		{
-
-		}
-	}
-*/
-}
-
-///////////////////////////////////////////////////////////////
 //	Weight mutation:
 //		- modify weight
 //		(for now the neuromodulation connections are ignored)
