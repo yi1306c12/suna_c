@@ -964,11 +964,6 @@ double Module::execute(int neuron_index, bool ignore_if_only_recurrent)
 					//because we still do not know if this neuron will fire
 					connections_used.push(cnn);
 
-					if(isnan(sum)||isinf(sum))
-					{
-						printf("fired %f %f\n",c[j].weight, neuron_state[source_index]);
-					}
-
 				}
 				//recurrent connection
 				//case it was not activated yet, use the state from the previous iteration
@@ -986,16 +981,7 @@ double Module::execute(int neuron_index, bool ignore_if_only_recurrent)
 						//because we still do not know if this neuron will fire
 						connections_used.push(cnn);
 
-						if(isnan(sum)||isinf(sum))
-						{
-							printf("not fired %f %f\n",c[j].weight, previous_neuron_state[source_index]);
-						}
 					}
-				}
-
-				if(isnan(sum)||isinf(sum))
-				{
-					printf("no neuromodulation \n");
 				}
 			}
 			//with neuron modulation
@@ -1055,10 +1041,6 @@ double Module::execute(int neuron_index, bool ignore_if_only_recurrent)
 					//because we still do not know if this neuron will fire
 					connections_used.push(cnn);
 
-					if(isnan(source_input)||isinf(source_input))
-					{
-						printf("fired %f\n",neuron_state[source_index]);
-					}
 
 				}
 				//recurrent connection
@@ -1077,26 +1059,13 @@ double Module::execute(int neuron_index, bool ignore_if_only_recurrent)
 						//because we still do not know if this neuron will fire
 						connections_used.push(cnn);
 
-						if(isnan(source_input)||isinf(source_input))
-						{
-							printf("not fired f %f\n", previous_neuron_state[source_index]);
-						}
 					}
 
-					if(isnan(sum)||isinf(sum))
-					{
-						printf("not fired nnn\n");
-					}
 
 				}
 
 
 				sum+= modulator_input * source_input;
-
-				if(isnan(sum)||isinf(sum))
-				{
-					printf("neuromodulation modulator %f source %f\n",modulator_input, source_input);
-				}
 
 			}
 		}
@@ -1113,8 +1082,6 @@ double Module::execute(int neuron_index, bool ignore_if_only_recurrent)
 
 	if(isnan(sum)||isinf(sum))
 	{
-		printf("sum is nan, id %d\n",id);
-		printGraph("problem.dot");
 		exit(1);
 	}
 
@@ -1125,12 +1092,6 @@ double Module::execute(int neuron_index, bool ignore_if_only_recurrent)
 	}
 
 	double neuron_output = activationFunction(n[neuron_index].type, sum, random);
-
-
-	if(isnan(neuron_output)||isinf(neuron_output))
-	{
-		printf("neuron_state!! nan, id %d sum %f neuron output %f internal_neuron_state %f\n",id, sum, neuron_output, internal_neuron_state[neuron_index]);
-	}
 
 	//In the case that the ignore_if_only_recurrent flag is set,
 	//the neuron does not activate if it only has recurrent input
