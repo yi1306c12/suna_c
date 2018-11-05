@@ -54,7 +54,8 @@ BOOST_PYTHON_MODULE(module)
     Py_Initialize();
     np::initialize();
 
-    class<module_python>("module")
+    class<module_python>("module", init<int, int>())
+    //[Boost\.Python（日本語訳）](http://alpha.osdn.jp/devel/boost.python_ja.pdf)	
         .def("process", &module_python::process)
         .def("weightMutation", &module_python::weightMutation)//in Unified_Neural_Model::init(), do only structuralMutation but weightMutation
         .def("structuralMutation", &module_python::structuralMutation)
