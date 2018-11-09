@@ -111,7 +111,8 @@ int main()
 	bool print_agent_information=false;
 
 	//int trials=100000
-	int trials=300000;		
+	//int trials=300000;		
+	int trials=1000000;		
 	//int trials=200;		
 	//int trials=500;		
 	//int trials=100000;		
