@@ -23,7 +23,7 @@ class module_python:public Module
 public:
     module_python(int const number_of_inputs, int const number_of_outputs):
         Module(number_of_inputs, number_of_outputs, INITIAL_ALLOCATION_LENGTH),
-        shape(p::make_tuple(number_of_outputs))
+        shape(p::make_tuple(number_of_outputs)),
         output(new double[number_of_outputs])
     {
         setRandom(new State_of_Art_Random(
@@ -32,7 +32,7 @@ public:
     }
     np::ndarray process(np::ndarray input)
     {
-        if(observation.get_nd() != 1)throw runtime_error("input must be 1-dimensional");
+        if(input.get_nd() != 1)throw runtime_error("input must be 1-dimensional");
 
         Module::process(reinterpret_cast<double *>(input.get_data()), output);
         return np::from_data(output, dtype, shape, stride, p::object());
@@ -54,7 +54,7 @@ BOOST_PYTHON_MODULE(module_wrapper)
     Py_Initialize();
     np::initialize();
 
-    class<module_python>("module", init<int, int>())
+    class_<module_python>("module", init<int, int>())
     //[Boost\.Python（日本語訳）](http://alpha.osdn.jp/devel/boost.python_ja.pdf)	
         .def("process", &module_python::process)
         .def("weightMutation", &module_python::weightMutation)//in Unified_Neural_Model::init(), do only structuralMutation but weightMutation
