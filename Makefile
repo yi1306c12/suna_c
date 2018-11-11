@@ -36,5 +36,5 @@ python_env:
 	g++ $(CFLAGS) environments_wrapper.cpp $(ENVIRONMENTS) $(LDFLAGS) -o environments.so $(NUMPY_FLAGS)
 
 python_module:
-	g++ $(CFLAGS) $(MODELS) -o module_wrapper.so $(LDFLAGS) $(NUMPY_FLAGS)
+	g++ $(CFLAGS) module_wrapper.cpp $(MODELS) -o module_wrapper.so $(LDFLAGS) $(NUMPY_FLAGS)
 
