@@ -48,7 +48,7 @@ public:
 };
 
 
-BOOST_PYTHON_MODULE(module)
+BOOST_PYTHON_MODULE(module_wrapper)
 {
     using namespace boost::python;
     Py_Initialize();
