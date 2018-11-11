@@ -23,12 +23,13 @@ class module_python:public Module
 public:
     module_python(int const number_of_inputs, int const number_of_outputs):
         Module(number_of_inputs, number_of_outputs, INITIAL_ALLOCATION_LENGTH),
-        shape(p::make_tuple(number_of_outputs)),
-        output(new double[number_of_outputs])
+        shape(p::make_tuple(number_of_outputs))
     {
         setRandom(new State_of_Art_Random(
             static_cast<unsigned int>(clock())+static_cast<unsigned int>(getpid())
         ));
+
+        output = new double[number_of_outputs];
     }
     np::ndarray process(np::ndarray input)
     {
