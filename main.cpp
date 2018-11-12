@@ -80,11 +80,15 @@ void setFeatures(Reinforcement_Environment* env)
 
 }
 
-int main()
+int main(int const argc, char const * argv[])
 {
 	//int trials_to_change_maze_states= 10000;
 	int i;
-	main_log_file= fopen("log.txt","w");
+	
+	char const * main_log_file_name = argv[1];
+	char const * network_file_name = argv[2];
+
+	main_log_file= fopen(main_log_file_name,"w");
 
 	Random* random= new State_of_Art_Random(static_cast<unsigned int>(clock())+static_cast<unsigned int>(getpid()));
 
@@ -259,7 +263,7 @@ int main()
 
 	}
 
-	agent->saveAgent("dna_best_individual");
+	agent->saveAgent(network_file_name);
 
 
 
