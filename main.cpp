@@ -6,6 +6,9 @@
 #include<unistd.h>//getpid
 #include<time.h>//clock
 
+//for experiment time
+#include<ctime>//strftime
+
 //agents
 #include"agents/Unified_Neural_Model.h"
 
@@ -90,7 +93,10 @@ int main(int const argc, char const * argv[])
 
 	main_log_file= fopen(main_log_file_name,"w");
 
-	Random* random= new State_of_Art_Random(static_cast<unsigned int>(clock())+static_cast<unsigned int>(getpid()));
+	int unsigned const randseed = static_cast<unsigned int>(clock())+static_cast<unsigned int>(getpid());
+	
+
+	Random* random= new State_of_Art_Random(randseed);
 
 	//Reinforcement_Environment* env= new Mountain_Car(random);
 	//Reinforcement_Environment* env= new Function_Approximation(random,1000,false);
@@ -143,6 +149,15 @@ int main(int const argc, char const * argv[])
 	int counter=0;
 	double avg_rewards;
 
+	//environment log
+	time_t rawtime;
+	char buffer[80];
+	time(&rawtime);
+	struct tm * timeinfo = localtime(&rawtime);
+	strftime(buffer, sizeof(buffer), "%d-%m-%Y %H:%M:%S", timeinfo);
+	fprintf(main_log_file, "start time:\t%s\n", buffer);
+	fprintf(main_log_file, "random_seed:\t%u\n", randseed);
+	fprintf(main_log_file, "trials:\t%d\n", trials);
 
 	for(i=env->trial;i<trials;)
 	{
