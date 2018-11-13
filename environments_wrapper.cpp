@@ -20,8 +20,8 @@ class doublecartpole_python:public Double_Cart_Pole
     p::tuple const stride = p::make_tuple(sizeof(double));
     
 public:
-    int number_of_observation_vars=-1;
-    int number_of_action_vars=-1;
+//    int number_of_observation_vars=-1;
+//    int number_of_action_vars=-1;
 
     doublecartpole_python():Double_Cart_Pole(new State_of_Art_Random(time(NULL)))
     {

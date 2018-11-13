@@ -5,10 +5,12 @@ import numpy as np
 
 #@profile
 def main():
+    print('env')
     env = double_cart_pole()
 
-    agent = unified_neural_model()
-    agent.init(env.observations,env.actions)
+    print('agent', env.observations, env.actions)
+    agent = unified_neural_model(env.observations,env.actions)
+    print('end init')
 
     trials = int(3e5)
 
@@ -44,4 +46,5 @@ def main():
     agent.saveAgent("dna_best_individual")
 
 if __name__=='__main__':
+    print('start')
     main()

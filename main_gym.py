@@ -12,8 +12,7 @@ env = gym.make('BipedalWalker-v2')
 
 inputs,outputs = env.observation_space.shape[0], env.action_space.shape[0]#pendulum,lunarlander,bipedwalker,MountainCarContinuous
 
-agent = unified_neural_model()
-agent.init(inputs,outputs)
+agent = unified_neural_model(inputs,outputs)
 
 trials = int(3e5)
 steps = 1000

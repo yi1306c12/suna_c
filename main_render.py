@@ -13,8 +13,7 @@ inputs,outputs = env.observation_space.shape[0], env.action_space.shape[0]#pendu
 #inputs,outputs = env.observation_space.shape[0], 1
 
 from unified_neural_model import unified_neural_model   
-agent = unified_neural_model()
-agent.init(inputs,outputs)
+agent = unified_neural_model(inputs,outputs)
 
 trials = int(2e5)
 steps = 500
