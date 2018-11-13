@@ -6,6 +6,8 @@ namespace np = p::numpy;
 #include<new>
 #include<stdexcept>
 using std::runtime_error;
+#include<exception>
+using std::invalid_argument;
 
 //#include"environments/Reinforcement_Environment.h"
 #include"environments/Double_Cart_Pole.h"
@@ -26,9 +28,10 @@ public:
         start(number_of_observation_vars,number_of_action_vars);
     }
 
-    const double step_(np::ndarray action)
+    double const step_(np::ndarray const & action)
     {
-        if(action.get_nd() != 1)throw runtime_error("action must be 1-dimensional");
+        if(action.get_nd() != 1)throw invalid_argument("action must be 1-dimensional");
+        if(action.get_dtype() != np::dtype::get_builtin<double>())throw invalid_argument("input must be numpy.float64");
         return Double_Cart_Pole::step(reinterpret_cast<double*>(action.get_data()));
     }
 
