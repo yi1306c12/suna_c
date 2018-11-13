@@ -58,6 +58,21 @@ public:
     }
 };
 
+class module_python_suite : public p::pickle_suite
+{
+    //picklable
+    //boost python pickle c++
+    //(https://gist.github.com/seanevans/04b61f58a321c46fec94)	
+/*
+    static p::tuple getstate(p::object w_obj)
+    {
+        Module const & w = p::extract<Module const &>(w_obj)()
+        return p::make_tuple(
+            w_obj.attr("__dict__"), w.id, 
+        )
+    }
+*/
+}
 
 BOOST_PYTHON_MODULE(module_wrapper)
 {
@@ -65,8 +80,10 @@ BOOST_PYTHON_MODULE(module_wrapper)
     Py_Initialize();
     np::initialize();
 
-    class_<module_python>("module", init<int, int>())
-    //[Boost\.Python（日本語訳）](http://alpha.osdn.jp/devel/boost.python_ja.pdf)	
+    class_<module_python, boost::noncopyable>("module", init<int, int>())
+        //.enable_pickling()
+        //.def_pickle(module_python_suite())
+    //[Boost\.Python（日本語訳）](http://alpha.osdn.jp/devel/boost.python_ja.pdf)
         .def("process", &module_python::process)
         .def("weightMutation", &module_python::weightMutation)//in Unified_Neural_Model::init(), do only structuralMutation but weightMutation
         .def("structuralMutation", &module_python::structuralMutation)
