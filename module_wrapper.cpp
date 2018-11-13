@@ -6,6 +6,8 @@ namespace np = p::numpy;
 #include<new>
 #include<stdexcept>
 using std::runtime_error;
+#include<exception>
+using std::invalid_argument;
 
 //for random seed
 #include<unistd.h>//getpid
@@ -31,9 +33,10 @@ public:
 
         output = new double[number_of_outputs];
     }
-    np::ndarray process(np::ndarray input)
+    np::ndarray process(np::ndarray const & input)
     {
-        if(input.get_nd() != 1)throw runtime_error("input must be 1-dimensional");
+        if(input.get_nd() != 1)throw invalid_argument("input must be 1-dimensional");
+        if(input.get_dtype() != np::dtype::get_builtin<double>())throw invalid_argument("input must be numpy.float64");
 
         Module::process(reinterpret_cast<double *>(input.get_data()), output);
         return np::from_data(output, dtype, shape, stride, p::object());
@@ -45,6 +48,13 @@ public:
             Module::structuralMutation();
         }
         updatePrimerList();
+    }
+    //for debug
+    np::ndarray check_input(np::ndarray const & input, int unsigned const number_of_inputs)
+    {
+        p::tuple const input_shape = p::make_tuple(number_of_inputs);
+        if(input.get_nd() != 1)throw invalid_argument("input must be 1-dimensional");
+        return np::from_data(reinterpret_cast<double *>(input.get_data()), dtype, input_shape, stride, p::object());
     }
 };
 
@@ -61,5 +71,6 @@ BOOST_PYTHON_MODULE(module_wrapper)
         .def("weightMutation", &module_python::weightMutation)//in Unified_Neural_Model::init(), do only structuralMutation but weightMutation
         .def("structuralMutation", &module_python::structuralMutation)
 //        .def("clone", &module_python::clone)
+        .def("check_input", &module_python::check_input)
     ;
 }
