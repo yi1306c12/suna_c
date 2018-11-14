@@ -18,7 +18,7 @@ class UNF_python:public Unified_Neural_Model
     p::tuple const stride = p::make_tuple(sizeof(double));
 
 public:
-    UNF_python(int number_of_actions, int number_of_observations):
+    UNF_python(int number_of_observations, int number_of_actions):
         Unified_Neural_Model(new State_of_Art_Random(time(NULL)))
     {
         Unified_Neural_Model::init(number_of_observations, number_of_actions);

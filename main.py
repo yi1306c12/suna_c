@@ -26,6 +26,7 @@ def main():
 
             action = agent.step(env.last_observation(),reward)
             reward = env.step(action)
+            #print(action, env.last_observation(), reward)
 
             accum_reward += reward
 
