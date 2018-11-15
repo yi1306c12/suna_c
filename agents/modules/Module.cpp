@@ -1085,7 +1085,7 @@ double Module::execute(int neuron_index, bool ignore_if_only_recurrent)
 				if(is_fired[source_index] == true)
 				{
 					source_input= neuron_state[source_index];
-					only_recurrent_inputs=false;
+					//only_recurrent_inputs=false;//comment out align the experiment in original SUNA article
 
 					connection_type cnn;
 					cnn.index=j;
