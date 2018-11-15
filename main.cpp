@@ -109,7 +109,7 @@ int main(int const argc, char const * argv[])
 
 
 	//Reinforcement_Agent* agent= new Dummy(env);
-	Reinforcement_Agent* agent= new Unified_Neural_Model(random);
+	Unified_Neural_Model* agent= new Unified_Neural_Model(random);
 
 	setFeatures(env);
 
