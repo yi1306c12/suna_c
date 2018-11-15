@@ -70,10 +70,10 @@ class Unified_Neural_Model : public Reinforcement_Agent
 		//Implementing the Reinforcement Agent Interface
 		void init(int number_of_observation_vars, int number_of_action_vars);
 		void step(double* observation, double reward);
-		void print();
+		void saveGraph_bestAgent(const char dotfilename[]);
 		double stepBestAction(double* observation);
 		void endEpisode(double reward);
-		void saveAgent(const char* filename);
+		void saveDNA_bestAgent(const char* filename);
 		void loadAgent(const char* filename);
 		
 		//debug
