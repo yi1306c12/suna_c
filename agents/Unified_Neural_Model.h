@@ -73,7 +73,7 @@ class Unified_Neural_Model : public Reinforcement_Agent
 		void saveGraph_bestAgent(const char dotfilename[]);
 		double stepBestAction(double* observation);
 		void endEpisode(double reward);
-		void saveDNA_bestAgent(const char* filename);
+		void saveAgent(const char* filename);
 		void loadAgent(const char* filename);
 		
 		//debug

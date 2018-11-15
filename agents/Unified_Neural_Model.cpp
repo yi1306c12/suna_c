@@ -65,7 +65,7 @@ void Unified_Neural_Model::savePopulation()
 }
 */
 		
-void Unified_Neural_Model::saveDNA_bestAgent(const char* filename)
+void Unified_Neural_Model::saveAgent(const char* filename)
 {
 	//printf("Saving best agent model\n");
 	
