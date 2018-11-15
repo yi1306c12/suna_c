@@ -279,8 +279,8 @@ int main(int const argc, char const * argv[])
 
 	}
 
-	agent->saveGraph_bestAgent(network_file_name);
-	agent->saveDNA_bestAgent(DNA_filename);
+	agent->saveGraph_bestAgent(network_filename);
+	agent->saveAgent(DNA_filename);
 
 
 
