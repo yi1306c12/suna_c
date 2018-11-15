@@ -202,6 +202,10 @@ void Unified_Neural_Model::saveGraph_bestAgent(char const dotfilename[])
 {
 	subpopulation[MAIN_SUBPOP][best_index]->printGraph(dotfilename);
 }
+void Unified_Neural_Model::print()
+{
+	subpopulation[MAIN_SUBPOP][best_index]->printGraph(dotfilename);
+}
 
 double Unified_Neural_Model::stepBestAction(double* observation)
 {
