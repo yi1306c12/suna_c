@@ -65,14 +65,14 @@ void Unified_Neural_Model::savePopulation()
 }
 */
 		
-void Unified_Neural_Model::saveAgent(const char* filename)
+void Unified_Neural_Model::saveDNA_bestAgent(const char* filename)
 {
 	//printf("Saving best agent model\n");
 	
 	//execute individual
 	subpopulation[MAIN_SUBPOP][best_index]->saveDNA(filename);		
 
-	subpopulation[MAIN_SUBPOP][best_index]->printGraph("best_individual.dot");		
+	//subpopulation[MAIN_SUBPOP][best_index]->printGraph("best_individual.dot");		
 	
 	//char name[64];
 	//sprintf(name,"%s_printed",filename);
@@ -198,9 +198,9 @@ void Unified_Neural_Model::endEpisode(double reward)
 
 }
 
-void Unified_Neural_Model::print()
+void Unified_Neural_Model::saveGraph_bestAgent(char const dotfilename[])
 {
-	subpopulation[MAIN_SUBPOP][best_index]->printGraph("best_individual.dot");		
+	subpopulation[MAIN_SUBPOP][best_index]->printGraph(dotfilename);
 }
 
 double Unified_Neural_Model::stepBestAction(double* observation)

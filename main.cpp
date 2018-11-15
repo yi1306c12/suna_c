@@ -88,10 +88,11 @@ int main(int const argc, char const * argv[])
 	//int trials_to_change_maze_states= 10000;
 	int i;
 	
-	char const * main_log_file_name = argv[1];
-	char const * network_file_name = argv[2];
+	char const * mainlog_filename = argv[1];
+	char const * network_filename = argv[2];
+	char const * DNA_filename = argv[3];
 
-	main_log_file= fopen(main_log_file_name,"w");
+	main_log_file= fopen(mainlog_filename,"w");
 
 	int unsigned const randseed = static_cast<unsigned int>(clock())+static_cast<unsigned int>(getpid());
 	
@@ -278,7 +279,8 @@ int main(int const argc, char const * argv[])
 
 	}
 
-	agent->saveAgent(network_file_name);
+	agent->saveGraph_bestAgent(network_file_name);
+	agent->saveDNA_bestAgent(DNA_filename);
 
 
 
