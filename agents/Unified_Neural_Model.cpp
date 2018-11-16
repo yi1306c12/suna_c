@@ -75,7 +75,7 @@ void Unified_Neural_Model::saveAgent(const char* filename)
 	//execute individual
 	subpopulation[MAIN_SUBPOP][best_index]->saveDNA(filename);		
 
-	subpopulation[MAIN_SUBPOP][best_index]->printGraph("best_individual.dot");		
+	//subpopulation[MAIN_SUBPOP][best_index]->printGraph("best_individual.dot");		
 	
 	//char name[64];
 	//sprintf(name,"%s_printed",filename);
@@ -201,9 +201,13 @@ void Unified_Neural_Model::endEpisode(double reward)
 
 }
 
+void Unified_Neural_Model::saveGraph_bestAgent(char const dotfilename[])
+{
+	subpopulation[MAIN_SUBPOP][best_index]->printGraph(dotfilename);
+}
 void Unified_Neural_Model::print()
 {
-	subpopulation[MAIN_SUBPOP][best_index]->printGraph("best_individual.dot");		
+	subpopulation[MAIN_SUBPOP][best_index]->printGraph("best_individual.dot");
 }
 
 double Unified_Neural_Model::stepBestAction(double* observation)
