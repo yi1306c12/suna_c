@@ -24,12 +24,13 @@ Unified_Neural_Model::Unified_Neural_Model(Random* random)
 		printf("ERROR: Novelty map's size is bigger or equal to the subpopulation size\n");
 		exit(1);
 	}
-	
+/*	
 	if(NUMBER_OF_SUBPOPULATIONS != 1)
 	{
 		printf("ERROR: Number of subpopulations is different than 1\n");
 		exit(1);
 	}
+*/
 #endif
 
 	step_counter=0;
