@@ -104,28 +104,28 @@ int main(int const argc, char const * argv[])
 	Random* random= new State_of_Art_Random(randseed);
 
 	//Reinforcement_Environment* env= new Frog_Fly(1);
-	//Reinforcement_Environment* env= new Continuous_Empty_Maze();
+	Reinforcement_Environment* env= new Continuous_Empty_Maze();
 	//Reinforcement_Environment* env= new General_Labyrinth(trials_to_change_maze_states, random);
 	//Reinforcement_Environment* env= new Mountain_Car(random);
 	//Reinforcement_Environment* env= new Function_Approximation(random,1000,false);
 	//Reinforcement_Environment* env= new Single_Cart_Pole(random);
 //	Reinforcement_Environment* env= new Caesar_Cipher(random);
-	Reinforcement_Environment* env= new Double_Cart_Pole(random);
+//	Reinforcement_Environment* env= new Double_Cart_Pole(random);
 //	Reinforcement_Environment* env= new Multiplexer(2,4,random);
 //	Reinforcement_Environment* env= new Copy(4,4,20,random);
 	//Reinforcement_Environment* env= new Pendulum_Swing_Up(random);
 	//Reinforcement_Environment* env= new Go(random, BOARDSIZE);
 
-	//Reinforcement_Agent* agent= new Mysterious_Agent();
-	//Reinforcement_Agent* agent= new Neural_XCSF(population_size, number_of_hidden, layers);
-	//Reinforcement_Agent* agent= new XCSF(population_size);
-	//Reinforcement_Agent* agent= new Dummy(env);
-	Reinforcement_Agent* agent= new Unified_Neural_Model(random);
-	//Reinforcement_Agent* agent= new NEAT_Interface(random, NEAT_PARAMETERS);
-	//Reinforcement_Agent* agent= new Self_Organizing_Neurons(SOM_SIZE,SOM_SIZE, random);
-	//Reinforcement_Agent* agent= new Novelty_Organizing_Neurons(random);
-	//Reinforcement_Agent* agent= new NOTC(random);
-	//Reinforcement_Agent* agent= new Cacla(random);
+	//Unified_Neural_Model* agent= new Mysterious_Agent();
+	//Unified_Neural_Model* agent= new Neural_XCSF(population_size, number_of_hidden, layers);
+	//Unified_Neural_Model* agent= new XCSF(population_size);
+	//Unified_Neural_Model* agent= new Dummy(env);
+	Unified_Neural_Model* agent= new Unified_Neural_Model(random);
+	//Unified_Neural_Model* agent= new NEAT_Interface(random, NEAT_PARAMETERS);
+	//Unified_Neural_Model* agent= new Self_Organizing_Neurons(SOM_SIZE,SOM_SIZE, random);
+	//Unified_Neural_Model* agent= new Novelty_Organizing_Neurons(random);
+	//Unified_Neural_Model* agent= new NOTC(random);
+	//Unified_Neural_Model* agent= new Cacla(random);
 
 	setFeatures(env);
 
