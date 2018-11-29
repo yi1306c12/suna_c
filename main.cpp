@@ -6,18 +6,25 @@
 #include<unistd.h>//getpid
 #include<time.h>//clock
 
+//for experiment time
+#include<ctime>//strftime
+
 //agents
 #include"agents/Unified_Neural_Model.h"
 
 //environments
+//#include"environments/Frog_Fly.h"
 #include"environments/Function_Approximation.h"
+#include"environments/Continuous_Empty_Maze.h"
 #include"environments/Single_Cart_Pole.h"
+#include"environments/Pendulum_Swing_Up.h"
 #include"environments/Double_Cart_Pole.h"
 #include"environments/Mountain_Car.h"
+#include"environments/Go.h"
 #include"environments/Multiplexer.h"
-#include"environments/Pendulum_Swing_Up.h"
-#include"environments/Count_Minority.h"
-
+#include"environments/General_Labyrinth.h"
+#include"environments/Copy.h"
+#include"environments/Caesar_Cipher.h"
 #include"parameters.h"
 
 FILE* main_log_file;
@@ -80,25 +87,45 @@ void setFeatures(Reinforcement_Environment* env)
 
 }
 
-int main()
+int main(int const argc, char const * argv[])
 {
 	//int trials_to_change_maze_states= 10000;
 	int i;
-	main_log_file= fopen("log.txt","w");
+	
+	char const * mainlog_filename = argv[1];
+	char const * network_filename = argv[2];
+	char const * DNA_filename = argv[3];
 
-	Random* random= new State_of_Art_Random(static_cast<unsigned int>(clock())+static_cast<unsigned int>(getpid()));
+	main_log_file= fopen(mainlog_filename,"w");
 
+	int unsigned const randseed = static_cast<unsigned int>(clock())+static_cast<unsigned int>(getpid());
+	
+
+	Random* random= new State_of_Art_Random(randseed);
+
+	//Reinforcement_Environment* env= new Frog_Fly(1);
+	Reinforcement_Environment* env= new Continuous_Empty_Maze();
+	//Reinforcement_Environment* env= new General_Labyrinth(trials_to_change_maze_states, random);
 	//Reinforcement_Environment* env= new Mountain_Car(random);
 	//Reinforcement_Environment* env= new Function_Approximation(random,1000,false);
 	//Reinforcement_Environment* env= new Single_Cart_Pole(random);
-	Reinforcement_Environment* env= new Double_Cart_Pole(random);
-	//Reinforcement_Environment* env= new Multiplexer(3,8,random);
+//	Reinforcement_Environment* env= new Caesar_Cipher(random);
+//	Reinforcement_Environment* env= new Double_Cart_Pole(random);
+//	Reinforcement_Environment* env= new Multiplexer(2,4,random);
+//	Reinforcement_Environment* env= new Copy(4,4,20,random);
 	//Reinforcement_Environment* env= new Pendulum_Swing_Up(random);
-	//Reinforcement_Environment* env = new Count_Minority(random);
+	//Reinforcement_Environment* env= new Go(random, BOARDSIZE);
 
-
-	//Reinforcement_Agent* agent= new Dummy(env);
-	Reinforcement_Agent* agent= new Unified_Neural_Model(random);
+	//Unified_Neural_Model* agent= new Mysterious_Agent();
+	//Unified_Neural_Model* agent= new Neural_XCSF(population_size, number_of_hidden, layers);
+	//Unified_Neural_Model* agent= new XCSF(population_size);
+	//Unified_Neural_Model* agent= new Dummy(env);
+	Unified_Neural_Model* agent= new Unified_Neural_Model(random);
+	//Unified_Neural_Model* agent= new NEAT_Interface(random, NEAT_PARAMETERS);
+	//Unified_Neural_Model* agent= new Self_Organizing_Neurons(SOM_SIZE,SOM_SIZE, random);
+	//Unified_Neural_Model* agent= new Novelty_Organizing_Neurons(random);
+	//Unified_Neural_Model* agent= new NOTC(random);
+	//Unified_Neural_Model* agent= new Cacla(random);
 
 	setFeatures(env);
 
@@ -139,6 +166,15 @@ int main()
 	int counter=0;
 	double avg_rewards;
 
+	//environment log
+	time_t rawtime;
+	char buffer[80];
+	time(&rawtime);
+	struct tm * timeinfo = localtime(&rawtime);
+	strftime(buffer, sizeof(buffer), "%d-%m-%Y %H:%M:%S", timeinfo);
+	fprintf(main_log_file, "start time:\t%s\n", buffer);
+	fprintf(main_log_file, "random_seed:\t%u\n", randseed);
+	fprintf(main_log_file, "trials:\t%d\n", trials);
 
 	for(i=env->trial;i<trials;)
 	{
@@ -259,7 +295,8 @@ int main()
 
 	}
 
-	agent->saveAgent("dna_best_individual");
+	agent->saveGraph_bestAgent(network_filename);
+	agent->saveAgent(DNA_filename);
 
 
 
