@@ -13,7 +13,7 @@
 #include"agents/Unified_Neural_Model.h"
 
 //environments
-//#include"environments/Frog_Fly.h"
+#include"environments/Frog_Fly.h"
 #include"environments/Function_Approximation.h"
 #include"environments/Continuous_Empty_Maze.h"
 #include"environments/Single_Cart_Pole.h"
@@ -103,8 +103,8 @@ int main(int const argc, char const * argv[])
 
 	Random* random= new State_of_Art_Random(randseed);
 
-	//Reinforcement_Environment* env= new Frog_Fly(1);
-	Reinforcement_Environment* env= new Continuous_Empty_Maze();
+	Reinforcement_Environment* env= new Frog_Fly(1);
+	//Reinforcement_Environment* env= new Continuous_Empty_Maze();
 	//Reinforcement_Environment* env= new General_Labyrinth(trials_to_change_maze_states, random);
 	//Reinforcement_Environment* env= new Mountain_Car(random);
 	//Reinforcement_Environment* env= new Function_Approximation(random,1000,false);
@@ -112,7 +112,7 @@ int main(int const argc, char const * argv[])
 //	Reinforcement_Environment* env= new Caesar_Cipher(random);
 //	Reinforcement_Environment* env= new Double_Cart_Pole(random);
 //	Reinforcement_Environment* env= new Multiplexer(2,4,random);
-//	Reinforcement_Environment* env= new Copy(4,4,20,random);
+	//Reinforcement_Environment* env= new Copy(4,4,20,random);
 	//Reinforcement_Environment* env= new Pendulum_Swing_Up(random);
 	//Reinforcement_Environment* env= new Go(random, BOARDSIZE);
 
