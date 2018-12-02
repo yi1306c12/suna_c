@@ -81,11 +81,12 @@ double Multiplexer::step(double* action)
 	double correct_output= getCorrectOutput();
 
 	//debug
-	//printf("correct %f\n\n",correct_result);
+	//printf("correct %f\n",correct_output);
 	
 	//discretize action (output)
 	double discrete_output=0;
-	if(action[0] > 0.5)
+	if(action[0] > 0.0)
+	//if(action[0] > 0.5)
 	{
 		discrete_output=1;
 	}
@@ -99,24 +100,30 @@ double Multiplexer::step(double* action)
        	double squared_error= error*error; 	
 
 	reward= -squared_error;
+	
+	//printf("reward %f \n\n",reward);	
 
 	//--------------------- Update Values and Check for End of Trial ------------------------
 	
 	//next step will be a different combination of inputs
 	current_combination++;
+
 	
 	//check if all combinations were already tested
 	if(current_combination >= all_combinations)
 	{
 		restart();
+		//printf("\n");
 		return reward;
 	}
 	
 	//set observation to current combination of inputs
 	for(int j=0; j<(data_bits+address_bits) ;++j)
 	{	
-		observation[j]= (double) input_data[current_combination][j]; 
+		observation[j]= (double) input_data[current_combination][j];
+		//printf("%.0f ",observation[j]);	
 	}
+	//printf("\n");
 
 	return reward;
 }
@@ -190,8 +197,8 @@ double Multiplexer::getCorrectOutput()
 		address|= value << (j-data_bits);
 	}
 
-	/*
-	 * debug
+	
+	/* debug
 	for(int j=0; j<data_bits;++j)
 	{	
 		printf("%f ",observation[j]);	
@@ -203,7 +210,7 @@ double Multiplexer::getCorrectOutput()
 	}
 	printf("\n");
 
-	printf("address %d\n",address);
+	printf("correct answer %f address %d\n",observation[address], address);
 	*/
 
 	return observation[address];
