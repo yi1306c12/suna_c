@@ -14,7 +14,9 @@ Caesar_Cipher_multiplicatekey::Caesar_Cipher_multiplicatekey(Random* random, int
         pow(max_value_of_key, 1./static_cast<double>(number_of_key))
         ),
     keys(std::vector<double>(number_of_key))
-{}
+{
+    this->random = random;
+}
 
 void Caesar_Cipher_multiplicatekey::start(int &number_of_observation_vars, int& number_of_action_vars)
 {
@@ -39,7 +41,7 @@ double Caesar_Cipher_multiplicatekey::restart()
 
     for(int i=0; i < number_of_key; ++i)
     {
-        keys[i] = random->uniform(0., max_value_of_each_key);
+        keys[i] = random->uniform(1., max_value_of_each_key);
         observation[i+1] = keys[i];
     }
     key = std::accumulate(keys.begin(), keys.end(), 1., std::multiplies<double>());

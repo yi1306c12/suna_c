@@ -111,7 +111,7 @@ int main(int const argc, char const * argv[])
 	//Reinforcement_Environment* env= new Function_Approximation(random,1000,false);
 	//Reinforcement_Environment* env= new Single_Cart_Pole(random);
 //	Reinforcement_Environment* env= new Caesar_Cipher(random);
-	Reinforcement_Environment* env= new Caesar_Cipher_multiplicatekey(random, 1);
+	Reinforcement_Environment* env= new Caesar_Cipher_multiplicatekey(random, 2);
 //	Reinforcement_Environment* env= new Double_Cart_Pole(random);
 //	Reinforcement_Environment* env= new Multiplexer(2,4,random);
 //	Reinforcement_Environment* env= new Copy(4,4,20,random);
