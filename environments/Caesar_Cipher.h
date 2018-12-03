@@ -32,10 +32,13 @@ class Caesar_Cipher : public Reinforcement_Environment
 	
 		Random* random;
 
-		int max_number_of_messages;
+		int const max_steps_of_messages;
 		int message_counter;
 		double key;
 		double current_message;
+
+		double const max_value_of_message = 25.;
+		double const max_value_of_key = 25.;
 };
 
 #endif

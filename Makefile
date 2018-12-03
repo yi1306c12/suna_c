@@ -1,7 +1,8 @@
 
 PATH_TO_ZWEIFEL_LIBRARY=$(HOME)/Programs/zweifel
 
-CFLAGS= -O4 -Wall -std=c++11
+#CFLAGS= -O4 -Wall -std=c++14
+CFLAGS= -O0 -Wall -std=c++14 -g
 #-Wall -pedantic -ansi
 #CFLAGS=-O4
 
