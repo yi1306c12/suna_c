@@ -1,12 +1,11 @@
 #include"Caesar_Cipher.h"
 
-Caesar_Cipher::Caesar_Cipher(Random* random)
+Caesar_Cipher::Caesar_Cipher(Random* random):
+max_steps_of_messages(100)
 {
 	this->random= random;
 	trial=-1;	//the first trial will be zero, because restart() is called making it increment
 	MAX_STEPS= 9999;
-
-	max_number_of_messages=100;
 }
 
 Caesar_Cipher::~Caesar_Cipher()
@@ -40,7 +39,7 @@ double Caesar_Cipher::step(double* action)
 
 
 
-	if(message_counter > max_number_of_messages) 
+	if(message_counter > max_steps_of_messages) 
 	{
 		restart();
 		//return 1/(x*x + theta*theta + 0.001);             
@@ -49,7 +48,7 @@ double Caesar_Cipher::step(double* action)
 	else
 	{
 		//set new message
-		current_message= random->uniform(0.0, 25.0);
+		current_message= random->uniform(0.0, max_value_of_message);
 
 		observation[0]= current_message;
 		message_counter++;
@@ -63,11 +62,11 @@ double Caesar_Cipher::restart()
 	trial++;
 	
 	//set new message
-	current_message= random->uniform(0.0, 25.0);
+	current_message= random->uniform(0.0, max_value_of_message);
 	observation[0]= current_message;
 	message_counter=0;
 	
-	key= random->uniform(0.0, 25.0);
+	key= random->uniform(0.0, max_value_of_key);
 	observation[1]= key;
 
 	return 0;
