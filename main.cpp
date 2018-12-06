@@ -27,6 +27,7 @@
 #include"environments/Caesar_Cipher.h"
 #include"environments/Caesar_Cipher_multiplicatekey.hpp"
 #include"environments/Randomized_Double_Cart_Pole.hpp"
+#include"environments/Randomized_Pendulum_Swing_Up.hpp"
 #include"parameters.h"
 
 FILE* main_log_file;
@@ -119,7 +120,8 @@ int main(int const argc, char const * argv[])
 	//Reinforcement_Environment* env= new Pendulum_Swing_Up(random);
 	//Reinforcement_Environment* env= new Go(random, BOARDSIZE);
 
-	Reinforcement_Environment* env = new Randomized_Double_Cart_Pole(random, 0., 0.01);
+	//Reinforcement_Environment* env = new Randomized_Double_Cart_Pole(random, 0., 0.01);
+	Reinforcement_Environment* env = new Randomized_Pendulum_Swing_Up(random, 0., 0.01);
 
 	//Unified_Neural_Model* agent= new Mysterious_Agent();
 	//Unified_Neural_Model* agent= new Neural_XCSF(population_size, number_of_hidden, layers);
