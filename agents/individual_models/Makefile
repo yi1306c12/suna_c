@@ -1,0 +1,3 @@
+all:
+	g++ -c Trivial_Model.cpp Neural_Model.cpp ../neural_model/Simple_Feedforward.cpp -lzrandom -lzgraph
+	g++ -o o main.cpp Trivial_Model.cpp Neural_Model.cpp ../neural_model/Simple_Feedforward.cpp -lzrandom -lzgraph

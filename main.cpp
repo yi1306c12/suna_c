@@ -11,6 +11,7 @@
 
 //agents
 #include"agents/Unified_Neural_Model.h"
+#include"agents/NEAT_Interface.h"
 
 //environments
 //#include"environments/Frog_Fly.h"
@@ -127,8 +128,8 @@ int main(int const argc, char const * argv[])
 	//Unified_Neural_Model* agent= new Neural_XCSF(population_size, number_of_hidden, layers);
 	//Unified_Neural_Model* agent= new XCSF(population_size);
 	//Unified_Neural_Model* agent= new Dummy(env);
-	Unified_Neural_Model* agent= new Unified_Neural_Model(random);
-	//Unified_Neural_Model* agent= new NEAT_Interface(random, NEAT_PARAMETERS);
+	//Unified_Neural_Model* agent= new Unified_Neural_Model(random);
+	NEAT_Interface* agent= new NEAT_Interface(random, NEAT_PARAMETERS);
 	//Unified_Neural_Model* agent= new Self_Organizing_Neurons(SOM_SIZE,SOM_SIZE, random);
 	//Unified_Neural_Model* agent= new Novelty_Organizing_Neurons(random);
 	//Unified_Neural_Model* agent= new NOTC(random);
@@ -302,7 +303,8 @@ int main(int const argc, char const * argv[])
 
 	}
 
-	agent->saveGraph_bestAgent(network_filename);
+//	agent->saveGraph_bestAgent(network_filename);
+	
 	agent->saveAgent(DNA_filename);
 
 

@@ -1,0 +1,9 @@
+# tabOutFile XCSTS_TEST_01 nrExps 1 maxNrSteps 100000 initialSeed 101 initialFoldSeed 69 do10FoldedC.V. 1 testFrequency 500 popOutFrequency 500000 doGenerateTree 0 maxPopSize 6400
+# alpha 0.100000 betaP 0.200000 betaE 0.200000 betaF 0.200000 betaS 0.200000 gamma 0.900000 epsilon0 0.001000 nu 5 fallOffRate 0.100000
+# thetaGA 48 fitnessReduction 0.100000 doSetPreErrDirectly 0 doInitializePE 3 doFitnessAdjustment 0 tournamentSize 0.40 selectTolerance 0.000000 forceDifferentInTournament 0.00 crossoverType 0 chi 1.000000 mu 0.040000 mutateRand 0.200000 doGeneralizationMutation 0 doNicheMutation 0 delta 0.100000 thetaDel 50 deletionType 1 
+# doMAM 1 doGradient 0 doRelativeFitness 1 doGAErrorBasedSelect 0
+# dontCareProb 0.600000 coverRand 100.000000 doGASubsumption 1 doActionSetSubsumption 0 thetaSub 50 exploreProb 1.000000 teletransportation 50 initializePopulation 0
+# Function hungarian-14-heart-disease; addNoiseToAction 0.000000; actionNoiseMu 0.000000; actionNoiseSigma 0.000000
+# paymentRange 1000.000000; conditionLength 13
+# Next Experiment
+30 0.666667 0.334900 3033 110.505603 385.438125 -nan -nan 26.497126 96.434117 0.010204 -nan -nan	 0.114206 0.624687 0.114896 0.437830 0.585195 0.319219 0.242109 0.319334 0.590469 0.367533 0.250000 -nan 0.135625

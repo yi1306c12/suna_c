@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<h+tml xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=ISO-8859-1" />
+  <meta name="keywords" content="hado van hasselt,van hasselt,reinforcement learning,algorithms,q-learning,sarsa,acla,cacla,actor-critic,actor,critic,r-learning,qv-learning,qv,adp,dynamic programming,machine learning,marco wiering,convergence,continuous actions,continuous action spaces"/>
+  <title>A Short Introduction To Some RL Algorithms - Hado van Hasselt</title>
+  <link href="style.css" rel="stylesheet" media="screen" />
+</head>
+<body><h1>A Short Introduction To Some Reinforcement Learning Algorithms</h1>
+<p>By <a href="../index.html">Hado van Hasselt</a></p>
+
+<h2>Actor-Critic Learning Automaton (Acla)</h2>
+<a href="AC.html">Previous</a> -- <a href="rl_algs.html">Up</a> -- <a href="Cacla.html">Next</a>
+
+<p>
+Acla is an algorithm that uses state values to update state-dependent action values. For the update to these action values, one observes the update to the state value of the last state. If this update increased the value of the state, the action that was performed was a good action and the update is:
+</p>
+
+<p>
+<img src="../img/Acla1.png" alt="P_{t+1}(s_t,a_t) \overset{\alpha_t}{\longleftarrow} 1" />
+</p>
+
+If the state value decreases, the action was not such a good idea, and the update is:
+
+<p>
+<img src="../img/Acla0.png" alt="P_{t+1}(s_t,a_t) \overset{\alpha_t}{\longleftarrow} 1" />
+</p>
+
+<p>
+Note that both updated preserve the property that the values of the actions are between 0 and 1, if they are initialised in this interval.
+</p>
+
+
+<h4>Neutral characteristics</h4>
+<p>
+<ul>
+  <li>It is on-policy.</li>
+  <li>Learns preference values that do not hold explicit information on the expected discounted rewards.</li>
+</ul>
+</p>
+
+<h4>Advantages</h4>
+<p>
+<ul>
+  <li>Using state values often speeds up learning.</li>
+  <li>State values are easily extendable to eligibility traces.</li>
+  <li>Has been shown to outperform several other algorithms on some problems.</li>
+</ul>
+</p>
+
+<h4>Disadvantages</h4>
+<p>
+<ul>
+  <li>Converges to a solution that optimizes the probability of a higher value, instead of the expected reward. In stochastic problems these solutions may differ (although this is not typically the case).</li>
+  <li>Cannot handle continuous action spaces.</li>
+</ul>
+</p>
+
+<a name="alg"></a>
+<h4>Algorithm</h4>
+
+<p>
+  The Acla algorithm in schematic form:
+</p>
+
+<p>
+  <img src="../img/Aclaalg.png" alt="Acla algorithm" />
+</p>
+
+<p>
+  In the publication below, it is shown that in at least some cases, Acla performs a lot better than similar algorithms such as <a href="Q.html">Q-learning</a> and <a href="Sarsa.html">Sarsa</a>. The only algorithm that was shown to be able to perform better on the selected task is the <a href="Cacla.html">Cacla</a> algorithm.
+</p>
+
+<p>
+<b>Selected relevant publications:</b>
+<ul>
+  <li> Hado van Hasselt and Marco Wiering (2009). <a href="../papers/Using_Continuous_Action_Spaces_to_Solve_Discrete_Problems.pdf">"Using Continuous Action Spaces to Solve Discrete Problems"</a>. Proceedings of the International Joint Conference on Neural Networks, IJCNN 2009, Atlanta, GA, USA, 2009.</li>
+</ul>
+</p>
+
+<h3>Quick links:</h3>
+<a href="AC.html">Previous</a> -- <a href="rl_algs.html">Up</a> -- <a href="Cacla.html">Next</a>
+<p>
+  <ul>
+    <li><a href="Notation.html">Notation</a></li>
+    <li>Using only <a href="onlyQ.html">state-action values</a>:</li>
+    <ul>
+      <li><a href="Q.html">Q-learning</a></li>
+      <li><a href="Sarsa.html">Sarsa</a></li>
+      <li><a href="ESarsa.html">Expected-Sarsa</a></li>
+    </ul>
+    <li>Also using <a href="alsoV.html">state values</a>:</li>
+    <ul>
+      <li><a href="QV.html">QV-learning</a></li>
+      <li><a href="AC.html">Actor-Critic</a></li>
+      <li><a href="Acla.html">Acla</a></li>
+    </ul>
+    <li>Using continuous actions:</li>
+    <ul>
+      <li><a href="Cacla.html">Cacla</a></li>
+    </ul>
+  </ul>
+</p>
+
+<h3>Contact</h3>
+
+<p>
+My contact data can be found on <a href="http://www.cs.uu.nl/staff/hado.html">the staff page</a> of the department.
+</p>
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2239771-1";
+urchinTracker();
+</script>
+</body>
+</html>

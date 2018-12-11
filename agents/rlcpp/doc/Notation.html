@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<h+tml xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=ISO-8859-1" />
+  <meta name="keywords" content="hado van hasselt,van hasselt,reinforcement learning,algorithms,q-learning,sarsa,acla,cacla,actor-critic,actor,critic,r-learning,qv-learning,qv,adp,dynamic programming,machine learning,marco wiering,convergence,continuous actions,continuous action spaces"/>
+  <title>A Short Introduction To Some RL Algorithms - Hado van Hasselt</title>
+  <link href="style.css" rel="stylesheet" media="screen" />
+</head>
+<body><h1>A Short Introduction To Some Reinforcement Learning Algorithms</h1>
+<p>By <a href="../index.html">Hado van Hasselt</a></p>
+
+<h2>Notation</h2>
+<a href="QuickLinks.html">Previous</a> -- <a href="rl_algs.html">Up</a> -- <a href="onlyQ.html">Next</a>
+
+<p>
+  On this website, we use the following notation conventions. Whenever a value (or function) is updated, we use the following notation to indicate such an update:
+</p>
+
+<p>
+  <img src="../img/not1.png" alt="A_{t+1}(x) \overset{\alpha}{\longleftarrow} B_t" />
+</p>
+
+<p>
+  This equation means that the value of A(x), which is dependent on some input x, is updated towards some value B. The subscripts indicate temporal steps, making this a discrete time formulation. The alpha is a learning rate parameter: <img src="../img/alpha.png" alt="0 \leq \alpha \leq 1" />, that indicates how large to step towards B is.
+</p>
+
+<p>
+  If the values of A(x) for all possible inputs x are stored in a table, one can understand the notation above to be equivalent to the following update:
+</p>
+
+<p>
+  <img src="../img/not2.png" alt="A_{t+1}(x) = (1 - \alpha) A_t(x) + \alpha B_t" />
+</p>
+
+<p>
+  As another option, A(x) could be a parametrised function that is dependent on the input x and on some parameters <b>w</b>. Then, the notation can be understand to be shorthand for the following update on each of the parameters of this function:
+</p>
+
+<p>
+  <img src="../img/nn.png" alt="w_{t+1} = w_t + \alpha \Big( B_t - A_t(x,\mathbf{w}) \Big) \frac{ \partial A_t(x,\mathbf{w}) }{ \partial w_t }" />
+</p>
+
+<p>
+  This update can be interpreted as a gradient descent update on the squared difference between the output A(x,<b>w</b>) and the target output B. The learning rate parameter again regulates the size of the update. For instance, a neural network is often used to store values and in this case the parameters <b>w</b> would correspond to the weights of this network. However, other function approximators can of course also be used. On this page, we will use the same general notaton from the first equation to fill in for any of these options.
+</p>
+
+<h3>Quick links:</h3>
+<a href="QuickLinks.html">Previous</a> -- <a href="rl_algs.html">Up</a> -- <a href="onlyQ.html">Next</a>
+<p>
+  <ul>
+    <li><a href="Notation.html">Notation</a></li>
+    <li>Using only <a href="onlyQ.html">state-action values</a>:</li>
+    <ul>
+      <li><a href="Q.html">Q-learning</a></li>
+      <li><a href="Sarsa.html">Sarsa</a></li>
+      <li><a href="ESarsa.html">Expected-Sarsa</a></li>
+    </ul>
+    <li>Also using <a href="alsoV.html">state values</a>:</li>
+    <ul>
+      <li><a href="QV.html">QV-learning</a></li>
+      <li><a href="AC.html">Actor-Critic</a></li>
+      <li><a href="Acla.html">Acla</a></li>
+    </ul>
+    <li>Using continuous actions:</li>
+    <ul>
+      <li><a href="Cacla.html">Cacla</a></li>
+    </ul>
+  </ul>
+</p>
+
+<h3>Contact</h3>
+
+<p>
+My contact data can be found on <a href="http://www.cs.uu.nl/staff/hado.html">the staff page</a> of the department.
+</p>
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2239771-1";
+urchinTracker();
+</script>
+</body>
+</html>

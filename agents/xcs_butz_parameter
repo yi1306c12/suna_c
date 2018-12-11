@@ -1,0 +1,54 @@
+# The following parameters can all be set in XCS1.2, a # symbol at the beginning of a line
+# in a parameter file denotes a comment line parameters without values are not set parameters!
+tabOutFile XCSTS_TEST_01
+nrExps 1
+maxNrSteps 100000
+initialSeed 101
+initialFoldSeed 69
+do10FoldedCrossValidation 1
+testFrequency 500
+popOutFrequency 500000
+maxPopSize 6400
+initializePopulation 0
+doGenerateTree 0
+
+alpha 0.1
+beta .2
+gamma .9
+epsilon0 .001
+nu 5
+
+doSetPreErrDirectly 0
+doInitializePE 3
+thetaGA 48
+fitnessReduction .1
+tournamentSize 0.4
+forceDifferentInTournament 0
+crossoverType 0
+
+selectTolerance 0
+chi 1.0
+mu .04
+mutateRand 0.2
+doGeneralizationMutation 0
+doNicheMutation 0
+
+doMAM 1
+doGradient 0
+doGAErrorBasedSelect 0
+
+delta .1
+thetaDel 50
+deletionType 1
+dontCareProb 0.6
+coverRand 100
+doGASubsumption 1
+doActionSetSubsumption 0
+thetaSub 50
+
+exploreProb 1.0
+teletransportation 50
+
+addNoiseToAction 0
+actionNoiseSigma 0
+
