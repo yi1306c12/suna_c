@@ -9,6 +9,13 @@
 //for experiment time
 #include<ctime>//strftime
 
+//for optional arguments
+#include<boost/program_options.hpp>
+namespace po = boost::program_options;
+#include<iostream>
+#include<string>
+using std::string;
+
 //agents
 #include"agents/Unified_Neural_Model.h"
 
@@ -92,6 +99,22 @@ void setFeatures(Reinforcement_Environment* env)
 
 int main(int const argc, char const * argv[])
 {
+	po::options_description opt("Allowed options");
+	opt.add_options()
+		("help,h", "produce help message")
+		("neat_parameters", "set neat_parameter")
+//		("test", "for debug")
+	;
+	po::variables_map argmap;
+	po::store(po::parse_command_line(argc, argv, opt), argmap);
+	po::notify(argmap);
+
+	if(argmap.count("help"))// || !argmap.count("test"))
+	{
+		std::cerr << opt << std::endl;
+		return 1;
+	}
+
 	int trials_to_change_maze_states= 10000;
 	int i;
 	
