@@ -15,7 +15,7 @@ NEAT_AGENT=agents/NEAT_Interface.cpp agents/neat/neat.cpp agents/neat/network.cp
 MODELS=agents/modules/Module.cpp
 MAPS=agents/self_organized_systems/Som_Map.cpp agents/self_organized_systems/Novelty_Map.cpp agents/self_organized_systems/SOM_Cell.cpp agents/self_organized_systems/ASSOM_Cell.cpp
 
-LDFLAGS=  -L${PATH_TO_ZWEIFEL_LIBRARY}/lib -I${PATH_TO_ZWEIFEL_LIBRARY}/src/ -lzrandom -lzgraph
+LDFLAGS=  -L${PATH_TO_ZWEIFEL_LIBRARY}/lib -I${PATH_TO_ZWEIFEL_LIBRARY}/src/ -lzrandom -lzgraph -lboost_program_options
 
 
 all:	main live
