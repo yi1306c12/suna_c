@@ -103,7 +103,7 @@ int main(int const argc, char const * argv[])
 	po::options_description opt("Allowed options");
 	opt.add_options()
 		("help,h", "produce help message")
-		("neat_parameters", "set neat_parameter")
+		("neat_parameters", po::value<string>(), "set neat_parameter")
 //		("test", "for debug")
 	;
 	po::variables_map argmap;
@@ -152,7 +152,15 @@ int main(int const argc, char const * argv[])
 	//Unified_Neural_Model* agent= new XCSF(population_size);
 	//Unified_Neural_Model* agent= new Dummy(env);
 	//Unified_Neural_Model* agent= new Unified_Neural_Model(random);
-	NEAT_Interface* agent= new NEAT_Interface(random, NEAT_PARAMETERS);
+//	NEAT_Interface* agent= new NEAT_Interface(random, NEAT_PARAMETERS);
+	if(!argmap.count("neat_parameters"))
+	{
+		std::cerr << opt << std::endl;
+		return 1;
+	}
+	string neat_parameters_filename = argmap["neat_parameters"].as<string>();
+	std::cout << neat_parameters_filename << std::endl;
+	NEAT_Interface* agent= new NEAT_Interface(random, neat_parameters_filename.c_str());
 	//Unified_Neural_Model* agent= new Self_Organizing_Neurons(SOM_SIZE,SOM_SIZE, random);
 	//Unified_Neural_Model* agent= new Novelty_Organizing_Neurons(random);
 	//Unified_Neural_Model* agent= new NOTC(random);
