@@ -25,7 +25,7 @@ void Caesar_Cipher::start(int &number_of_observation_vars, int& number_of_action
 	restart();
 }
 
-void Caesar_Cipher::set(int const feature)
+bool Caesar_Cipher::set(int const feature)
 {
 	switch(feature)
 	{

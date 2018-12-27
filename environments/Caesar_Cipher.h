@@ -29,6 +29,7 @@ class Caesar_Cipher : public Reinforcement_Environment
 		double step(double* action);
 		double restart();
 		void print();
+		bool set(int const feature);
 	
 		Random* random;
 
