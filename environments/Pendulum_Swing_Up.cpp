@@ -108,6 +108,12 @@ double Pendulum_Swing_Up::step(double* action)
 	//--- Apply action to the simulated cart-pole ---
 	cart_pole(force, &x, &x_dot, &theta, &theta_dot);
 	
+#ifdef NORMALIZED_OBSERVATION
+	observation[0]=x/4.8;
+	observation[1]=x_dot/2.0;
+	observation[2]=theta/0.52;
+	observation[3]=theta_dot/2.0;
+#else
 	//copy the state to the agents' observable variables
 	observation[0]=x;
 	//observation[0]= (x + 2.4) / 4.8;
@@ -117,7 +123,7 @@ double Pendulum_Swing_Up::step(double* action)
 	//observation[2]=(theta + TWELVE_DEGREES) / .41;
 	observation[3]=theta_dot;
 	//observation[3]=(theta_dot + 1.0) / 2.0;
-
+#endif
 	//--- Check for failure.  If so, return steps ---
 	if(x < -2.4 || x > 2.4)
 	{
@@ -158,6 +164,12 @@ double Pendulum_Swing_Up::restart()
 		theta_dot = 0;
 	}
 
+#ifdef NORMALIZED_OBSERVATION
+	observation[0]=x/4.8;
+	observation[1]=x_dot/2.0;
+	observation[2]=theta/0.52;
+	observation[3]=theta_dot/2.0;
+#else
 	//copy the state to the agents' observable variables
 	observation[0]=x;
 	//observation[0]= (x + 2.4) / 4.8;
@@ -167,7 +179,7 @@ double Pendulum_Swing_Up::restart()
 	//observation[2]=(theta + TWELVE_DEGREES) / .41;
 	observation[3]=theta_dot;
 	//observation[3]=(theta_dot + 1.0) / 2.0;
-
+#endif
 	
 	return -1;
 	//return 1/(x*x + theta*theta + 0.001);             
@@ -193,3 +205,23 @@ void Pendulum_Swing_Up::print()
 	cart_position+=  
 
 	*/
+bool Pendulum_Swing_Up::set(int feature)
+{
+	switch(feature)
+	{
+		case NORMALIZED_OBSERVATION:
+		{
+			return true;
+		}
+		break;
+		case NORMALIZED_ACTION:
+		{
+			return true;
+		}
+		break;
+		default:
+		{
+			return false;
+		}
+	}
+}

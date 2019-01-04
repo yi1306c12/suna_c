@@ -138,12 +138,12 @@ int main(int const argc, char const * argv[])
 	//Reinforcement_Environment* env= new Mountain_Car(random);
 	//Reinforcement_Environment* env= new Function_Approximation(random,1000,false);
 	//Reinforcement_Environment* env= new Single_Cart_Pole(random);
-	Reinforcement_Environment* env= new Caesar_Cipher(random);
+//	Reinforcement_Environment* env= new Caesar_Cipher(random);
 //	Reinforcement_Environment* env= new Caesar_Cipher_multiplicatekey(random, 2);
 //	Reinforcement_Environment* env= new Double_Cart_Pole(random);
 //	Reinforcement_Environment* env= new Multiplexer(2,4,random);
 //	Reinforcement_Environment* env= new Copy(4,4,20,random);
-	//Reinforcement_Environment* env= new Pendulum_Swing_Up(random);
+	Reinforcement_Environment* env= new Pendulum_Swing_Up(random);
 	//Reinforcement_Environment* env= new Go(random, BOARDSIZE);
 
 	//Reinforcement_Environment* env = new Randomized_Double_Cart_Pole(random, 0., 0.01);
@@ -161,7 +161,7 @@ int main(int const argc, char const * argv[])
 		return 1;
 	}
 	string neat_parameters_filename = argmap["neat_parameters"].as<string>();
-	std::cout << neat_parameters_filename << std::endl;
+	//std::cout << neat_parameters_filename << std::endl;
 	NEAT_Interface* agent= new NEAT_Interface(random, neat_parameters_filename.c_str());
 	//Unified_Neural_Model* agent= new Self_Organizing_Neurons(SOM_SIZE,SOM_SIZE, random);
 	//Unified_Neural_Model* agent= new Novelty_Organizing_Neurons(random);

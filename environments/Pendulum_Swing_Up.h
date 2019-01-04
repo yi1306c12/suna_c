@@ -31,6 +31,8 @@ class Pendulum_Swing_Up : public Reinforcement_Environment
 		double restart();
 		void print();
 	
+		bool set(int feature);
+
 		//auxiliary functions
 		void cart_pole(double force, double *x,double *x_dot, double *theta, double *theta_dot);
 
