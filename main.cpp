@@ -137,14 +137,14 @@ int main(int const argc, char const * argv[])
 	//Reinforcement_Environment* env= new Single_Cart_Pole(random);
 //	Reinforcement_Environment* env= new Caesar_Cipher(random);
 //	Reinforcement_Environment* env= new Caesar_Cipher_multiplicatekey(random, 2);
-//	Reinforcement_Environment* env= new Double_Cart_Pole(random);
+	Reinforcement_Environment* env= new Double_Cart_Pole(random);
 //	Reinforcement_Environment* env= new Multiplexer(2,4,random);
 //	Reinforcement_Environment* env= new Copy(4,4,20,random);
 	//Reinforcement_Environment* env= new Pendulum_Swing_Up(random);
 	//Reinforcement_Environment* env= new Go(random, BOARDSIZE);
 
 	//Reinforcement_Environment* env = new Randomized_Double_Cart_Pole(random, 0., 0.01);
-	Reinforcement_Environment* env = new Randomized_Pendulum_Swing_Up(random, 0., 0.01);
+	//Reinforcement_Environment* env = new Randomized_Pendulum_Swing_Up(random, 0., 0.01);
 
 	//Unified_Neural_Model* agent= new Mysterious_Agent();
 	//Unified_Neural_Model* agent= new Neural_XCSF(population_size, number_of_hidden, layers);

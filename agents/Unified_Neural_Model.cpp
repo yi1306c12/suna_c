@@ -1,6 +1,9 @@
 
 #include"Unified_Neural_Model.h"
 
+#include<sstream>
+using std::ostringstream;
+
 Unified_Neural_Model::Unified_Neural_Model(Random* random)
 {
 	this->random= random;
@@ -480,8 +483,18 @@ void Unified_Neural_Model::spectrumDiversityEvolve()
 		}
 	}
 	
+
 		
 	nmap_cell* cell= (nmap_cell*)(nmap->map[0]).pointer;
+	for(int i = 0; i < NOVELTY_MAP_SIZE; ++i)
+	{
+		cell = (nmap_cell*)(nmap->map[i]).pointer;
+		if(cell->module==NULL)continue;
+		ostringstream oss;
+		oss << "subpopulation_gen" << generation << "_sub" << i << "_fit" << cell->fitness << ".dot";
+		cell->module->printGraph(oss.str().c_str());
+	}
+
 	best_fitness= cell->fitness;
 	best_index= 0;
 
