@@ -9,6 +9,13 @@
 //for experiment time
 #include<ctime>//strftime
 
+//for optional arguments
+#include<boost/program_options.hpp>
+namespace po = boost::program_options;
+#include<iostream>
+#include<string>
+using std::string;
+
 //agents
 #include"agents/Unified_Neural_Model.h"
 
@@ -92,6 +99,22 @@ void setFeatures(Reinforcement_Environment* env)
 
 int main(int const argc, char const * argv[])
 {
+	po::options_description opt("Allowed options");
+	opt.add_options()
+		("help,h", "produce help message")
+		("neat_parameters", "set neat_parameter")
+//		("test", "for debug")
+	;
+	po::variables_map argmap;
+	po::store(po::parse_command_line(argc, argv, opt), argmap);
+	po::notify(argmap);
+
+	if(argmap.count("help"))// || !argmap.count("test"))
+	{
+		std::cerr << opt << std::endl;
+		return 1;
+	}
+
 	int trials_to_change_maze_states= 10000;
 	int i;
 	
@@ -114,14 +137,14 @@ int main(int const argc, char const * argv[])
 	//Reinforcement_Environment* env= new Single_Cart_Pole(random);
 //	Reinforcement_Environment* env= new Caesar_Cipher(random);
 //	Reinforcement_Environment* env= new Caesar_Cipher_multiplicatekey(random, 2);
-//	Reinforcement_Environment* env= new Double_Cart_Pole(random);
+	Reinforcement_Environment* env= new Double_Cart_Pole(random);
 //	Reinforcement_Environment* env= new Multiplexer(2,4,random);
 	//Reinforcement_Environment* env= new Copy(4,4,20,random);
 	//Reinforcement_Environment* env= new Pendulum_Swing_Up(random);
 	//Reinforcement_Environment* env= new Go(random, BOARDSIZE);
 
 	//Reinforcement_Environment* env = new Randomized_Double_Cart_Pole(random, 0., 0.01);
-	Reinforcement_Environment* env = new Randomized_Pendulum_Swing_Up(random, 0., 0.01);
+	//Reinforcement_Environment* env = new Randomized_Pendulum_Swing_Up(random, 0., 0.01);
 
 	//Unified_Neural_Model* agent= new Mysterious_Agent();
 	//Unified_Neural_Model* agent= new Neural_XCSF(population_size, number_of_hidden, layers);
