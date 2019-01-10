@@ -491,7 +491,7 @@ void Unified_Neural_Model::spectrumDiversityEvolve()
 		cell = (nmap_cell*)(nmap->map[i]).pointer;
 		if(cell->module==NULL)continue;
 		ostringstream oss;
-		oss << "subpopulation_gen" << generation << "_sub" << i << "_fit" << cell->fitness << ".dot";
+		oss << "subpopulation_gen" << generation << "_sub" << i << "_fit" << static_cast<int>(cell->fitness) << ".dot";
 		cell->module->printGraph(oss.str().c_str());
 	}
 
