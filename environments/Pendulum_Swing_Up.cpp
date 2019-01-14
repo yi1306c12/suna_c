@@ -123,7 +123,7 @@ double Pendulum_Swing_Up::step(double* action)
 	{
 		restart();
 		//return 1/(x*x + theta*theta + 0.001);             
-		return EXTREME_NEGATIVE_REWARD;
+		return -1.2*MAX_STEPS;
 	}
 
 	if(theta < -TWELVE_DEGREES ||	theta > TWELVE_DEGREES) 
